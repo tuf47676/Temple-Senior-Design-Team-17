@@ -1,0 +1,282 @@
+[Workspace Header]
+Version = 710
+Pathname = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Scanner_DAQ.cws"
+CVI Dir = "/c/program files/national instruments/cvi71"
+IVI Standard Root Dir = "/C/Program Files/IVI"
+VXIplug&play Framework Dir = "/C/VXIPNP/winnt"
+Number of Projects = 1
+Active Project = 1
+Project 0001 = "Scanner_DAQ.prj"
+Drag Bar Left = 214
+Window Top = 30
+Window Left = 270
+Window Bottom = 1016
+Window Right = 1675
+Maximized = True
+Maximized Children = False
+Max Number Of Errors = 20
+Track Include File Dependencies = True
+Prompt For Missing Includes = True
+Stop On First Error File = False
+Bring Up Err Win For Warnings = True
+Show Build Dialog = False
+Save Changes Before Running = "Always"
+Hide Windows = False
+Global Hot Key = False
+Break At First Statement = False
+Sort Type = "File Name"
+Number of Opened Files = 0
+Window Confinement Region Enabled = True
+MainColumnWidth = 195
+FileDateColumnWidth = 70
+FileSizeColumnWidth = 70
+StatusColumnWidth = 70
+
+[Project Header 0001]
+Version = 710
+Platform Code = 4
+Build Configuration = "Debug"
+Warn User If Debugging Release = 1
+Batch Build Release = False
+Batch Build Debug = True
+
+[File 0001]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/agena.fp"
+File Type = "Function Panel"
+Disk Date = 3241796700
+In Projects = "1,"
+
+[File 0002]
+Path = "/c/Program Files/National Instruments/CVI71/toolslib/toolbox/inifile.fp"
+File Type = "Function Panel"
+Disk Date = 3173691600
+In Projects = "1,"
+Window Top = 572
+Window Left = 294
+Window Height = 400
+Window Width = 400
+
+[File 0003]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Setup.c"
+File Type = "CSource"
+Disk Date = 3305101542
+In Projects = "1,"
+Window Top = 72
+Window Left = -78
+Source Window State = "1,3788,3788,3788,8,16,16,1,0,132,0,0,0,0,0,49,3509,0,3783,34,668,1124,1,0,"
+
+[File 0004]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/agena.c"
+File Type = "CSource"
+Disk Date = 3265976852
+In Projects = "1,"
+Window Top = 34
+Window Left = -54
+Source Window State = "1,664,665,665,0,8160,38,1,0,129,0,746,0,0,0,57,0,0,0,16,776,1100,1,39,"
+
+[File 0005]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/agena.h"
+File Type = "Include"
+Disk Date = 3241796700
+In Projects = "1,"
+Window Top = 32
+Window Left = 6
+Source Window State = "1,81,81,81,21,27,27,1,0,0,0,0,0,0,0,0,593,0,618,18,699,967,1,0,"
+
+[File 0006]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Defines.h"
+File Type = "Include"
+Disk Date = 3264781048
+In Projects = "1,"
+Source Window State = "1,4,4,4,24,25,24,1,0,0,0,0,0,0,0,0,0,0,4,26,349,748,1,0,"
+
+[File 0007]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/E5071.c"
+File Type = "CSource"
+Disk Date = 3378732370
+In Projects = "1,"
+Window Top = 58
+Window Left = -88
+Source Window State = "1,79,79,79,31,39,39,0,0,132,0,143,7,1,0,50,83,0,117,60,681,1121,1,0,"
+
+[File 0008]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/E5071.h"
+File Type = "Include"
+Disk Date = 3263465524
+In Projects = "1,"
+Window Top = 106
+Window Left = 66
+Source Window State = "1,12,12,12,4,25,4,1,0,0,0,0,0,0,0,0,5,0,19,4,349,740,1,0,"
+
+[File 0009]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Plot.c"
+File Type = "CSource"
+Disk Date = 3266322042
+In Projects = "1,"
+Window Top = 86
+Window Left = 8
+Source Window State = "1,11,13,13,0,8160,3,1,0,0,0,1,0,1,0,0,0,0,17,12,664,1108,1,0,"
+
+[File 0010]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Plot.h"
+File Type = "Include"
+Disk Date = 3263548542
+In Projects = "1,"
+Window Top = 542
+Window Left = 278
+Source Window State = "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,2,349,748,1,0,"
+
+[File 0011]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Points.c"
+File Type = "CSource"
+Disk Date = 3264779586
+In Projects = "1,"
+Window Top = 90
+Window Left = 35
+Source Window State = "1,490,491,491,0,8160,25,1,0,0,0,0,0,0,0,0,30,0,55,59,699,973,1,0,"
+
+[File 0012]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Points.h"
+File Type = "Include"
+Disk Date = 3263489514
+In Projects = "1,"
+Window Top = 46
+Window Left = 182
+Source Window State = "1,10,10,10,0,27,27,1,0,0,0,0,0,0,0,0,0,0,16,4,349,748,1,0,"
+
+[File 0013]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/SaveData.c"
+File Type = "CSource"
+Disk Date = 3266322042
+In Projects = "1,"
+Window Top = 55
+Window Left = -72
+Source Window State = "1,163,163,163,57,63,57,1,0,0,0,0,0,0,0,0,140,0,163,63,637,1106,1,0,"
+
+[File 0014]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/SaveData.h"
+File Type = "Include"
+Disk Date = 3261218360
+In Projects = "1,"
+Window Top = 272
+Window Left = 134
+Source Window State = "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,4,349,748,1,0,"
+
+[File 0015]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Scanner.c"
+File Type = "CSource"
+Disk Date = 3305101540
+In Projects = "1,"
+Window Top = 95
+Window Left = -40
+Source Window State = "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,10,559,934,1,0,"
+
+[File 0016]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Setup.h"
+File Type = "Include"
+Disk Date = 3305099438
+In Projects = "1,"
+Window Top = 75
+Window Left = -280
+Source Window State = "1,48,48,48,9,32,32,1,0,0,0,0,0,0,0,0,258,0,307,17,842,1283,1,0,"
+
+[File 0017]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/Setup.uir"
+File Type = "User Interface Resource"
+Disk Date = 3305099438
+In Projects = "1,"
+Window Top = 75
+Window Left = 38
+Window Height = 579
+Window Width = 965
+
+[File 0018]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/StepperControllerIF.c"
+File Type = "CSource"
+Disk Date = 3305130410
+In Projects = "1,"
+Window Top = 66
+Window Left = -52
+Source Window State = "1,66,66,66,22,31,31,1,0,124,0,0,0,0,0,51,102,0,139,29,692,1055,1,0,"
+
+[File 0019]
+Path = "/c/ChrisMiller/A_Projects/FieldProbe2/CVI_Code/StepperControllerIF.h"
+File Type = "Include"
+Disk Date = 3264753444
+In Projects = "1,"
+Window Top = 32
+Window Left = 6
+Source Window State = "1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,7,751,1043,1,0,"
+
+[Build Options 0001]
+Generate Browse Info = True
+Enable Uninitialized Locals Runtime Warning = True
+Debugging Level = "Standard"
+Break On Library Errors = True
+Break On First Chance Exceptions = False
+Enable Remote Debugging = False
+Remote Debugger Address = "localhost"
+Remote Target Address = ""
+Remote Debugging Port = 3291
+
+[SCC Options 0001]
+Use global settings = True
+SCC Provider = ""
+SCC Project = ""
+Local Path = ""
+Auxiliary Path = ""
+Perform Same Action For .h File As For .uir File = "Ask"
+Username = ""
+Comment = ""
+Use Default Username = False
+Use Default Comment = True
+Suppress CVI Error Messages = False
+
+[DLL Debugging Support 0001]
+External Process Path = ""
+
+[Command Line Args 0001]
+Command Line Args = ""
+
+[Watch Point 1]
+Watch Expression = "active"
+Update Display Continuously = True
+Break When Value Changes = False
+Scope = "Global To Project"
+DllName = "Scanner_DAQ_dbg.exe"
+Project = 1
+
+[Watch Point 2]
+Watch Expression = "ch1numberofmeasurements"
+Update Display Continuously = True
+Break When Value Changes = False
+Scope = "Global To Project"
+DllName = "Scanner_DAQ_dbg.exe"
+Project = 1
+
+[Watch Point 3]
+Watch Expression = "iFPPosValid"
+Update Display Continuously = True
+Break When Value Changes = False
+Scope = "Global To Project"
+DllName = "Scanner_DAQ_dbg.exe"
+Project = 1
+
+[Watch Point 4]
+Watch Expression = "CH1MFORM"
+Update Display Continuously = True
+Break When Value Changes = False
+Scope = "Global To Project"
+DllName = "Scanner_DAQ_dbg.exe"
+Project = 1
+
+[Watch Point 5]
+Watch Expression = "powerlevel"
+Update Display Continuously = True
+Break When Value Changes = False
+Scope = "Local"
+File = "E5071.c"
+Function = "network_analyzer_open"
+DllName = "Scanner_DAQ_dbg.exe"
+Project = 1
+

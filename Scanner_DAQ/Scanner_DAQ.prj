@@ -1,0 +1,322 @@
+[Project Header]
+Version = 710
+Pathname Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Pathname Line0002 = "canner_DAQ.prj"
+CVI Dir = "/c/program files/national instruments/cvi71"
+IVI Standard Root Dir = "/C/Program Files/IVI"
+VXIplug&play Framework Dir = "/C/Program Files/VISA/winnt"
+Number of Files = 19
+Target Type = "Executable"
+Flags = 16
+
+[File 0001]
+File Type = "CSource"
+Res Id = 1
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "agena.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/a"
+Path Line0002 = "gena.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0002]
+File Type = "Function Panel"
+Res Id = 2
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "agena.fp"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/a"
+Path Line0002 = "gena.fp"
+Exclude = False
+Project Flags = 0
+Folder = "Instrument Files"
+
+[File 0003]
+File Type = "Include"
+Res Id = 3
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "agena.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/a"
+Path Line0002 = "gena.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[File 0004]
+File Type = "Include"
+Res Id = 4
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Defines.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/D"
+Path Line0002 = "efines.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[File 0005]
+File Type = "CSource"
+Res Id = 5
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "E5071.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/E"
+Path Line0002 = "5071.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0006]
+File Type = "Include"
+Res Id = 6
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "E5071.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/E"
+Path Line0002 = "5071.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[File 0007]
+File Type = "Function Panel"
+Res Id = 7
+Path Is Rel = True
+Path Rel To = "CVI"
+Path Rel Path = "toolslib/toolbox/inifile.fp"
+Path = "/c/program files/national instruments/cvi71/toolslib/toolbox/inifile.fp"
+Exclude = False
+Project Flags = 0
+Folder = "Instrument Files"
+
+[File 0008]
+File Type = "CSource"
+Res Id = 8
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Plot.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/P"
+Path Line0002 = "lot.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0009]
+File Type = "Include"
+Res Id = 9
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Plot.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/P"
+Path Line0002 = "lot.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[File 0010]
+File Type = "CSource"
+Res Id = 10
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Points.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/P"
+Path Line0002 = "oints.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0011]
+File Type = "Include"
+Res Id = 11
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Points.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/P"
+Path Line0002 = "oints.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[File 0012]
+File Type = "CSource"
+Res Id = 12
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "SaveData.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "aveData.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0013]
+File Type = "Include"
+Res Id = 13
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "SaveData.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "aveData.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[File 0014]
+File Type = "CSource"
+Res Id = 14
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Scanner.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "canner.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0015]
+File Type = "CSource"
+Res Id = 15
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Setup.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "etup.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0016]
+File Type = "Include"
+Res Id = 16
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Setup.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "etup.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[File 0017]
+File Type = "User Interface Resource"
+Res Id = 17
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "Setup.uir"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "etup.uir"
+Exclude = False
+Project Flags = 0
+Folder = "User Interface Files"
+
+[File 0018]
+File Type = "CSource"
+Res Id = 18
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "StepperControllerIF.c"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "tepperControllerIF.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+Folder = "Source Files"
+
+[File 0019]
+File Type = "Include"
+Res Id = 19
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "StepperControllerIF.h"
+Path Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Path Line0002 = "tepperControllerIF.h"
+Exclude = False
+Project Flags = 0
+Folder = "Include Files"
+
+[Folders]
+Folder 0 = "Instrument Files"
+Folder 1 = "Include Files"
+Folder 2 = "Source Files"
+Folder 3 = "User Interface Files"
+
+[Compiler Options]
+Default Calling Convention = "cdecl"
+Require Prototypes = True
+Require Return Values = True
+Enable Pointer Mismatch Warning = False
+Enable Unreachable Code Warning = False
+Enable Unreferenced Identifiers Warning = False
+Enable Assignment In Conditional Warning = False
+O Option Compatible With 5.0 = False
+Uninitialized Locals Compile Warning = "Conservative"
+
+[Run Options]
+Stack Size = 1000000
+Image Base Address = 4194304
+
+[Compiler Defines]
+Compiler Defines = "/DWIN32_LEAN_AND_MEAN"
+
+[Create Executable]
+Executable File_Debug Is Rel = True
+Executable File_Debug Rel To = "Project"
+Executable File_Debug Rel Path = "Scanner_DAQ_dbg.exe"
+Executable File_Debug Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Executable File_Debug Line0002 = "canner_DAQ_dbg.exe"
+Executable File_Release Is Rel = True
+Executable File_Release Rel To = "Project"
+Executable File_Release Rel Path = "Scanner_DAQ.exe"
+Executable File_Release Line0001 = "/c/Documents and Settings/Jason Batcho/My Documents/CVI_Projects/E5071_Scanner/S"
+Executable File_Release Line0002 = "canner_DAQ.exe"
+Icon File Is Rel = False
+Icon File = ""
+Application Title = ""
+DLL Exports = "Include File Symbols"
+DLL Import Library Choice = "Gen Lib For Current Mode"
+Use IVI Subdirectories for Import Libraries = False
+Use VXIPNP Subdirectories for Import Libraries = False
+Use Dflt Import Lib Base Name = True
+Where to Copy DLL = "Do not copy"
+Add Type Lib To DLL = False
+Include Type Lib Help Links = False
+Type Lib FP File Is Rel = False
+Type Lib FP File = ""
+Type Lib Guid = ""
+Runtime Support = "Full Runtime Support"
+Instrument Driver Support Only = False
+Embed Project .UIRs = False
+Generate Map File = False
+
+[External Compiler Support]
+UIR Callbacks File Option = 0
+Using LoadExternalModule = False
+Create Project Symbols File = True
+UIR Callbacks Obj File Is Rel = False
+UIR Callbacks Obj File = ""
+Project Symbols H File Is Rel = False
+Project Symbols H File = ""
+Project Symbols Obj File Is Rel = False
+Project Symbols Obj File = ""
+
+[ActiveX Server Options]
+Specification File Is Rel = False
+Specification File = ""
+Source File Is Rel = False
+Source File = ""
+Include File Is Rel = False
+Include File = ""
+IDL File Is Rel = False
+IDL File = ""
+Register ActiveX Server = False
+
