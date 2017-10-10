@@ -94,7 +94,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>visa32.lib</AdditionalDependencies>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <EntryPointSymbol>Main</EntryPointSymbol>
       <AdditionalLibraryDirectories>C:\Program Files (x86)\IVI Foundation\VISA\WinNT\lib\msc</AdditionalLibraryDirectories>
     </Link>
@@ -152,6 +152,9 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="commandList.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

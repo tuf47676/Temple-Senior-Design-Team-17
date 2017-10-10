@@ -1,6 +1,9 @@
 #pragma once
 #include <string.h>
+#include <iostream>
+#include <fstream>
 #include <stdlib.h>
+#include <vector>
 #include <stdio.h>
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visatype.h"
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visaext.h"
@@ -8,7 +11,8 @@
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visa.h"
 
 //Mention Visa connection string here.
-#define DEFAULT_LOGICAL_ADDRESS "TCPIP0::169.254.253.20::inst0::INSTR"
+#define DEFAULT_LOGICAL_ADDRESS "TCPIP0::192.168.100.5::inst0::INSTR"
+#define CSV_FILE_NAME "commandList.csv"
 char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
 
 //Global Strings for VISA lib. Change scope of these later
@@ -67,6 +71,8 @@ namespace Design_Project {
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::Button^  readCSVfile;
+	private: System::Windows::Forms::Button^  Append_CSV;
 	protected:
 
 	private:
@@ -91,6 +97,8 @@ namespace Design_Project {
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
+			this->readCSVfile = (gcnew System::Windows::Forms::Button());
+			this->Append_CSV = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// button1
@@ -169,11 +177,33 @@ namespace Design_Project {
 			this->label5->Text = L"Recieved message:";
 			this->label5->Click += gcnew System::EventHandler(this, &MainForm::label5_Click);
 			// 
+			// readCSVfile
+			// 
+			this->readCSVfile->Location = System::Drawing::Point(240, 61);
+			this->readCSVfile->Name = L"readCSVfile";
+			this->readCSVfile->Size = System::Drawing::Size(75, 23);
+			this->readCSVfile->TabIndex = 10;
+			this->readCSVfile->Text = L"Read CSV";
+			this->readCSVfile->UseVisualStyleBackColor = true;
+			this->readCSVfile->Click += gcnew System::EventHandler(this, &MainForm::readCSVfile_Click);
+			// 
+			// Append_CSV
+			// 
+			this->Append_CSV->Location = System::Drawing::Point(240, 90);
+			this->Append_CSV->Name = L"Append_CSV";
+			this->Append_CSV->Size = System::Drawing::Size(75, 23);
+			this->Append_CSV->TabIndex = 11;
+			this->Append_CSV->Text = L"Append CSV";
+			this->Append_CSV->UseVisualStyleBackColor = true;
+			this->Append_CSV->Click += gcnew System::EventHandler(this, &MainForm::Append_CSV_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(327, 144);
+			this->Controls->Add(this->Append_CSV);
+			this->Controls->Add(this->readCSVfile);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->label3);
@@ -209,6 +239,9 @@ namespace Design_Project {
 
 		viWrite(Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), &actual);
 		label1->Text = "Command Sent"; //INFORM USER THAT CMD WAS SENT
+		std::cout << "The command: ";
+		std::cout << SCPIcmd;
+		std::cout << " was sent. \n";
 		viClose(Instrument);
 
 	}
@@ -223,7 +256,9 @@ namespace Design_Project {
 
 		viScanf(Instrument, "%t", &buf); //Read buffer into memory
 		label1->Text = "Command Read";
-
+		std::cout << "The command: ";
+		std::cout << buf;
+		std::cout << " was read. \n";
 		viClose(Instrument); //Close COM
 
 		String^ nativeVISAREAD;
@@ -255,6 +290,9 @@ private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows:
 
 		viWrite(Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), &actual);
 		label1->Text = "Command Sent"; //INFORM USER THAT CMD WAS SENT
+		std::cout << "The command: ";
+		std::cout << SCPIcmd;
+		std::cout << " was sent. \n";
 		viClose(Instrument);
 	}
 }
@@ -264,6 +302,87 @@ private: System::Void label3_Click(System::Object^  sender, System::EventArgs^  
 private: System::Void label5_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 private: System::Void MainForm_Load(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void readCSVfile_Click(System::Object^  sender, System::EventArgs^  e) {
+	std::cout << "\n======CVS READ CODE WAS CALLED======\n";
+	std::ifstream csv_fileStream;
+	csv_fileStream.open(CSV_FILE_NAME);
+
+	if (csv_fileStream.is_open()) {
+		
+		std::cout << "The CSV File";
+		std::cout << CSV_FILE_NAME;
+		std::cout << " was opened\n";
+
+		std::vector<char*> csv_values;
+		const int MAXSIZE = 25600; //Max char length of an entry
+		char csv_single_value[MAXSIZE];
+		while (csv_fileStream.getline(csv_single_value, MAXSIZE, ','))
+		{
+			csv_values.resize(csv_values.size() + 1); //Expand vector size on the fly
+			csv_values.back() = new char[MAXSIZE];
+			strcpy(csv_values.back(), csv_single_value);
+		}
+		csv_fileStream.close();
+
+		for (int i = 0; i < csv_values.size();i++) {
+			std::cout << csv_values[i];
+			
+		}
+
+	}
+	else {
+		std::cout<<("Error in opening CSV file.\n");
+	}
+	std::cout << "\n";
+	std::cout << "======End of CVS File======\n";
+
+
+}
+private: System::Void Append_CSV_Click(System::Object^  sender, System::EventArgs^  e) {
+	std::cout << "\n======CVS APPEND CODE WAS CALLED======\n";
+
+//First open the old CSV file and read in all contents
+	std::ifstream csv_fileStream;
+	csv_fileStream.open(CSV_FILE_NAME);
+	std::vector<char*> csv_values;
+	if (csv_fileStream.is_open()) {
+		
+		const int MAXSIZE = 25600; //Max char length of an entry
+		char csv_single_value[MAXSIZE];
+		while (csv_fileStream.getline(csv_single_value, MAXSIZE, ','))
+		{
+			csv_values.resize(csv_values.size() + 1); //Expand vector size on the fly
+			csv_values.back() = new char[MAXSIZE];
+			strcpy(csv_values.back(), csv_single_value);
+		}
+		csv_fileStream.close();
+	}
+	else {
+		std::cout << ("Error in opening CSV file.\n");
+	}
+
+
+	//Now rewrite the buffer and append the text
+	std::ofstream csv_fileStream2;
+	csv_fileStream2.open(CSV_FILE_NAME);
+	for (int i = 0; i < csv_values.size(); i++) {
+		csv_fileStream2 << csv_values[i];
+	}
+
+
+	char SCPIcmd[10000]; //Char Array for CMD [FINAL DATA TYPE BEFORE TRANS]
+
+	String^ test = (textBox1->Text); //NATIVE STRING
+	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(test); //PTR TO NATIVE STRING
+	char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
+	strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
+
+
+	csv_fileStream2 << SCPIcmd;
+	csv_fileStream2 << "\n";
+	csv_fileStream2.close();
+
 }
 };
 }
