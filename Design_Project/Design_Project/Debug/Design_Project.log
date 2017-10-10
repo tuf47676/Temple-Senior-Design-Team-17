@@ -1,0 +1,5 @@
+﻿  MainForm.cpp
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(253): warning C4101: 'actual': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(328): warning C4018: '<': signed/unsigned mismatch
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(369): warning C4018: '<': signed/unsigned mismatch
+  Design_Project.vcxproj -> C:\Users\Reed\source\repos\Design_Project\Debug\Design_Project.exe
