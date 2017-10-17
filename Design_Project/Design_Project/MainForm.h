@@ -73,6 +73,20 @@ namespace Design_Project {
 	private: System::Windows::Forms::Label^  label5;
 	private: System::Windows::Forms::Button^  readCSVfile;
 	private: System::Windows::Forms::Button^  Append_CSV;
+	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::TextBox^  SpanTextBox;
+	private: System::Windows::Forms::TextBox^  CenterTextBox;
+	private: System::Windows::Forms::TextBox^  StopTextBox;
+	private: System::Windows::Forms::TextBox^  StartTextBox;
+	private: System::Windows::Forms::Label^  SpanFreqLabel;
+	private: System::Windows::Forms::Label^  CenterFreqLabel;
+	private: System::Windows::Forms::Label^  StopFreqLabel;
+	private: System::Windows::Forms::Label^  StartFreqLabel;
+	private: System::Windows::Forms::RadioButton^  CenterSpanRadio;
+
+	private: System::Windows::Forms::RadioButton^  StartStopRadio;
+	private: System::Windows::Forms::Button^  SetCMDButton;
+
 	protected:
 
 	private:
@@ -99,6 +113,19 @@ namespace Design_Project {
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->readCSVfile = (gcnew System::Windows::Forms::Button());
 			this->Append_CSV = (gcnew System::Windows::Forms::Button());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->SpanTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->CenterTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->StopTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->StartTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->SpanFreqLabel = (gcnew System::Windows::Forms::Label());
+			this->CenterFreqLabel = (gcnew System::Windows::Forms::Label());
+			this->StopFreqLabel = (gcnew System::Windows::Forms::Label());
+			this->StartFreqLabel = (gcnew System::Windows::Forms::Label());
+			this->CenterSpanRadio = (gcnew System::Windows::Forms::RadioButton());
+			this->StartStopRadio = (gcnew System::Windows::Forms::RadioButton());
+			this->SetCMDButton = (gcnew System::Windows::Forms::Button());
+			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -197,11 +224,130 @@ namespace Design_Project {
 			this->Append_CSV->UseVisualStyleBackColor = true;
 			this->Append_CSV->Click += gcnew System::EventHandler(this, &MainForm::Append_CSV_Click);
 			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->SpanTextBox);
+			this->groupBox1->Controls->Add(this->CenterTextBox);
+			this->groupBox1->Controls->Add(this->StopTextBox);
+			this->groupBox1->Controls->Add(this->StartTextBox);
+			this->groupBox1->Controls->Add(this->SpanFreqLabel);
+			this->groupBox1->Controls->Add(this->CenterFreqLabel);
+			this->groupBox1->Controls->Add(this->StopFreqLabel);
+			this->groupBox1->Controls->Add(this->StartFreqLabel);
+			this->groupBox1->Controls->Add(this->CenterSpanRadio);
+			this->groupBox1->Controls->Add(this->StartStopRadio);
+			this->groupBox1->Location = System::Drawing::Point(571, 61);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(260, 155);
+			this->groupBox1->TabIndex = 12;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Frequency";
+			// 
+			// SpanTextBox
+			// 
+			this->SpanTextBox->Location = System::Drawing::Point(80, 124);
+			this->SpanTextBox->Name = L"SpanTextBox";
+			this->SpanTextBox->Size = System::Drawing::Size(100, 20);
+			this->SpanTextBox->TabIndex = 9;
+			// 
+			// CenterTextBox
+			// 
+			this->CenterTextBox->Location = System::Drawing::Point(80, 99);
+			this->CenterTextBox->Name = L"CenterTextBox";
+			this->CenterTextBox->Size = System::Drawing::Size(100, 20);
+			this->CenterTextBox->TabIndex = 8;
+			// 
+			// StopTextBox
+			// 
+			this->StopTextBox->Location = System::Drawing::Point(80, 75);
+			this->StopTextBox->Name = L"StopTextBox";
+			this->StopTextBox->Size = System::Drawing::Size(100, 20);
+			this->StopTextBox->TabIndex = 7;
+			// 
+			// StartTextBox
+			// 
+			this->StartTextBox->Location = System::Drawing::Point(80, 52);
+			this->StartTextBox->Name = L"StartTextBox";
+			this->StartTextBox->Size = System::Drawing::Size(100, 20);
+			this->StartTextBox->TabIndex = 6;
+			// 
+			// SpanFreqLabel
+			// 
+			this->SpanFreqLabel->AutoSize = true;
+			this->SpanFreqLabel->Location = System::Drawing::Point(7, 127);
+			this->SpanFreqLabel->Name = L"SpanFreqLabel";
+			this->SpanFreqLabel->Size = System::Drawing::Size(59, 13);
+			this->SpanFreqLabel->TabIndex = 5;
+			this->SpanFreqLabel->Text = L"Span Freq:";
+			// 
+			// CenterFreqLabel
+			// 
+			this->CenterFreqLabel->AutoSize = true;
+			this->CenterFreqLabel->Location = System::Drawing::Point(6, 102);
+			this->CenterFreqLabel->Name = L"CenterFreqLabel";
+			this->CenterFreqLabel->Size = System::Drawing::Size(65, 13);
+			this->CenterFreqLabel->TabIndex = 4;
+			this->CenterFreqLabel->Text = L"Center Freq:";
+			// 
+			// StopFreqLabel
+			// 
+			this->StopFreqLabel->AutoSize = true;
+			this->StopFreqLabel->Location = System::Drawing::Point(7, 78);
+			this->StopFreqLabel->Name = L"StopFreqLabel";
+			this->StopFreqLabel->Size = System::Drawing::Size(56, 13);
+			this->StopFreqLabel->TabIndex = 3;
+			this->StopFreqLabel->Text = L"Stop Freq:";
+			// 
+			// StartFreqLabel
+			// 
+			this->StartFreqLabel->AutoSize = true;
+			this->StartFreqLabel->Location = System::Drawing::Point(6, 55);
+			this->StartFreqLabel->Name = L"StartFreqLabel";
+			this->StartFreqLabel->Size = System::Drawing::Size(56, 13);
+			this->StartFreqLabel->TabIndex = 2;
+			this->StartFreqLabel->Text = L"Start Freq:";
+			// 
+			// CenterSpanRadio
+			// 
+			this->CenterSpanRadio->AutoSize = true;
+			this->CenterSpanRadio->Location = System::Drawing::Point(87, 20);
+			this->CenterSpanRadio->Name = L"CenterSpanRadio";
+			this->CenterSpanRadio->Size = System::Drawing::Size(86, 17);
+			this->CenterSpanRadio->TabIndex = 1;
+			this->CenterSpanRadio->TabStop = true;
+			this->CenterSpanRadio->Text = L"Center/Span";
+			this->CenterSpanRadio->UseVisualStyleBackColor = true;
+			this->CenterSpanRadio->CheckedChanged += gcnew System::EventHandler(this, &MainForm::CenterSpanRadio_CheckedChanged);
+			// 
+			// StartStopRadio
+			// 
+			this->StartStopRadio->AutoSize = true;
+			this->StartStopRadio->Location = System::Drawing::Point(7, 20);
+			this->StartStopRadio->Name = L"StartStopRadio";
+			this->StartStopRadio->Size = System::Drawing::Size(74, 17);
+			this->StartStopRadio->TabIndex = 0;
+			this->StartStopRadio->TabStop = true;
+			this->StartStopRadio->Text = L"Start/Stop";
+			this->StartStopRadio->UseVisualStyleBackColor = true;
+			this->StartStopRadio->CheckedChanged += gcnew System::EventHandler(this, &MainForm::StartStopRadio_CheckedChanged);
+			// 
+			// SetCMDButton
+			// 
+			this->SetCMDButton->Location = System::Drawing::Point(581, 223);
+			this->SetCMDButton->Name = L"SetCMDButton";
+			this->SetCMDButton->Size = System::Drawing::Size(112, 23);
+			this->SetCMDButton->TabIndex = 13;
+			this->SetCMDButton->Text = L"Set Commands";
+			this->SetCMDButton->UseVisualStyleBackColor = true;
+			this->SetCMDButton->Click += gcnew System::EventHandler(this, &MainForm::SetCMDButton_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(327, 144);
+			this->ClientSize = System::Drawing::Size(923, 282);
+			this->Controls->Add(this->SetCMDButton);
+			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->Append_CSV);
 			this->Controls->Add(this->readCSVfile);
 			this->Controls->Add(this->label5);
@@ -215,6 +361,8 @@ namespace Design_Project {
 			this->Name = L"MainForm";
 			this->Text = L"Team Zero Impedance";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -382,6 +530,124 @@ private: System::Void Append_CSV_Click(System::Object^  sender, System::EventArg
 	csv_fileStream2 << SCPIcmd;
 	csv_fileStream2 << "\n";
 	csv_fileStream2.close();
+
+}
+
+private: System::Void StartStopRadio_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	if (StartStopRadio->Checked == 1) {
+		StartTextBox->Enabled = 1;
+		StopTextBox->Enabled = 1;
+		SpanTextBox->Enabled = 0;
+		CenterTextBox->Enabled = 0;
+	}
+}
+private: System::Void CenterSpanRadio_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	if (CenterSpanRadio->Checked == 1) {
+		StartTextBox->Enabled = 0;
+		StopTextBox->Enabled = 0;
+		SpanTextBox->Enabled = 1;
+		CenterTextBox->Enabled = 1;
+	}
+}
+
+private: System::Void SetCMDButton_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	if (StartStopRadio->Checked == 1) {
+		//Opening COM
+		ViSession viDefaultRM, Instrument;
+		ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
+		ViUInt32 actual;
+		viOpenDefaultRM(&viDefaultRM);
+		viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
+
+		//sending a cmd
+		char SCPIcmd[256]; //Char Array for CMD [FINAL DATA TYPE BEFORE TRANS]
+		
+
+		//Round 1 for start cmd
+		String^ test = (StartTextBox->Text); //NATIVE STRING
+		test = ":SENS1:FREQ:STAR " + test;
+		IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(test); //PTR TO NATIVE STRING
+		char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
+		strcpy(SCPIcmd,nativeString); //COPY CHAR ARRAY TO SCPIcmd 
+		//char SCPIcmd2[256] = ":SENS1:FREQ:STAR ";
+		
+
+		viWrite(Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), &actual);
+		label1->Text = "Command Sent"; //INFORM USER THAT CMD WAS SENT
+		std::cout << "The command: ";
+		std::cout << SCPIcmd;
+		std::cout << " was sent. \n";
+
+		//Round 2 for Stop CMD
+
+		test = (StopTextBox->Text); //NATIVE STRING
+		test = ":SENS1:FREQ:STOP " + test;
+		ptrToNativeString = Marshal::StringToHGlobalAnsi(test); //PTR TO NATIVE STRING
+		nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
+		strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
+									   //char SCPIcmd2[256] = ":SENS1:FREQ:STAR ";
+
+
+		viWrite(Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), &actual);
+		label1->Text = "Command Sent"; //INFORM USER THAT CMD WAS SENT
+		std::cout << "The command: ";
+		std::cout << SCPIcmd;
+		std::cout << " was sent. \n";
+
+
+		viClose(Instrument);
+
+	}
+
+	if (CenterSpanRadio->Checked == 1) {
+		//Opening COM
+		ViSession viDefaultRM, Instrument;
+		ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
+		ViUInt32 actual;
+		viOpenDefaultRM(&viDefaultRM);
+		viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
+
+		//sending a cmd
+		char SCPIcmd[256]; //Char Array for CMD [FINAL DATA TYPE BEFORE TRANS]
+
+
+						   //Round 1 for start cmd
+		String^ test = (CenterTextBox->Text); //NATIVE STRING
+		test = ":SENS1:FREQ:CENT " + test;
+		IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(test); //PTR TO NATIVE STRING
+		char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
+		strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
+									   //char SCPIcmd2[256] = ":SENS1:FREQ:STAR ";
+
+
+		viWrite(Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), &actual);
+		label1->Text = "Command Sent"; //INFORM USER THAT CMD WAS SENT
+		std::cout << "The command: ";
+		std::cout << SCPIcmd;
+		std::cout << " was sent. \n";
+
+		//Round 2 for Stop CMD
+
+		test = (SpanTextBox->Text); //NATIVE STRING
+		test = ":SENS1:FREQ:SPAN " + test;
+		ptrToNativeString = Marshal::StringToHGlobalAnsi(test); //PTR TO NATIVE STRING
+		nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
+		strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
+									   //char SCPIcmd2[256] = ":SENS1:FREQ:STAR ";
+
+
+		viWrite(Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), &actual);
+		label1->Text = "Command Sent"; //INFORM USER THAT CMD WAS SENT
+		std::cout << "The command: ";
+		std::cout << SCPIcmd;
+		std::cout << " was sent. \n";
+
+
+		viClose(Instrument);
+
+	}
+
 
 }
 };

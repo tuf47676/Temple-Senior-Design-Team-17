@@ -29,3 +29,6 @@ Assembly WindowsFormsIntegration, Version=4.0.0.0, Culture=neutral, PublicKeyTok
 Class Design_Project.MainForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+Class Design_Project.ScanAgendaForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

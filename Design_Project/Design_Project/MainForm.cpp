@@ -12,12 +12,10 @@
 //#include "engine.h"
 #pragma warning(disable:4996)
 #include "MainForm.h"
-
+#include "ScanAgendaForm.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
-
-
 
 [STAThreadAttribute]
 void Main(array<String^>^ args) {
@@ -51,6 +49,8 @@ void Main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Design_Project::MainForm form;
+//	Design_Project::ScanAgendaForm form;
 	Application::Run(%form);
+
 
 }
