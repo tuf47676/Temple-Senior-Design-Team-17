@@ -25,7 +25,6 @@ char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
 //this might no longer be needed. Should remove if possible
 char strResult[256] = { 0 };
 char noErrString[256] = { "+0,\"No error\"\n" };
-char buf[256];
 
 
 namespace Design_Project {
@@ -116,6 +115,10 @@ namespace Design_Project {
 	private: System::Windows::Forms::TextBox^  PowerTextBox;
 	private: System::Windows::Forms::RadioButton^  Power_dBm;
 	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::Label^  labelTrace1;
+	private: System::Windows::Forms::ListBox^  ListBox_Trace1;
+	private: System::Windows::Forms::ListBox^  ListBox_Trace2;
+	private: System::Windows::Forms::Label^  LabelTrace2;
 
 
 
@@ -180,6 +183,10 @@ namespace Design_Project {
 			this->PowerTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->labelTrace1 = (gcnew System::Windows::Forms::Label());
+			this->ListBox_Trace1 = (gcnew System::Windows::Forms::ListBox());
+			this->LabelTrace2 = (gcnew System::Windows::Forms::Label());
+			this->ListBox_Trace2 = (gcnew System::Windows::Forms::ListBox());
 			this->Group_Freq->SuspendLayout();
 			this->Span_Units->SuspendLayout();
 			this->Center_Units->SuspendLayout();
@@ -187,6 +194,7 @@ namespace Design_Project {
 			this->Start_Units->SuspendLayout();
 			this->Group_Power->SuspendLayout();
 			this->Power_Units->SuspendLayout();
+			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -636,18 +644,64 @@ namespace Design_Project {
 			// 
 			// groupBox1
 			// 
+			this->groupBox1->Controls->Add(this->ListBox_Trace2);
+			this->groupBox1->Controls->Add(this->LabelTrace2);
+			this->groupBox1->Controls->Add(this->labelTrace1);
 			this->groupBox1->Location = System::Drawing::Point(450, 275);
 			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(200, 100);
+			this->groupBox1->Size = System::Drawing::Size(373, 94);
 			this->groupBox1->TabIndex = 15;
 			this->groupBox1->TabStop = false;
 			this->groupBox1->Text = L"Trace";
+			// 
+			// labelTrace1
+			// 
+			this->labelTrace1->AutoSize = true;
+			this->labelTrace1->Location = System::Drawing::Point(13, 20);
+			this->labelTrace1->Name = L"labelTrace1";
+			this->labelTrace1->Size = System::Drawing::Size(47, 13);
+			this->labelTrace1->TabIndex = 0;
+			this->labelTrace1->Text = L"Trace 1:";
+			// 
+			// ListBox_Trace1
+			// 
+			this->ListBox_Trace1->FormattingEnabled = true;
+			this->ListBox_Trace1->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
+				L"Mag Log", L"Smith", L"Phase", L"Polar",
+					L"Lin Mag", L"SWR", L"Real", L"Imaginary", L"Expanded Phase", L"Positive Phase"
+			});
+			this->ListBox_Trace1->Location = System::Drawing::Point(466, 311);
+			this->ListBox_Trace1->Name = L"ListBox_Trace1";
+			this->ListBox_Trace1->Size = System::Drawing::Size(120, 43);
+			this->ListBox_Trace1->TabIndex = 1;
+			// 
+			// LabelTrace2
+			// 
+			this->LabelTrace2->AutoSize = true;
+			this->LabelTrace2->Location = System::Drawing::Point(188, 19);
+			this->LabelTrace2->Name = L"LabelTrace2";
+			this->LabelTrace2->Size = System::Drawing::Size(47, 13);
+			this->LabelTrace2->TabIndex = 1;
+			this->LabelTrace2->Text = L"Trace 2:";
+			// 
+			// ListBox_Trace2
+			// 
+			this->ListBox_Trace2->FormattingEnabled = true;
+			this->ListBox_Trace2->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
+				L"Mag Log", L"Smith", L"Phase", L"Polar",
+					L"Lin Mag", L"SWR", L"Real", L"Imaginary", L"Expanded Phase", L"Positive Phase"
+			});
+			this->ListBox_Trace2->Location = System::Drawing::Point(194, 36);
+			this->ListBox_Trace2->Name = L"ListBox_Trace2";
+			this->ListBox_Trace2->Size = System::Drawing::Size(120, 43);
+			this->ListBox_Trace2->TabIndex = 2;
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(923, 457);
+			this->Controls->Add(this->ListBox_Trace1);
 			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->Group_Power);
 			this->Controls->Add(this->SetCMDButton);
@@ -679,6 +733,8 @@ namespace Design_Project {
 			this->Group_Power->PerformLayout();
 			this->Power_Units->ResumeLayout(false);
 			this->Power_Units->PerformLayout();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -721,6 +777,7 @@ namespace Design_Project {
 		ViUInt32 actual;
 		viOpenDefaultRM(&viDefaultRM);
 		viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
+		char buf[256];
 
 		viScanf(Instrument, "%t", &buf); //Read buffer into memory
 		label1->Text = "Command Read";
@@ -765,6 +822,7 @@ private: System::Void SetCMDButton_Click(System::Object^  sender, System::EventA
 	std::cout << "The BUTTON SetCMDButton was pressed \n";
 	returnStatus = Controls_Frequency();
 	returnStatus = Controls_Power();
+	returnStatus = Controls_Trace();
 	std::cout << "\n";
 
 }
@@ -785,6 +843,32 @@ private: bool is_number(String^ testString){
 	return(strspn(s.c_str(), "-.0123456789") == s.size()); //Check for valid chars
 }
 
+private: std::string Controls_Trace(void) {
+	/**
+	*   \brief Sends Trace Controls to NA.
+	*
+	*   \param NO INPUT PARAMETERS.
+	*   \return Returns a Status String.
+	*
+	**/
+	std::string returnStatus;
+	std::string linkedList[] = { "MLOG", "SMIT", "PHAS", "POL", "LMAG", "SWR", "REAL", "IMAG", "UPH", "PPH" };
+
+	String^ traceCMD = ":CALC1:TRAC1:FORM ";
+	String^ tempSelection = gcnew String(linkedList[ListBox_Trace1->SelectedIndex].c_str());
+	traceCMD = traceCMD + tempSelection;
+	sendSCPI_String(traceCMD);
+
+	traceCMD = ":CALC1:TRAC2:FORM ";
+	tempSelection = gcnew String(linkedList[ListBox_Trace2->SelectedIndex].c_str());
+	traceCMD = traceCMD + tempSelection;
+	sendSCPI_String(traceCMD);
+
+	//Return statement
+	returnStatus = "Maybe it worked...";
+	return returnStatus;
+}
+
 private: std::string Controls_Power(void) {
 	/**
 	*   \brief Forms, checks and sends Power Controls to NA.
@@ -798,14 +882,35 @@ private: std::string Controls_Power(void) {
 	*
 	**/
 
-	String^ powerCMD; //String used to add zeros based on GHz, Mhz, and kHz selection
+	String^ powerCMD = ":SOUR:POW:LEV:IMM:AMPL "; 
 	std::string returnStatus;
+	double powerNum;
 
 	std::cout << "The Function  \"Controls_Power\" has been called\n";
 
-	powerCMD = (PowerTextBox->Text); //NATIVE STRING
-	powerCMD = ":SOUR:POW:LEV:IMM:AMPL " + powerCMD;
+	if (is_number(PowerTextBox->Text)) { //check user input as number
+		std::cout << "Power is a number\n";
+		//Convert user input into double
+		std::string tempString = convert_vcppString_string(PowerTextBox->Text); //Using Cpp Strings
+		powerNum = string_to_double(tempString); //Convert to double. This is might cause errors... Needs testing
+	}
+	else {
+		returnStatus = "Power is not a number\n";
+		std::cout << returnStatus;
+		MessageBox::Show("Please check the transmit power.\nParameter not set.", "Transmit power is not valid", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+		return returnStatus;
+	}
+
+	powerCMD = powerCMD + powerNum;
 	sendSCPI_String(powerCMD);
+	
+	//INCOMPLETE CODE BELOW!!!!!!
+
+	//Power should be checked now
+	sendSCPI_String(":SOUR:POW:LEV:IMM:AMPL?");
+	std::string returnMessage = readSCPI_Buffer();
+	//now convert "+5.000000000E+009" string into a double
+	//Check numbers
 	
 	//Return statement
 	returnStatus = "Maybe it worked...";
@@ -908,6 +1013,16 @@ private: std::string Controls_Frequency(void) {
 			sendSCPI_String(frequencyStartCMD);
 			frequencyStopCMD = frequencyStopCMD + frequencyStopNum;
 			sendSCPI_String(frequencyStopCMD);
+
+			//INCOMPLETE CODE BELOW!!!!!!
+
+			//start and stop parameters should be checked now
+			sendSCPI_String(":SENS1:FREQ:STAR?");
+			std::string returnMessage = readSCPI_Buffer();
+			//now convert "+5.000000000E+009" string into a double
+			//Then compare number, and repeat for stop command. Copy code for center span.
+
+
 		}
 		else {
 			returnStatus = "Start and Stop Frequencies are NOT in range\n";
@@ -1021,6 +1136,38 @@ private: std::string convert_vcppString_string(String^ vcppString) {
 	nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
 	strcpy(charBuffer, nativeString); //COPY CHAR ARRAY TO SCPIcmd Char buffer
 	return (std::string)charBuffer;
+}
+
+private: std::string readSCPI_Buffer(System::Void) {
+	/**
+	*   \brief Reads the SCPI buffer
+	*
+	*   This function is responsiable reading commands sent by the NA
+	*
+	*   \param void
+	*   \return Returns a std c string.
+	**/
+
+	//Open COM
+		//ViSession viDefaultRM, Instrument;
+		//ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
+		//ViUInt32 actual;
+		//viOpenDefaultRM(&viDefaultRM);
+		//viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
+	char buf[256];
+
+
+		//viScanf(Instrument, "%t", &buf); //Read buffer into memory
+	std::cout << "The visa buffer was read:  \"";
+	std::cout << buf;
+	std::cout << "\" \n";
+		//viClose(Instrument); //Close COM
+
+	String^ nativeVISAREAD;
+	nativeVISAREAD = Marshal::PtrToStringAnsi((IntPtr)buf); //Convert to native string
+	std::string VisaMessage = convert_vcppString_string(nativeVISAREAD);
+	return VisaMessage;
+
 }
 
 private: System::Void sendSCPI_String(String^ sendString) {
