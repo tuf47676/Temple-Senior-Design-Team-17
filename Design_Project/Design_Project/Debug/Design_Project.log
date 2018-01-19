@@ -1,7 +1,8 @@
 ﻿  MainForm.cpp
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(777): warning C4101: 'actual': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(839): warning C4101: 'nativeString': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(935): warning C4101: 'frequencyCMD': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(1250): warning C4018: '<': signed/unsigned mismatch
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(1291): warning C4018: '<': signed/unsigned mismatch
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(939): warning C4101: 'actual': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1001): warning C4101: 'nativeString': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1102): warning C4101: 'frequencyCMD': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1321): warning C4101: 'actual': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1449): warning C4018: '<': signed/unsigned mismatch
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1490): warning C4018: '<': signed/unsigned mismatch
   Design_Project.vcxproj -> C:\Users\Reed\source\repos\Design_Project\Debug\Design_Project.exe
