@@ -934,23 +934,10 @@ namespace Design_Project {
 	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
 
 		//Open COM
-		ViSession viDefaultRM, Instrument;
-		ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
-		ViUInt32 actual;
-		viOpenDefaultRM(&viDefaultRM);
-		viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
-		char buf[256];
 
-		viScanf(Instrument, "%t", &buf); //Read buffer into memory
-		label1->Text = "Command Read";
-		std::cout << "The visa buffer was read: \n";
-		std::cout << buf;
-		std::cout << "\n";
-		viClose(Instrument); //Close COM
-
-		String^ nativeVISAREAD;
-		nativeVISAREAD = Marshal::PtrToStringAnsi((IntPtr)buf); //Convert to native string
-		label4->Text = nativeVISAREAD;
+		std::string tempString = readSCPI_Buffer();
+		//String^ nativeVISAREAD = gcnew String(tempString.c_str());
+		//label4->Text = nativeVISAREAD;
 	}
 
 private: System::Void StartStopRadio_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -1318,13 +1305,14 @@ private: std::string readSCPI_Buffer(System::Void) {
 	//Open COM
 		ViSession viDefaultRM, Instrument;
 		ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
-		ViUInt32 actual;
 		viOpenDefaultRM(&viDefaultRM);
 		viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
-	char buf[256000];
+	char buf[1000000];
 
 
 		viScanf(Instrument, "%t", &buf); //Read buffer into memory
+
+
 	std::cout << "The visa buffer was read:  \"";
 	std::cout << buf;
 	std::cout << "\" \n";
