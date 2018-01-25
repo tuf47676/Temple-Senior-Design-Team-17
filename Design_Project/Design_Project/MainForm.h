@@ -17,8 +17,8 @@
 char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
 
 //Error checking constraights
-#define FREQ_MAX 10000000000 //Set to 10ghz for now. Dont know a proper limit
-#define FREQ_MIN 250000 //Set to 250khz for now. Dont know a proper limit
+#define FREQ_MAX 20000000000 //Set to 20GHz
+#define FREQ_MIN 300000 //Set to 300kHz
 
 
 //Global Strings for VISA lib. Change scope of these later
@@ -77,11 +77,11 @@ namespace Design_Project {
 	private: System::Windows::Forms::Button^  button2;
 	private: System::Windows::Forms::TextBox^  textBox1;
 	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::Label^  label3;
+
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::Button^  readCSVfile;
-	private: System::Windows::Forms::Button^  Append_CSV;
+
+
 	private: System::Windows::Forms::GroupBox^  Group_Freq;
 
 	private: System::Windows::Forms::TextBox^  SpanTextBox;
@@ -134,8 +134,15 @@ namespace Design_Project {
 	private: System::Windows::Forms::RadioButton^  rad_S21;
 	private: System::Windows::Forms::RadioButton^  rad_S12;
 	private: System::Windows::Forms::RadioButton^  rad_S11;
-	private: System::Windows::Forms::Label^  label7;
+
 	private: System::Windows::Forms::Button^  btn_Data;
+	private: System::Windows::Forms::GroupBox^  group_VisaAddr;
+	private: System::Windows::Forms::GroupBox^  group_SendReceiveMess;
+	private: System::Windows::Forms::GroupBox^  group_Points;
+	private: System::Windows::Forms::NumericUpDown^  numBox_Points;
+	private: System::Windows::Forms::Label^  lbl_sweeppoints;
+	private: System::Windows::Forms::RichTextBox^  rTBX_DataPreview;
+	private: System::Windows::Forms::Label^  lbl_ReturnTxt;
 
 
 
@@ -162,11 +169,8 @@ namespace Design_Project {
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->readCSVfile = (gcnew System::Windows::Forms::Button());
-			this->Append_CSV = (gcnew System::Windows::Forms::Button());
 			this->Group_Freq = (gcnew System::Windows::Forms::GroupBox());
 			this->Span_Units = (gcnew System::Windows::Forms::GroupBox());
 			this->Span_kHz = (gcnew System::Windows::Forms::RadioButton());
@@ -214,8 +218,14 @@ namespace Design_Project {
 			this->rad_S21 = (gcnew System::Windows::Forms::RadioButton());
 			this->rad_S12 = (gcnew System::Windows::Forms::RadioButton());
 			this->rad_S11 = (gcnew System::Windows::Forms::RadioButton());
-			this->label7 = (gcnew System::Windows::Forms::Label());
 			this->btn_Data = (gcnew System::Windows::Forms::Button());
+			this->group_VisaAddr = (gcnew System::Windows::Forms::GroupBox());
+			this->group_SendReceiveMess = (gcnew System::Windows::Forms::GroupBox());
+			this->group_Points = (gcnew System::Windows::Forms::GroupBox());
+			this->numBox_Points = (gcnew System::Windows::Forms::NumericUpDown());
+			this->lbl_sweeppoints = (gcnew System::Windows::Forms::Label());
+			this->rTBX_DataPreview = (gcnew System::Windows::Forms::RichTextBox());
+			this->lbl_ReturnTxt = (gcnew System::Windows::Forms::Label());
 			this->Group_Freq->SuspendLayout();
 			this->Span_Units->SuspendLayout();
 			this->Center_Units->SuspendLayout();
@@ -225,11 +235,15 @@ namespace Design_Project {
 			this->Power_Units->SuspendLayout();
 			this->Group_Trace->SuspendLayout();
 			this->Group_Sparam->SuspendLayout();
+			this->group_VisaAddr->SuspendLayout();
+			this->group_SendReceiveMess->SuspendLayout();
+			this->group_Points->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button1
 			// 
-			this->button1->Location = System::Drawing::Point(118, 61);
+			this->button1->Location = System::Drawing::Point(114, 17);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(75, 23);
 			this->button1->TabIndex = 1;
@@ -240,7 +254,7 @@ namespace Design_Project {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(13, 86);
+			this->label1->Location = System::Drawing::Point(9, 42);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(34, 13);
 			this->label1->TabIndex = 3;
@@ -248,7 +262,7 @@ namespace Design_Project {
 			// 
 			// button2
 			// 
-			this->button2->Location = System::Drawing::Point(118, 90);
+			this->button2->Location = System::Drawing::Point(114, 46);
 			this->button2->Name = L"button2";
 			this->button2->Size = System::Drawing::Size(75, 23);
 			this->button2->TabIndex = 4;
@@ -258,7 +272,7 @@ namespace Design_Project {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(12, 63);
+			this->textBox1->Location = System::Drawing::Point(8, 19);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(100, 20);
 			this->textBox1->TabIndex = 5;
@@ -268,26 +282,16 @@ namespace Design_Project {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(12, 41);
+			this->label2->Location = System::Drawing::Point(6, 16);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(35, 13);
 			this->label2->TabIndex = 6;
 			this->label2->Text = L"label2";
 			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(12, 25);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(89, 13);
-			this->label3->TabIndex = 7;
-			this->label3->Text = L"VISA ADDRESS:";
-			this->label3->Click += gcnew System::EventHandler(this, &MainForm::label3_Click);
-			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(12, 113);
+			this->label4->Location = System::Drawing::Point(8, 69);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(40, 13);
 			this->label4->TabIndex = 8;
@@ -296,32 +300,12 @@ namespace Design_Project {
 			// label5
 			// 
 			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(13, 100);
+			this->label5->Location = System::Drawing::Point(9, 56);
 			this->label5->Name = L"label5";
 			this->label5->Size = System::Drawing::Size(101, 13);
 			this->label5->TabIndex = 9;
 			this->label5->Text = L"Recieved message:";
 			this->label5->Click += gcnew System::EventHandler(this, &MainForm::label5_Click);
-			// 
-			// readCSVfile
-			// 
-			this->readCSVfile->Location = System::Drawing::Point(199, 63);
-			this->readCSVfile->Name = L"readCSVfile";
-			this->readCSVfile->Size = System::Drawing::Size(75, 23);
-			this->readCSVfile->TabIndex = 10;
-			this->readCSVfile->Text = L"Read CSV";
-			this->readCSVfile->UseVisualStyleBackColor = true;
-			this->readCSVfile->Click += gcnew System::EventHandler(this, &MainForm::readCSVfile_Click);
-			// 
-			// Append_CSV
-			// 
-			this->Append_CSV->Location = System::Drawing::Point(199, 92);
-			this->Append_CSV->Name = L"Append_CSV";
-			this->Append_CSV->Size = System::Drawing::Size(75, 23);
-			this->Append_CSV->TabIndex = 11;
-			this->Append_CSV->Text = L"Append CSV";
-			this->Append_CSV->UseVisualStyleBackColor = true;
-			this->Append_CSV->Click += gcnew System::EventHandler(this, &MainForm::Append_CSV_Click);
 			// 
 			// Group_Freq
 			// 
@@ -339,7 +323,7 @@ namespace Design_Project {
 			this->Group_Freq->Controls->Add(this->StartFreqLabel);
 			this->Group_Freq->Controls->Add(this->CenterSpanRadio);
 			this->Group_Freq->Controls->Add(this->StartStopRadio);
-			this->Group_Freq->Location = System::Drawing::Point(450, 12);
+			this->Group_Freq->Location = System::Drawing::Point(12, 12);
 			this->Group_Freq->Name = L"Group_Freq";
 			this->Group_Freq->Size = System::Drawing::Size(373, 194);
 			this->Group_Freq->TabIndex = 12;
@@ -616,7 +600,7 @@ namespace Design_Project {
 			// 
 			// SetCMDButton
 			// 
-			this->SetCMDButton->Location = System::Drawing::Point(332, 141);
+			this->SetCMDButton->Location = System::Drawing::Point(392, 161);
 			this->SetCMDButton->Name = L"SetCMDButton";
 			this->SetCMDButton->Size = System::Drawing::Size(112, 23);
 			this->SetCMDButton->TabIndex = 13;
@@ -629,7 +613,7 @@ namespace Design_Project {
 			this->Group_Power->Controls->Add(this->Power_Units);
 			this->Group_Power->Controls->Add(this->PowerTextBox);
 			this->Group_Power->Controls->Add(this->label6);
-			this->Group_Power->Location = System::Drawing::Point(450, 212);
+			this->Group_Power->Location = System::Drawing::Point(12, 212);
 			this->Group_Power->Name = L"Group_Power";
 			this->Group_Power->Size = System::Drawing::Size(373, 57);
 			this->Group_Power->TabIndex = 14;
@@ -684,7 +668,7 @@ namespace Design_Project {
 			this->Group_Trace->Controls->Add(this->ListBox_Trace2);
 			this->Group_Trace->Controls->Add(this->LabelTrace2);
 			this->Group_Trace->Controls->Add(this->labelTrace1);
-			this->Group_Trace->Location = System::Drawing::Point(450, 275);
+			this->Group_Trace->Location = System::Drawing::Point(12, 275);
 			this->Group_Trace->Name = L"Group_Trace";
 			this->Group_Trace->Size = System::Drawing::Size(373, 94);
 			this->Group_Trace->TabIndex = 15;
@@ -750,7 +734,7 @@ namespace Design_Project {
 				L"Mag Log", L"Smith", L"Phase", L"Polar",
 					L"Lin Mag", L"SWR", L"Real", L"Imaginary", L"Expanded Phase", L"Positive Phase"
 			});
-			this->ListBox_Trace1->Location = System::Drawing::Point(466, 311);
+			this->ListBox_Trace1->Location = System::Drawing::Point(28, 311);
 			this->ListBox_Trace1->Name = L"ListBox_Trace1";
 			this->ListBox_Trace1->Size = System::Drawing::Size(120, 43);
 			this->ListBox_Trace1->TabIndex = 1;
@@ -758,16 +742,16 @@ namespace Design_Project {
 			// label_SetCommands
 			// 
 			this->label_SetCommands->AutoSize = true;
-			this->label_SetCommands->Location = System::Drawing::Point(106, 146);
+			this->label_SetCommands->Location = System::Drawing::Point(510, 166);
 			this->label_SetCommands->Name = L"label_SetCommands";
 			this->label_SetCommands->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->label_SetCommands->Size = System::Drawing::Size(220, 13);
+			this->label_SetCommands->Size = System::Drawing::Size(167, 13);
 			this->label_SetCommands->TabIndex = 16;
-			this->label_SetCommands->Text = L"This button will set the parameters to the right";
+			this->label_SetCommands->Text = L"This button will set the parameters";
 			// 
 			// btn_IMM
 			// 
-			this->btn_IMM->Location = System::Drawing::Point(332, 170);
+			this->btn_IMM->Location = System::Drawing::Point(392, 190);
 			this->btn_IMM->Name = L"btn_IMM";
 			this->btn_IMM->Size = System::Drawing::Size(112, 23);
 			this->btn_IMM->TabIndex = 17;
@@ -781,9 +765,9 @@ namespace Design_Project {
 			this->Group_Sparam->Controls->Add(this->rad_S21);
 			this->Group_Sparam->Controls->Add(this->rad_S12);
 			this->Group_Sparam->Controls->Add(this->rad_S11);
-			this->Group_Sparam->Location = System::Drawing::Point(450, 376);
+			this->Group_Sparam->Location = System::Drawing::Point(12, 376);
 			this->Group_Sparam->Name = L"Group_Sparam";
-			this->Group_Sparam->Size = System::Drawing::Size(173, 69);
+			this->Group_Sparam->Size = System::Drawing::Size(188, 69);
 			this->Group_Sparam->TabIndex = 18;
 			this->Group_Sparam->TabStop = false;
 			this->Group_Sparam->Text = L"S Parameter";
@@ -832,18 +816,9 @@ namespace Design_Project {
 			this->rad_S11->Text = L"S11";
 			this->rad_S11->UseVisualStyleBackColor = true;
 			// 
-			// label7
-			// 
-			this->label7->AutoSize = true;
-			this->label7->Location = System::Drawing::Point(118, 25);
-			this->label7->Name = L"label7";
-			this->label7->Size = System::Drawing::Size(156, 13);
-			this->label7->TabIndex = 19;
-			this->label7->Text = L"These controls will be removed.";
-			// 
 			// btn_Data
 			// 
-			this->btn_Data->Location = System::Drawing::Point(332, 200);
+			this->btn_Data->Location = System::Drawing::Point(392, 220);
 			this->btn_Data->Name = L"btn_Data";
 			this->btn_Data->Size = System::Drawing::Size(112, 23);
 			this->btn_Data->TabIndex = 20;
@@ -851,13 +826,89 @@ namespace Design_Project {
 			this->btn_Data->UseVisualStyleBackColor = true;
 			this->btn_Data->Click += gcnew System::EventHandler(this, &MainForm::btn_Data_Click);
 			// 
+			// group_VisaAddr
+			// 
+			this->group_VisaAddr->Controls->Add(this->label2);
+			this->group_VisaAddr->Location = System::Drawing::Point(391, 12);
+			this->group_VisaAddr->Name = L"group_VisaAddr";
+			this->group_VisaAddr->Size = System::Drawing::Size(230, 40);
+			this->group_VisaAddr->TabIndex = 21;
+			this->group_VisaAddr->TabStop = false;
+			this->group_VisaAddr->Text = L"VISA Address";
+			// 
+			// group_SendReceiveMess
+			// 
+			this->group_SendReceiveMess->Controls->Add(this->button1);
+			this->group_SendReceiveMess->Controls->Add(this->label1);
+			this->group_SendReceiveMess->Controls->Add(this->button2);
+			this->group_SendReceiveMess->Controls->Add(this->textBox1);
+			this->group_SendReceiveMess->Controls->Add(this->label4);
+			this->group_SendReceiveMess->Controls->Add(this->label5);
+			this->group_SendReceiveMess->Location = System::Drawing::Point(392, 59);
+			this->group_SendReceiveMess->Name = L"group_SendReceiveMess";
+			this->group_SendReceiveMess->Size = System::Drawing::Size(229, 97);
+			this->group_SendReceiveMess->TabIndex = 22;
+			this->group_SendReceiveMess->TabStop = false;
+			this->group_SendReceiveMess->Text = L"Send/Receive String";
+			// 
+			// group_Points
+			// 
+			this->group_Points->Controls->Add(this->numBox_Points);
+			this->group_Points->Controls->Add(this->lbl_sweeppoints);
+			this->group_Points->Location = System::Drawing::Point(206, 376);
+			this->group_Points->Name = L"group_Points";
+			this->group_Points->Size = System::Drawing::Size(179, 69);
+			this->group_Points->TabIndex = 23;
+			this->group_Points->TabStop = false;
+			this->group_Points->Text = L"Points";
+			// 
+			// numBox_Points
+			// 
+			this->numBox_Points->Location = System::Drawing::Point(83, 16);
+			this->numBox_Points->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20001, 0, 0, 0 });
+			this->numBox_Points->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
+			this->numBox_Points->Name = L"numBox_Points";
+			this->numBox_Points->Size = System::Drawing::Size(64, 20);
+			this->numBox_Points->TabIndex = 1;
+			this->numBox_Points->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 200, 0, 0, 0 });
+			// 
+			// lbl_sweeppoints
+			// 
+			this->lbl_sweeppoints->AutoSize = true;
+			this->lbl_sweeppoints->Location = System::Drawing::Point(7, 19);
+			this->lbl_sweeppoints->Name = L"lbl_sweeppoints";
+			this->lbl_sweeppoints->Size = System::Drawing::Size(75, 13);
+			this->lbl_sweeppoints->TabIndex = 0;
+			this->lbl_sweeppoints->Text = L"Sweep Points:";
+			// 
+			// rTBX_DataPreview
+			// 
+			this->rTBX_DataPreview->Location = System::Drawing::Point(391, 249);
+			this->rTBX_DataPreview->Name = L"rTBX_DataPreview";
+			this->rTBX_DataPreview->Size = System::Drawing::Size(286, 196);
+			this->rTBX_DataPreview->TabIndex = 24;
+			this->rTBX_DataPreview->Text = L"";
+			// 
+			// lbl_ReturnTxt
+			// 
+			this->lbl_ReturnTxt->AutoSize = true;
+			this->lbl_ReturnTxt->Location = System::Drawing::Point(513, 230);
+			this->lbl_ReturnTxt->Name = L"lbl_ReturnTxt";
+			this->lbl_ReturnTxt->Size = System::Drawing::Size(106, 13);
+			this->lbl_ReturnTxt->TabIndex = 25;
+			this->lbl_ReturnTxt->Text = L"Return Data Preview";
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(923, 457);
+			this->ClientSize = System::Drawing::Size(689, 457);
+			this->Controls->Add(this->lbl_ReturnTxt);
+			this->Controls->Add(this->rTBX_DataPreview);
+			this->Controls->Add(this->group_Points);
+			this->Controls->Add(this->group_SendReceiveMess);
+			this->Controls->Add(this->group_VisaAddr);
 			this->Controls->Add(this->btn_Data);
-			this->Controls->Add(this->label7);
 			this->Controls->Add(this->Group_Sparam);
 			this->Controls->Add(this->btn_IMM);
 			this->Controls->Add(this->label_SetCommands);
@@ -866,16 +917,6 @@ namespace Design_Project {
 			this->Controls->Add(this->Group_Power);
 			this->Controls->Add(this->SetCMDButton);
 			this->Controls->Add(this->Group_Freq);
-			this->Controls->Add(this->Append_CSV);
-			this->Controls->Add(this->readCSVfile);
-			this->Controls->Add(this->label5);
-			this->Controls->Add(this->label4);
-			this->Controls->Add(this->label3);
-			this->Controls->Add(this->label2);
-			this->Controls->Add(this->textBox1);
-			this->Controls->Add(this->button2);
-			this->Controls->Add(this->label1);
-			this->Controls->Add(this->button1);
 			this->Name = L"MainForm";
 			this->Text = L"Team Zero Impedance";
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
@@ -897,6 +938,13 @@ namespace Design_Project {
 			this->Group_Trace->PerformLayout();
 			this->Group_Sparam->ResumeLayout(false);
 			this->Group_Sparam->PerformLayout();
+			this->group_VisaAddr->ResumeLayout(false);
+			this->group_VisaAddr->PerformLayout();
+			this->group_SendReceiveMess->ResumeLayout(false);
+			this->group_SendReceiveMess->PerformLayout();
+			this->group_Points->ResumeLayout(false);
+			this->group_Points->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -936,8 +984,8 @@ namespace Design_Project {
 		//Open COM
 
 		std::string tempString = readSCPI_Buffer();
-		//String^ nativeVISAREAD = gcnew String(tempString.c_str());
-		//label4->Text = nativeVISAREAD;
+		String^ nativeVISAREAD = gcnew String(tempString.c_str());
+		label4->Text = nativeVISAREAD;
 	}
 
 private: System::Void StartStopRadio_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
@@ -970,8 +1018,17 @@ private: System::Void SetCMDButton_Click(System::Object^  sender, System::EventA
 
 	std::cout << "The BUTTON SetCMDButton was pressed \n";
 	returnStatus = Controls_Frequency();
+	std::cout << returnStatus;
+	std::cout << "\n";
 	returnStatus = Controls_Power();
+	std::cout << returnStatus;
+	std::cout << "\n";
 	returnStatus = Controls_Trace();
+	std::cout << returnStatus;
+	std::cout << "\n";
+	returnStatus = Controls_Points();
+	std::cout << returnStatus;
+	std::cout << "\n";
 	std::cout << "\n";
 
 }
@@ -1069,6 +1126,30 @@ private: std::string Controls_Power(void) {
 	//Return statement
 	returnStatus = "Maybe it worked...";
 	return returnStatus;
+}
+
+private: std::string Controls_Points(void) {
+	/**
+	*   \brief Forms, checks and sends number of points in sweep to NA.
+	*
+	*
+	*   \param NO INPUT PARAMETERS.
+	*   \return Returns a Status String.
+	*
+	**/
+	String^ pointsCMD = ":SENS1:SWE:POIN ";
+	pointsCMD = pointsCMD + numBox_Points->Value;
+	sendSCPI_String(pointsCMD);
+
+	//error checking
+	pointsCMD = ":SENS1:SWE:POIN?";
+	sendSCPI_String(pointsCMD);
+	std::string tempReturn = readSCPI_Buffer();
+	if (string_to_double(tempReturn) == ((double)numBox_Points->Value)) {
+		return "Points Properly Set";
+	}
+	return "Points did not match on NA";
+
 }
 
 
@@ -1282,7 +1363,7 @@ private: std::string convert_vcppString_string(String^ vcppString) {
 	/**
 	*   \brief converts a visual C++ string to a normal C string
 	**/
-	char charBuffer[256]; //Char Array Buffer
+	char charBuffer[50000]; //Char Array Buffer
 	IntPtr ptrToNativeString; //Pointer for String to Char conversion
 	char* nativeString; // Static Char used in conversion process
 
@@ -1307,15 +1388,15 @@ private: std::string readSCPI_Buffer(System::Void) {
 		ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
 		viOpenDefaultRM(&viDefaultRM);
 		viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
-	char buf[1000000];
+	char buf[50000]; //Reduce buffer size once issue is found
 
 
 		viScanf(Instrument, "%t", &buf); //Read buffer into memory
 
 
-	std::cout << "The visa buffer was read:  \"";
+	std::cout << "The visa buffer was read:  \n";
 	std::cout << buf;
-	std::cout << "\" \n";
+	std::cout << "\n";
 		viClose(Instrument); //Close COM
 
 	String^ nativeVISAREAD;
@@ -1384,13 +1465,35 @@ private: System::Void btn_Data_Click(System::Object^  sender, System::EventArgs^
 		tempString = ":SENS:DATA:RAWD? S22";
 	}
 	sendSCPI_String(tempString);
-
-	//_sleep(50);
-	//std::string tempReturn = readSCPI_Buffer();
-
-
+	
+	std::string tempReturn = readSCPI_Buffer();
+	String^ nativeVISAREAD = gcnew String(tempReturn.c_str());
+	rTBX_DataPreview->Text = nativeVISAREAD;
+	saveString2File(nativeVISAREAD);
 }
 
+private: System::Void saveString2File(String^ dataString) {
+	/**
+	*   \brief writes passed string to a CSV file
+	*
+	*   \return NO RETURN VALUE.
+	**/
+	std::cout << "\n======saveString2File CODE WAS CALLED======\n";
+
+	//First open the CSV File
+	std::ofstream csv_fileStream;
+	csv_fileStream.open(CSV_FILE_NAME);
+
+	char SCPIcmd[50000]; //Char Array for CMD 
+
+	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(dataString); //PTR TO NATIVE STRING
+	char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
+	strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
+
+	csv_fileStream << SCPIcmd;
+	
+	csv_fileStream.close();
+}
 
 private: System::Void groupBox2_Enter(System::Object^  sender, System::EventArgs^  e) {
 }
@@ -1408,91 +1511,6 @@ private: System::Void textBox1_TextChanged(System::Object^  sender, System::Even
 }
 private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 }
-
-
-
-		 //Below is some CSV shit code. This will be ripped out later
-private: System::Void readCSVfile_Click(System::Object^  sender, System::EventArgs^  e) {
-	std::cout << "\n======CVS READ CODE WAS CALLED======\n";
-	std::ifstream csv_fileStream;
-	csv_fileStream.open(CSV_FILE_NAME);
-
-	if (csv_fileStream.is_open()) {
-
-		std::cout << "The CSV File";
-		std::cout << CSV_FILE_NAME;
-		std::cout << " was opened\n";
-
-		std::vector<char*> csv_values;
-		const int MAXSIZE = 25600; //Max char length of an entry
-		char csv_single_value[MAXSIZE];
-		while (csv_fileStream.getline(csv_single_value, MAXSIZE, ','))
-		{
-			csv_values.resize(csv_values.size() + 1); //Expand vector size on the fly
-			csv_values.back() = new char[MAXSIZE];
-			strcpy(csv_values.back(), csv_single_value);
-		}
-		csv_fileStream.close();
-
-		for (int i = 0; i < csv_values.size(); i++) {
-			std::cout << csv_values[i];
-
-		}
-
-	}
-	else {
-		std::cout << ("Error in opening CSV file.\n");
-	}
-	std::cout << "\n";
-	std::cout << "======End of CVS File======\n";
-
-
-}
-private: System::Void Append_CSV_Click(System::Object^  sender, System::EventArgs^  e) {
-	std::cout << "\n======CVS APPEND CODE WAS CALLED======\n";
-
-	//First open the old CSV file and read in all contents
-	std::ifstream csv_fileStream;
-	csv_fileStream.open(CSV_FILE_NAME);
-	std::vector<char*> csv_values;
-	if (csv_fileStream.is_open()) {
-
-		const int MAXSIZE = 25600; //Max char length of an entry
-		char csv_single_value[MAXSIZE];
-		while (csv_fileStream.getline(csv_single_value, MAXSIZE, ','))
-		{
-			csv_values.resize(csv_values.size() + 1); //Expand vector size on the fly
-			csv_values.back() = new char[MAXSIZE];
-			strcpy(csv_values.back(), csv_single_value);
-		}
-		csv_fileStream.close();
-	}
-	else {
-		std::cout << ("Error in opening CSV file.\n");
-	}
-
-
-	//Now rewrite the buffer and append the text
-	std::ofstream csv_fileStream2;
-	csv_fileStream2.open(CSV_FILE_NAME);
-	for (int i = 0; i < csv_values.size(); i++) {
-		csv_fileStream2 << csv_values[i];
-	}
-
-
-	char SCPIcmd[10000]; //Char Array for CMD [FINAL DATA TYPE BEFORE TRANS]
-
-	String^ test = (textBox1->Text); //NATIVE STRING
-	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(test); //PTR TO NATIVE STRING
-	char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
-	strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
-
-	csv_fileStream2 << SCPIcmd;
-	csv_fileStream2 << "\n";
-	csv_fileStream2.close();
-}
-
-
 
 };
 }
