@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <stdio.h>
+#include <iterator> //For split function
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visatype.h"
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visaext.h"
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visaext.h"
@@ -143,6 +144,7 @@ namespace Design_Project {
 	private: System::Windows::Forms::Label^  lbl_sweeppoints;
 	private: System::Windows::Forms::RichTextBox^  rTBX_DataPreview;
 	private: System::Windows::Forms::Label^  lbl_ReturnTxt;
+private: System::Windows::Forms::Button^  button3;
 
 
 
@@ -226,6 +228,7 @@ namespace Design_Project {
 			this->lbl_sweeppoints = (gcnew System::Windows::Forms::Label());
 			this->rTBX_DataPreview = (gcnew System::Windows::Forms::RichTextBox());
 			this->lbl_ReturnTxt = (gcnew System::Windows::Forms::Label());
+			this->button3 = (gcnew System::Windows::Forms::Button());
 			this->Group_Freq->SuspendLayout();
 			this->Span_Units->SuspendLayout();
 			this->Center_Units->SuspendLayout();
@@ -822,7 +825,7 @@ namespace Design_Project {
 			this->btn_Data->Name = L"btn_Data";
 			this->btn_Data->Size = System::Drawing::Size(112, 23);
 			this->btn_Data->TabIndex = 20;
-			this->btn_Data->Text = L"Get Raw Data";
+			this->btn_Data->Text = L"Get Data";
 			this->btn_Data->UseVisualStyleBackColor = true;
 			this->btn_Data->Click += gcnew System::EventHandler(this, &MainForm::btn_Data_Click);
 			// 
@@ -898,11 +901,22 @@ namespace Design_Project {
 			this->lbl_ReturnTxt->TabIndex = 25;
 			this->lbl_ReturnTxt->Text = L"Return Data Preview";
 			// 
+			// button3
+			// 
+			this->button3->Location = System::Drawing::Point(545, 189);
+			this->button3->Name = L"button3";
+			this->button3->Size = System::Drawing::Size(75, 23);
+			this->button3->TabIndex = 26;
+			this->button3->Text = L"button3";
+			this->button3->UseVisualStyleBackColor = true;
+			this->button3->Click += gcnew System::EventHandler(this, &MainForm::button3_Click);
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(689, 457);
+			this->Controls->Add(this->button3);
 			this->Controls->Add(this->lbl_ReturnTxt);
 			this->Controls->Add(this->rTBX_DataPreview);
 			this->Controls->Add(this->group_Points);
@@ -1061,23 +1075,46 @@ private: std::string Controls_Trace(void) {
 	std::string linkedList[] = { "MLOG", "SMIT", "PHAS", "POL", "LMAG", "SWR", "REAL", "IMAG", "UPH", "PPH" };
 
 	String^ traceCMD = ":CALC1:TRAC1:FORM ";
-	String^ tempSelection = gcnew String(linkedList[ListBox_Trace1->SelectedIndex].c_str()); //convert string to String^
-	traceCMD = traceCMD + tempSelection;
+	String^ tempSelection1 = gcnew String(linkedList[ListBox_Trace1->SelectedIndex].c_str()); //convert string to String^
+	traceCMD = traceCMD + tempSelection1;
 	if (chkbx_Tr1Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
 	}
 	
 
 	traceCMD = ":CALC1:TRAC2:FORM ";
-	tempSelection = gcnew String(linkedList[ListBox_Trace2->SelectedIndex].c_str());
+	String^ tempSelection = gcnew String(linkedList[ListBox_Trace2->SelectedIndex].c_str());
 	traceCMD = traceCMD + tempSelection;
 	if (chkbx_Tr2Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
 	}
 
-	//Return statement
-	returnStatus = "Maybe it worked...";
-	return returnStatus;
+	sendSCPI_String(":CALC1:TRAC2:FORM?");
+	std::string returnMessage = readSCPI_Buffer();
+	if (convert_vcppString_string(tempSelection1 + "\n") == returnMessage) {
+		if (chkbx_Tr2Enable->Checked == true) {
+			if (convert_vcppString_string(tempSelection + "\n") == returnMessage) {
+				returnStatus = "Trace Controls Matched! \n";
+				return returnStatus;
+			}
+			else {
+				//did not match
+				returnStatus = "Trace Controls DID NOT Match \n";
+				return returnStatus;
+			}
+		}
+		else {
+			returnStatus = "Trace Controls Matched! \n";
+			return returnStatus;
+		}
+	}
+	else {
+		//did not match
+		returnStatus = "Trace Controls DID NOT Match \n";
+		return returnStatus;
+	}
+
+	
 }
 
 private: std::string Controls_Power(void) {
@@ -1120,12 +1157,16 @@ private: std::string Controls_Power(void) {
 	//Power should be checked now
 	sendSCPI_String(":SOUR:POW:LEV:IMM:AMPL?");
 	std::string returnMessage = readSCPI_Buffer();
-	//now convert "+5.000000000E+009" string into a double
-	//Check numbers
+	double retPower = string_science_to_double(returnMessage);
+	if (retPower == powerNum) {
+		returnMessage = "Power Control Matched! \n";
+		return returnMessage;
+	}
+	else {
+		returnStatus = "Power Control DID NOT match. \n";
+		return returnStatus;
+	}
 	
-	//Return statement
-	returnStatus = "Maybe it worked...";
-	return returnStatus;
 }
 
 private: std::string Controls_Points(void) {
@@ -1146,9 +1187,9 @@ private: std::string Controls_Points(void) {
 	sendSCPI_String(pointsCMD);
 	std::string tempReturn = readSCPI_Buffer();
 	if (string_to_double(tempReturn) == ((double)numBox_Points->Value)) {
-		return "Points Properly Set";
+		return "Points Control Matched! \n";
 	}
-	return "Points did not match on NA";
+	return "Points did not match on NA. \n";
 
 }
 
@@ -1249,13 +1290,27 @@ private: std::string Controls_Frequency(void) {
 			frequencyStopCMD = frequencyStopCMD + frequencyStopNum;
 			sendSCPI_String(frequencyStopCMD);
 
-			//INCOMPLETE CODE BELOW!!!!!!
+			
 
 			//start and stop parameters should be checked now
 			sendSCPI_String(":SENS1:FREQ:STAR?");
 			std::string returnMessage = readSCPI_Buffer();
-			//now convert "+5.000000000E+009" string into a double
-			//Then compare number, and repeat for stop command. Copy code for center span.
+			double retStartFreq = string_science_to_double(returnMessage);
+
+			sendSCPI_String(":SENS1:FREQ:STOP?");
+			returnMessage = readSCPI_Buffer();
+			double retStopFreq = string_science_to_double(returnMessage);
+
+			if ((retStartFreq == frequencyStartNum)&&(retStopFreq == frequencyStopNum)) {
+				returnStatus = "Frequency Controls Matched! \n";
+				return returnStatus;
+			}
+			else
+			{
+				MessageBox::Show("Please check the input frequencies.\nParameters are not in range.\nParameter not set.", "Start/Stop Frequency did not match", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+				returnStatus = "Frequency Controls DID NOT Match \n";
+				return returnStatus;
+			}
 
 
 		}
@@ -1332,6 +1387,31 @@ private: std::string Controls_Frequency(void) {
 			sendSCPI_String(frequencyCenterCMD);
 			frequencySpanCMD = frequencySpanCMD + frequencySpanNum;
 			sendSCPI_String(frequencySpanCMD);
+
+
+
+			//start and stop parameters should be checked now
+			sendSCPI_String(":SENS1:FREQ:CENT?");
+			std::string returnMessage = readSCPI_Buffer();
+			double retCenterFreq = string_science_to_double(returnMessage);
+
+			sendSCPI_String(":SENS1:FREQ:SPAN?");
+			returnMessage = readSCPI_Buffer();
+			double retSpanFreq = string_science_to_double(returnMessage);
+
+			if ((retCenterFreq == frequencyCenterNum) && (retSpanFreq == frequencySpanNum)) {
+				returnStatus = "Frequency Controls Matched! \n";
+				return returnStatus;
+			}
+			else
+			{
+				MessageBox::Show("Please check the input frequencies.\nParameters are not in range.\nParameter not set.", "Center/Span Frequency did not match", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+				returnStatus = "Frequency Controls DID NOT Match \n";
+				return returnStatus;
+			}
+
+
+
 		}
 		else {
 			returnStatus = "Center and Span Frequencies are NOT in range\n";
@@ -1342,21 +1422,44 @@ private: std::string Controls_Frequency(void) {
 	}
 
 	//Return statement
-	returnStatus = "Maybe it worked...";
+	//returnStatus = "Maybe it worked...";
 	return returnStatus;
 }
 
-
-private: double string_to_double(const std::string& s){
+private: double string_to_double(const std::string& s) {
 	/**
 	*   \brief converts a cpp string to a double.
 	*   Function found online... doesnt throw proper errors. This issue needs to be documented
 	**/
+
 	std::istringstream i(s);
 	double x;
 	if (!(i >> x))
 		return 0;
 	return x;
+}
+
+private: double string_science_to_double(const std::string& s){
+	/**
+	*   \brief converts a cpp string to a double.
+	*   Function found online... doesnt throw proper errors. This issue needs to be documented
+	**/
+	std::string delimiter = "E+";
+	std::string coeff = s.substr(0, s.find(delimiter)-1);
+	std::string power = s.substr(s.find(delimiter)+2, s.length());
+
+	std::istringstream i(coeff);
+	std::istringstream j(power);
+	double dbl_coeff;
+	double dbl_power;
+	if (!(i >> dbl_coeff))
+		return 0;
+	if (!(j >> dbl_power))
+		return 0;
+
+	double returnValue =  dbl_coeff * pow(10,(int)dbl_power);
+
+	return returnValue;
 }
 
 private: std::string convert_vcppString_string(String^ vcppString) {
@@ -1468,7 +1571,6 @@ private: System::Void btn_Data_Click(System::Object^  sender, System::EventArgs^
 	
 	std::string tempReturn = readSCPI_Buffer();
 	String^ nativeVISAREAD = gcnew String(tempReturn.c_str());
-	rTBX_DataPreview->Text = nativeVISAREAD;
 	saveString2File(nativeVISAREAD);
 }
 
@@ -1483,10 +1585,20 @@ private: System::Void saveString2File(String^ dataString) {
 	//First open the CSV File
 	std::ofstream csv_fileStream;
 	csv_fileStream.open(CSV_FILE_NAME);
-
 	char SCPIcmd[50000]; //Char Array for CMD 
+	String^ buildString;
+	std::string tempTest;
+	//format dataStrig below
+	std::vector<std::string> x = split(convert_vcppString_string(dataString), ',');
 
-	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(dataString); //PTR TO NATIVE STRING
+	for (int i = 0; i < x.size(); i= i + 2)
+	{
+		buildString = buildString + string_science_to_double(x[i]) + "," + string_science_to_double(x[i + 1]) + "\n";
+	}
+
+	rTBX_DataPreview->Text = buildString;
+
+	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(buildString); //PTR TO NATIVE STRING
 	char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
 	strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
 
@@ -1494,6 +1606,22 @@ private: System::Void saveString2File(String^ dataString) {
 	
 	csv_fileStream.close();
 }
+
+//split function
+std::vector<std::string> split(const std::string &s, char delim) {
+	std::vector<std::string> elems;
+	split(s, delim, std::back_inserter(elems));
+	return elems;
+}
+template<typename Out>
+void split(const std::string &s, char delim, Out result) {
+	std::stringstream ss(s);
+	std::string item;
+	while (std::getline(ss, item, delim)) {
+		*(result++) = item;
+	}
+}
+//end of split
 
 private: System::Void groupBox2_Enter(System::Object^  sender, System::EventArgs^  e) {
 }
@@ -1512,5 +1640,13 @@ private: System::Void textBox1_TextChanged(System::Object^  sender, System::Even
 private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 }
 
+private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
+	std::string test = "+5.000000000E+009";
+	std::cout << test;
+	std::cout << "\n";
+	double result = string_science_to_double(test);
+	std::cout << result;
+	std::cout << "\n";
+}
 };
 }
