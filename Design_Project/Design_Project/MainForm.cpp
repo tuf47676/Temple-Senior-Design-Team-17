@@ -9,6 +9,8 @@
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visa.h"
 #include <iostream>
 #include <cmath>
+#include <chrono>
+#include <ctime>
 //#include "engine.h"
 #pragma warning(disable:4996)
 #include "MainForm.h"
@@ -42,6 +44,11 @@ void Main(array<String^>^ args) {
 	std::cout << "|   |       |    ___|    ___| |_|   |       |  _    |      _|    ___|\n";
 	std::cout << "|   | ||_|| |   |   |   |___|       |   _   | | |   |     |_|   |___ \n";
 	std::cout << "|___|_|   |_|___|   |_______|______||__| |__|_|  |__|_______|_______|\n";
+	std::cout << "\nApplication Start Time: ";
+
+	std::time_t AppStart = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+	std::cout << std::ctime(&AppStart);
+	std::cout << "\n\n";
 
 	//testint
 	//std::cout << "Team Zero Impedance";

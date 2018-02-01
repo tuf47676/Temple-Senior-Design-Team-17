@@ -14,7 +14,7 @@
 
 //Mention Visa connection string here.
 #define DEFAULT_LOGICAL_ADDRESS "TCPIP0::192.168.100.5::inst0::INSTR"
-#define CSV_FILE_NAME "commandList.csv"
+#define CSV_FILE_NAME "NetworkAnalyzerData.csv"
 char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
 
 //Error checking constraights
@@ -125,7 +125,7 @@ namespace Design_Project {
 	private: System::Windows::Forms::ListBox^  ListBox_Trace1;
 	private: System::Windows::Forms::ListBox^  ListBox_Trace2;
 	private: System::Windows::Forms::Label^  LabelTrace2;
-	private: System::Windows::Forms::Label^  label_SetCommands;
+
 	private: System::Windows::Forms::CheckBox^  chkbx_Tr2Enable;
 
 	private: System::Windows::Forms::CheckBox^  chkbx_Tr1Enable;
@@ -144,7 +144,11 @@ namespace Design_Project {
 	private: System::Windows::Forms::Label^  lbl_sweeppoints;
 	private: System::Windows::Forms::RichTextBox^  rTBX_DataPreview;
 	private: System::Windows::Forms::Label^  lbl_ReturnTxt;
-private: System::Windows::Forms::Button^  button3;
+private: System::Windows::Forms::GroupBox^  group_SetCommands;
+private: System::Windows::Forms::GroupBox^  group_INITScan;
+private: System::Windows::Forms::Button^  btn_Continous;
+private: System::Windows::Forms::GroupBox^  group_ReturnData;
+
 
 
 
@@ -213,7 +217,6 @@ private: System::Windows::Forms::Button^  button3;
 			this->LabelTrace2 = (gcnew System::Windows::Forms::Label());
 			this->labelTrace1 = (gcnew System::Windows::Forms::Label());
 			this->ListBox_Trace1 = (gcnew System::Windows::Forms::ListBox());
-			this->label_SetCommands = (gcnew System::Windows::Forms::Label());
 			this->btn_IMM = (gcnew System::Windows::Forms::Button());
 			this->Group_Sparam = (gcnew System::Windows::Forms::GroupBox());
 			this->rad_S22 = (gcnew System::Windows::Forms::RadioButton());
@@ -228,7 +231,10 @@ private: System::Windows::Forms::Button^  button3;
 			this->lbl_sweeppoints = (gcnew System::Windows::Forms::Label());
 			this->rTBX_DataPreview = (gcnew System::Windows::Forms::RichTextBox());
 			this->lbl_ReturnTxt = (gcnew System::Windows::Forms::Label());
-			this->button3 = (gcnew System::Windows::Forms::Button());
+			this->group_SetCommands = (gcnew System::Windows::Forms::GroupBox());
+			this->group_INITScan = (gcnew System::Windows::Forms::GroupBox());
+			this->btn_Continous = (gcnew System::Windows::Forms::Button());
+			this->group_ReturnData = (gcnew System::Windows::Forms::GroupBox());
 			this->Group_Freq->SuspendLayout();
 			this->Span_Units->SuspendLayout();
 			this->Center_Units->SuspendLayout();
@@ -242,6 +248,9 @@ private: System::Windows::Forms::Button^  button3;
 			this->group_SendReceiveMess->SuspendLayout();
 			this->group_Points->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->BeginInit();
+			this->group_SetCommands->SuspendLayout();
+			this->group_INITScan->SuspendLayout();
+			this->group_ReturnData->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -603,9 +612,9 @@ private: System::Windows::Forms::Button^  button3;
 			// 
 			// SetCMDButton
 			// 
-			this->SetCMDButton->Location = System::Drawing::Point(392, 161);
+			this->SetCMDButton->Location = System::Drawing::Point(6, 15);
 			this->SetCMDButton->Name = L"SetCMDButton";
-			this->SetCMDButton->Size = System::Drawing::Size(112, 23);
+			this->SetCMDButton->Size = System::Drawing::Size(102, 23);
 			this->SetCMDButton->TabIndex = 13;
 			this->SetCMDButton->Text = L"Set Commands";
 			this->SetCMDButton->UseVisualStyleBackColor = true;
@@ -687,6 +696,7 @@ private: System::Windows::Forms::Button^  button3;
 			this->chkbx_Tr2Enable->TabIndex = 4;
 			this->chkbx_Tr2Enable->Text = L"Enable";
 			this->chkbx_Tr2Enable->UseVisualStyleBackColor = true;
+			this->chkbx_Tr2Enable->CheckedChanged += gcnew System::EventHandler(this, &MainForm::chkbx_Tr2Enable_CheckedChanged);
 			// 
 			// chkbx_Tr1Enable
 			// 
@@ -699,6 +709,7 @@ private: System::Windows::Forms::Button^  button3;
 			this->chkbx_Tr1Enable->TabIndex = 3;
 			this->chkbx_Tr1Enable->Text = L"Enable";
 			this->chkbx_Tr1Enable->UseVisualStyleBackColor = true;
+			this->chkbx_Tr1Enable->CheckedChanged += gcnew System::EventHandler(this, &MainForm::chkbx_Tr1Enable_CheckedChanged);
 			// 
 			// ListBox_Trace2
 			// 
@@ -742,23 +753,14 @@ private: System::Windows::Forms::Button^  button3;
 			this->ListBox_Trace1->Size = System::Drawing::Size(120, 43);
 			this->ListBox_Trace1->TabIndex = 1;
 			// 
-			// label_SetCommands
-			// 
-			this->label_SetCommands->AutoSize = true;
-			this->label_SetCommands->Location = System::Drawing::Point(510, 166);
-			this->label_SetCommands->Name = L"label_SetCommands";
-			this->label_SetCommands->RightToLeft = System::Windows::Forms::RightToLeft::No;
-			this->label_SetCommands->Size = System::Drawing::Size(167, 13);
-			this->label_SetCommands->TabIndex = 16;
-			this->label_SetCommands->Text = L"This button will set the parameters";
-			// 
 			// btn_IMM
 			// 
-			this->btn_IMM->Location = System::Drawing::Point(392, 190);
+			this->btn_IMM->Enabled = false;
+			this->btn_IMM->Location = System::Drawing::Point(6, 20);
 			this->btn_IMM->Name = L"btn_IMM";
-			this->btn_IMM->Size = System::Drawing::Size(112, 23);
+			this->btn_IMM->Size = System::Drawing::Size(109, 23);
 			this->btn_IMM->TabIndex = 17;
-			this->btn_IMM->Text = L"Immediate Scan";
+			this->btn_IMM->Text = L"Immediate";
 			this->btn_IMM->UseVisualStyleBackColor = true;
 			this->btn_IMM->Click += gcnew System::EventHandler(this, &MainForm::btn_IMM_Click);
 			// 
@@ -778,6 +780,7 @@ private: System::Windows::Forms::Button^  button3;
 			// rad_S22
 			// 
 			this->rad_S22->AutoSize = true;
+			this->rad_S22->Enabled = false;
 			this->rad_S22->Location = System::Drawing::Point(66, 42);
 			this->rad_S22->Name = L"rad_S22";
 			this->rad_S22->Size = System::Drawing::Size(44, 17);
@@ -789,6 +792,7 @@ private: System::Windows::Forms::Button^  button3;
 			// rad_S21
 			// 
 			this->rad_S21->AutoSize = true;
+			this->rad_S21->Enabled = false;
 			this->rad_S21->Location = System::Drawing::Point(16, 42);
 			this->rad_S21->Name = L"rad_S21";
 			this->rad_S21->Size = System::Drawing::Size(44, 17);
@@ -800,6 +804,7 @@ private: System::Windows::Forms::Button^  button3;
 			// rad_S12
 			// 
 			this->rad_S12->AutoSize = true;
+			this->rad_S12->Enabled = false;
 			this->rad_S12->Location = System::Drawing::Point(66, 19);
 			this->rad_S12->Name = L"rad_S12";
 			this->rad_S12->Size = System::Drawing::Size(44, 17);
@@ -821,9 +826,9 @@ private: System::Windows::Forms::Button^  button3;
 			// 
 			// btn_Data
 			// 
-			this->btn_Data->Location = System::Drawing::Point(392, 220);
+			this->btn_Data->Location = System::Drawing::Point(6, 19);
 			this->btn_Data->Name = L"btn_Data";
-			this->btn_Data->Size = System::Drawing::Size(112, 23);
+			this->btn_Data->Size = System::Drawing::Size(109, 23);
 			this->btn_Data->TabIndex = 20;
 			this->btn_Data->Text = L"Get Data";
 			this->btn_Data->UseVisualStyleBackColor = true;
@@ -886,50 +891,79 @@ private: System::Windows::Forms::Button^  button3;
 			// 
 			// rTBX_DataPreview
 			// 
-			this->rTBX_DataPreview->Location = System::Drawing::Point(391, 249);
+			this->rTBX_DataPreview->Location = System::Drawing::Point(8, 48);
 			this->rTBX_DataPreview->Name = L"rTBX_DataPreview";
-			this->rTBX_DataPreview->Size = System::Drawing::Size(286, 196);
+			this->rTBX_DataPreview->Size = System::Drawing::Size(215, 111);
 			this->rTBX_DataPreview->TabIndex = 24;
 			this->rTBX_DataPreview->Text = L"";
 			// 
 			// lbl_ReturnTxt
 			// 
 			this->lbl_ReturnTxt->AutoSize = true;
-			this->lbl_ReturnTxt->Location = System::Drawing::Point(513, 230);
+			this->lbl_ReturnTxt->Location = System::Drawing::Point(125, 29);
 			this->lbl_ReturnTxt->Name = L"lbl_ReturnTxt";
-			this->lbl_ReturnTxt->Size = System::Drawing::Size(106, 13);
+			this->lbl_ReturnTxt->Size = System::Drawing::Size(64, 13);
 			this->lbl_ReturnTxt->TabIndex = 25;
-			this->lbl_ReturnTxt->Text = L"Return Data Preview";
+			this->lbl_ReturnTxt->Text = L"File Preview";
 			// 
-			// button3
+			// group_SetCommands
 			// 
-			this->button3->Location = System::Drawing::Point(545, 189);
-			this->button3->Name = L"button3";
-			this->button3->Size = System::Drawing::Size(75, 23);
-			this->button3->TabIndex = 26;
-			this->button3->Text = L"button3";
-			this->button3->UseVisualStyleBackColor = true;
-			this->button3->Click += gcnew System::EventHandler(this, &MainForm::button3_Click);
+			this->group_SetCommands->Controls->Add(this->SetCMDButton);
+			this->group_SetCommands->Location = System::Drawing::Point(392, 162);
+			this->group_SetCommands->Name = L"group_SetCommands";
+			this->group_SetCommands->Size = System::Drawing::Size(229, 44);
+			this->group_SetCommands->TabIndex = 26;
+			this->group_SetCommands->TabStop = false;
+			this->group_SetCommands->Text = L"Set Scan Parameters";
+			// 
+			// group_INITScan
+			// 
+			this->group_INITScan->Controls->Add(this->btn_Continous);
+			this->group_INITScan->Controls->Add(this->btn_IMM);
+			this->group_INITScan->Location = System::Drawing::Point(392, 212);
+			this->group_INITScan->Name = L"group_INITScan";
+			this->group_INITScan->Size = System::Drawing::Size(229, 57);
+			this->group_INITScan->TabIndex = 27;
+			this->group_INITScan->TabStop = false;
+			this->group_INITScan->Text = L"Initiate Scan";
+			// 
+			// btn_Continous
+			// 
+			this->btn_Continous->Location = System::Drawing::Point(121, 20);
+			this->btn_Continous->Name = L"btn_Continous";
+			this->btn_Continous->Size = System::Drawing::Size(103, 23);
+			this->btn_Continous->TabIndex = 18;
+			this->btn_Continous->Text = L"Continuous (Stop)";
+			this->btn_Continous->UseVisualStyleBackColor = true;
+			this->btn_Continous->Click += gcnew System::EventHandler(this, &MainForm::btn_Continous_Click);
+			// 
+			// group_ReturnData
+			// 
+			this->group_ReturnData->Controls->Add(this->btn_Data);
+			this->group_ReturnData->Controls->Add(this->rTBX_DataPreview);
+			this->group_ReturnData->Controls->Add(this->lbl_ReturnTxt);
+			this->group_ReturnData->Location = System::Drawing::Point(392, 276);
+			this->group_ReturnData->Name = L"group_ReturnData";
+			this->group_ReturnData->Size = System::Drawing::Size(229, 169);
+			this->group_ReturnData->TabIndex = 28;
+			this->group_ReturnData->TabStop = false;
+			this->group_ReturnData->Text = L"Network Analyzer Data";
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(689, 457);
-			this->Controls->Add(this->button3);
-			this->Controls->Add(this->lbl_ReturnTxt);
-			this->Controls->Add(this->rTBX_DataPreview);
+			this->ClientSize = System::Drawing::Size(909, 457);
+			this->Controls->Add(this->group_ReturnData);
+			this->Controls->Add(this->group_INITScan);
+			this->Controls->Add(this->group_SetCommands);
 			this->Controls->Add(this->group_Points);
 			this->Controls->Add(this->group_SendReceiveMess);
 			this->Controls->Add(this->group_VisaAddr);
-			this->Controls->Add(this->btn_Data);
 			this->Controls->Add(this->Group_Sparam);
-			this->Controls->Add(this->btn_IMM);
-			this->Controls->Add(this->label_SetCommands);
 			this->Controls->Add(this->ListBox_Trace1);
 			this->Controls->Add(this->Group_Trace);
 			this->Controls->Add(this->Group_Power);
-			this->Controls->Add(this->SetCMDButton);
 			this->Controls->Add(this->Group_Freq);
 			this->Name = L"MainForm";
 			this->Text = L"Team Zero Impedance";
@@ -959,8 +993,11 @@ private: System::Windows::Forms::Button^  button3;
 			this->group_Points->ResumeLayout(false);
 			this->group_Points->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->EndInit();
+			this->group_SetCommands->ResumeLayout(false);
+			this->group_INITScan->ResumeLayout(false);
+			this->group_ReturnData->ResumeLayout(false);
+			this->group_ReturnData->PerformLayout();
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -1545,27 +1582,41 @@ private: System::Void sendSCPI_String(String^ sendString) {
 }
 private: System::Void btn_IMM_Click(System::Object^  sender, System::EventArgs^  e) {
 	//Need to select channel some how...
+
 	sendSCPI_String(":INIT:IMM1");
-
-
-
 }
+private: System::Void btn_Continous_Click(System::Object^  sender, System::EventArgs^  e) {
+	//first check continous state.
+	sendSCPI_String(":INIT:CONT? ");
+	std::string returnMessage = readSCPI_Buffer();
+	if (returnMessage == "1\n") {
+		btn_Continous->Text = "Continuous (Start)"; //is on now, but will be stopped
+		btn_IMM->Enabled = true;
+		sendSCPI_String(":INIT:CONT OFF ");
+	}
+	else {
+		btn_Continous->Text = "Continuous (Stop)"; //is on now, but will be stopped
+		btn_IMM->Enabled = false;
+		sendSCPI_String(":INIT:CONT ON ");
+	}
+}
+
 
 private: System::Void btn_Data_Click(System::Object^  sender, System::EventArgs^  e) {
 
 	String^ tempString;
 
 	if (rad_S11->Checked == true) {
-		tempString = ":SENS:DATA:RAWD? S11";
+		tempString = ":SENS:DATA:CORR? S11";
 	}
 	if (rad_S12->Checked == true) {
-		tempString = ":SENS:DATA:RAWD? S12";
+		tempString = ":SENS:DATA:CORR? S12";
 	}
 	if (rad_S21->Checked == true) {
-		tempString = ":SENS:DATA:RAWD? S21";
+		tempString = ":SENS:DATA:CORR? S21";
 	}
 	if (rad_S22->Checked == true) {
-		tempString = ":SENS:DATA:RAWD? S22";
+		tempString = ":SENS:DATA:CORR? S22";
 	}
 	sendSCPI_String(tempString);
 	
@@ -1582,6 +1633,25 @@ private: System::Void saveString2File(String^ dataString) {
 	**/
 	std::cout << "\n======saveString2File CODE WAS CALLED======\n";
 
+	//start, stop, points parameters should be gotten before hand 
+	sendSCPI_String(":SENS1:FREQ:STAR?");
+	std::string returnMessage = readSCPI_Buffer();
+	double retStartFreq = string_science_to_double(returnMessage);
+
+	sendSCPI_String(":SENS1:FREQ:STOP?");
+	returnMessage = readSCPI_Buffer();
+	double retStopFreq = string_science_to_double(returnMessage);
+
+	sendSCPI_String(":SENS1:SWE:POIN?");
+	returnMessage = readSCPI_Buffer();
+	int retPointsNum = string_to_double(returnMessage);
+	std::vector<double> frequencyPoints(retPointsNum);
+	double delta = (retStopFreq - retStartFreq) / retPointsNum;
+	for (int l = 0; l < retPointsNum, l++;) {
+		frequencyPoints[l] = retStartFreq + delta*l;
+	}
+	//NOW ACTUALLY GET THE DATA
+
 	//First open the CSV File
 	std::ofstream csv_fileStream;
 	csv_fileStream.open(CSV_FILE_NAME);
@@ -1593,7 +1663,7 @@ private: System::Void saveString2File(String^ dataString) {
 
 	for (int i = 0; i < x.size(); i= i + 2)
 	{
-		buildString = buildString + string_science_to_double(x[i]) + "," + string_science_to_double(x[i + 1]) + "\n";
+		buildString = buildString + frequencyPoints[i/2] + "," + string_science_to_double(x[i]) + "," + string_science_to_double(x[i + 1]) + "\n";
 	}
 
 	rTBX_DataPreview->Text = buildString;
@@ -1640,13 +1710,87 @@ private: System::Void textBox1_TextChanged(System::Object^  sender, System::Even
 private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 }
 
-private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-	std::string test = "+5.000000000E+009";
-	std::cout << test;
-	std::cout << "\n";
-	double result = string_science_to_double(test);
-	std::cout << result;
-	std::cout << "\n";
+
+private: System::Void chkbx_Tr1Enable_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == true)) {
+		//enable all sparams
+		rad_S11->Enabled = true;
+		rad_S12->Enabled = true;
+		rad_S21->Enabled = true;
+		rad_S22->Enabled = true;
+		btn_Data->Enabled = true;
+	}
+	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == true)) {
+		//Only enable S22 param & set it
+		rad_S11->Enabled = false;
+		rad_S12->Enabled = false;
+		rad_S21->Enabled = false;
+		rad_S22->Enabled = true;
+		rad_S22->Checked = true;
+		btn_Data->Enabled = true;
+	}
+	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == false)) {
+		//Only enable S22 param & set it
+		rad_S11->Enabled = true;
+		rad_S12->Enabled = false;
+		rad_S21->Enabled = false;
+		rad_S22->Enabled = false;
+		rad_S11->Checked = true;
+		btn_Data->Enabled = true;
+	}
+	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == false)) {
+		//disable collect data button and all sparams
+		rad_S11->Enabled = false;
+		rad_S12->Enabled = false;
+		rad_S21->Enabled = false;
+		rad_S22->Enabled = false;
+		rad_S11->Checked = false;
+		rad_S12->Checked = false;
+		rad_S21->Checked = false;
+		rad_S22->Checked = false;
+		btn_Data->Enabled = false;
+	}
 }
+private: System::Void chkbx_Tr2Enable_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
+	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == true)) {
+		//enable all sparams
+		rad_S11->Enabled = true;
+		rad_S12->Enabled = true;
+		rad_S21->Enabled = true;
+		rad_S22->Enabled = true;
+		btn_Data->Enabled = true;
+	}
+	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == true)) {
+		//Only enable S22 param & set it
+		rad_S11->Enabled = false;
+		rad_S12->Enabled = false;
+		rad_S21->Enabled = false;
+		rad_S22->Enabled = true;
+		rad_S22->Checked = true;
+		btn_Data->Enabled = true;
+	}
+	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == false)) {
+		//Only enable S22 param & set it
+		rad_S11->Enabled = true;
+		rad_S12->Enabled = false;
+		rad_S21->Enabled = false;
+		rad_S22->Enabled = false;
+		rad_S11->Checked = true;
+		btn_Data->Enabled = true;
+	}
+	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == false)) {
+		//disable collect data button and all sparams
+		rad_S11->Enabled = false;
+		rad_S12->Enabled = false;
+		rad_S21->Enabled = false;
+		rad_S22->Enabled = false;
+		rad_S11->Checked = false;
+		rad_S12->Checked = false;
+		rad_S21->Checked = false;
+		rad_S22->Checked = false;
+		btn_Data->Enabled = false;
+	}
+}
+
 };
 }

@@ -1,5 +1,6 @@
 ﻿  MainForm.cpp
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(1059): warning C4101: 'nativeString': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(1211): warning C4101: 'frequencyCMD': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(1594): warning C4018: '<': signed/unsigned mismatch
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1096): warning C4101: 'nativeString': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1248): warning C4101: 'frequencyCMD': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1647): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(1664): warning C4018: '<': signed/unsigned mismatch
   Design_Project.vcxproj -> C:\Users\Reed\source\repos\Design_Project\Debug\Design_Project.exe
