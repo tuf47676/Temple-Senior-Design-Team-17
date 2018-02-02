@@ -893,7 +893,7 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			// 
 			this->rTBX_DataPreview->Location = System::Drawing::Point(8, 48);
 			this->rTBX_DataPreview->Name = L"rTBX_DataPreview";
-			this->rTBX_DataPreview->Size = System::Drawing::Size(215, 111);
+			this->rTBX_DataPreview->Size = System::Drawing::Size(291, 111);
 			this->rTBX_DataPreview->TabIndex = 24;
 			this->rTBX_DataPreview->Text = L"";
 			// 
@@ -944,7 +944,7 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->group_ReturnData->Controls->Add(this->lbl_ReturnTxt);
 			this->group_ReturnData->Location = System::Drawing::Point(392, 276);
 			this->group_ReturnData->Name = L"group_ReturnData";
-			this->group_ReturnData->Size = System::Drawing::Size(229, 169);
+			this->group_ReturnData->Size = System::Drawing::Size(305, 169);
 			this->group_ReturnData->TabIndex = 28;
 			this->group_ReturnData->TabStop = false;
 			this->group_ReturnData->Text = L"Network Analyzer Data";
@@ -1646,8 +1646,8 @@ private: System::Void saveString2File(String^ dataString) {
 	returnMessage = readSCPI_Buffer();
 	int retPointsNum = string_to_double(returnMessage);
 	std::vector<double> frequencyPoints(retPointsNum);
-	double delta = (retStopFreq - retStartFreq) / retPointsNum;
-	for (int l = 0; l < retPointsNum, l++;) {
+	double delta = (retStopFreq - retStartFreq) / (retPointsNum);
+	for (int l = 0; l < retPointsNum; l++) {
 		frequencyPoints[l] = retStartFreq + delta*l;
 	}
 	//NOW ACTUALLY GET THE DATA
@@ -1666,12 +1666,13 @@ private: System::Void saveString2File(String^ dataString) {
 		buildString = buildString + frequencyPoints[i/2] + "," + string_science_to_double(x[i]) + "," + string_science_to_double(x[i + 1]) + "\n";
 	}
 
-	rTBX_DataPreview->Text = buildString;
+	rTBX_DataPreview->Text = "Frequency,Magnitude,Phase\n" + buildString;
 
 	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(buildString); //PTR TO NATIVE STRING
 	char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
 	strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
 
+	csv_fileStream << "Frequency,Magnitude,Phase\n";
 	csv_fileStream << SCPIcmd;
 	
 	csv_fileStream.close();
