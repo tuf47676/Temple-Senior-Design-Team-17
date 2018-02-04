@@ -27,7 +27,7 @@ p = 0.05;%pixle 5X5cm
 %%%%%%%%%% Introducing Target %%%%%%%%%%
 % T[x-coordinate y-coordinate Reflectivity]
 T = [51 26 1];
-%T(2,:) = [80 35 1];
+%T(2,:) = [80 35 1];% 2nd target
 
 %%%%%%%%%%%%%%%%% Antena %%%%%%%%%%%%%%%%%
 antenna_length = 1.5;%meters
@@ -59,6 +59,7 @@ for n = 1:1:N
     Rn(:,:,n) = exp(j*w'*D_temp);% w/o target
 end
 
+% Aligning Delays and obtaining image array
 for q = 1:numel(Qx)
     I(q) = 0;
     for k=1:length(w)
@@ -69,7 +70,7 @@ for q = 1:numel(Qx)
 end
 I = reshape(I,size(Qx));
 
-% Alining Delays and obtaining image array 
+
 % for k=1:length(w)
 %     for n=1:N
 %         I(k,:,n) = Rt(k,n).*Rn(k,:,n);
