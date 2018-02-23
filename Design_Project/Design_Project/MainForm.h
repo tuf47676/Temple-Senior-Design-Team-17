@@ -14,7 +14,11 @@
 
 //Mention Visa connection string here.
 #define DEFAULT_LOGICAL_ADDRESS "TCPIP0::192.168.100.5::inst0::INSTR"
-#define CSV_FILE_NAME "NetworkAnalyzerData.csv"
+
+
+std::string folderPath;
+std::string experimentName;
+
 char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
 
 //Error checking constraights
@@ -55,8 +59,8 @@ namespace Design_Project {
 			label2->Text = DEFAULT_LOGICAL_ADDRESS;
 
 			//default list box selection
-			ListBox_Trace1->SelectedIndex = 0;
-			ListBox_Trace2->SelectedIndex = 0;
+			ListBox_Ch1_Trace1->SelectedIndex = 0;
+			ListBox_Ch1_Trace2->SelectedIndex = 0;
 		}
 
 	protected:
@@ -70,7 +74,7 @@ namespace Design_Project {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
+
 
 	private: System::Windows::Forms::Button^  button1;
 
@@ -119,35 +123,59 @@ namespace Design_Project {
 
 	private: System::Windows::Forms::TextBox^  PowerTextBox;
 	private: System::Windows::Forms::RadioButton^  Power_dBm;
-	private: System::Windows::Forms::GroupBox^  Group_Trace;
+	private: System::Windows::Forms::GroupBox^  Group_Channel1;
+
 
 	private: System::Windows::Forms::Label^  labelTrace1;
-	private: System::Windows::Forms::ListBox^  ListBox_Trace1;
-	private: System::Windows::Forms::ListBox^  ListBox_Trace2;
+	private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace1;
+
+	private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace2;
+
 	private: System::Windows::Forms::Label^  LabelTrace2;
+	private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr2Enable;
 
-	private: System::Windows::Forms::CheckBox^  chkbx_Tr2Enable;
 
-	private: System::Windows::Forms::CheckBox^  chkbx_Tr1Enable;
-	private: System::Windows::Forms::Button^  btn_IMM;
+	private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr1Enable;
+
+
+
 	private: System::Windows::Forms::GroupBox^  Group_Sparam;
 	private: System::Windows::Forms::RadioButton^  rad_S22;
 	private: System::Windows::Forms::RadioButton^  rad_S21;
 	private: System::Windows::Forms::RadioButton^  rad_S12;
 	private: System::Windows::Forms::RadioButton^  rad_S11;
 
-	private: System::Windows::Forms::Button^  btn_Data;
+
 	private: System::Windows::Forms::GroupBox^  group_VisaAddr;
 	private: System::Windows::Forms::GroupBox^  group_SendReceiveMess;
-	private: System::Windows::Forms::GroupBox^  group_Points;
+
 	private: System::Windows::Forms::NumericUpDown^  numBox_Points;
 	private: System::Windows::Forms::Label^  lbl_sweeppoints;
 	private: System::Windows::Forms::RichTextBox^  rTBX_DataPreview;
-	private: System::Windows::Forms::Label^  lbl_ReturnTxt;
-private: System::Windows::Forms::GroupBox^  group_SetCommands;
+
+
 private: System::Windows::Forms::GroupBox^  group_INITScan;
-private: System::Windows::Forms::Button^  btn_Continous;
 private: System::Windows::Forms::GroupBox^  group_ReturnData;
+
+
+
+private: System::Windows::Forms::Button^  btn_ecal;
+
+private: System::Windows::Forms::GroupBox^  group_foldername;
+private: System::Windows::Forms::FolderBrowserDialog^  folderBrowserDialog1;
+private: System::Windows::Forms::Button^  btn_folder;
+private: System::Windows::Forms::Label^  lbl_folderPath;
+private: System::Windows::Forms::Label^  lbl_ExpName;
+private: System::Windows::Forms::Button^  btn_ExpName;
+private: System::Windows::Forms::TextBox^  txtbx_ExpName;
+private: System::Windows::Forms::Label^  lbl_name;
+private: System::Windows::Forms::Button^  btn_StartScan;
+private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr4Enable;
+private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace4;
+private: System::Windows::Forms::Label^  lbl_ch1trace4;
+private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr3Enable;
+private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace3;
+private: System::Windows::Forms::Label^  lbl_ch1trace3;
 
 
 
@@ -169,7 +197,6 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->button2 = (gcnew System::Windows::Forms::Button());
@@ -178,10 +205,12 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->Group_Freq = (gcnew System::Windows::Forms::GroupBox());
+			this->numBox_Points = (gcnew System::Windows::Forms::NumericUpDown());
 			this->Span_Units = (gcnew System::Windows::Forms::GroupBox());
 			this->Span_kHz = (gcnew System::Windows::Forms::RadioButton());
 			this->Span_MHz = (gcnew System::Windows::Forms::RadioButton());
 			this->Span_GHz = (gcnew System::Windows::Forms::RadioButton());
+			this->lbl_sweeppoints = (gcnew System::Windows::Forms::Label());
 			this->Center_Units = (gcnew System::Windows::Forms::GroupBox());
 			this->Center_kHz = (gcnew System::Windows::Forms::RadioButton());
 			this->Center_MHz = (gcnew System::Windows::Forms::RadioButton());
@@ -210,47 +239,54 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->Power_dBm = (gcnew System::Windows::Forms::RadioButton());
 			this->PowerTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
-			this->Group_Trace = (gcnew System::Windows::Forms::GroupBox());
-			this->chkbx_Tr2Enable = (gcnew System::Windows::Forms::CheckBox());
-			this->chkbx_Tr1Enable = (gcnew System::Windows::Forms::CheckBox());
-			this->ListBox_Trace2 = (gcnew System::Windows::Forms::ListBox());
+			this->Group_Channel1 = (gcnew System::Windows::Forms::GroupBox());
+			this->chkbx_Ch1_Tr4Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->ListBox_Ch1_Trace4 = (gcnew System::Windows::Forms::ListBox());
+			this->lbl_ch1trace4 = (gcnew System::Windows::Forms::Label());
+			this->chkbx_Ch1_Tr3Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->ListBox_Ch1_Trace3 = (gcnew System::Windows::Forms::ListBox());
+			this->lbl_ch1trace3 = (gcnew System::Windows::Forms::Label());
+			this->chkbx_Ch1_Tr2Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->chkbx_Ch1_Tr1Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->ListBox_Ch1_Trace2 = (gcnew System::Windows::Forms::ListBox());
 			this->LabelTrace2 = (gcnew System::Windows::Forms::Label());
 			this->labelTrace1 = (gcnew System::Windows::Forms::Label());
-			this->ListBox_Trace1 = (gcnew System::Windows::Forms::ListBox());
-			this->btn_IMM = (gcnew System::Windows::Forms::Button());
+			this->ListBox_Ch1_Trace1 = (gcnew System::Windows::Forms::ListBox());
 			this->Group_Sparam = (gcnew System::Windows::Forms::GroupBox());
 			this->rad_S22 = (gcnew System::Windows::Forms::RadioButton());
 			this->rad_S21 = (gcnew System::Windows::Forms::RadioButton());
 			this->rad_S12 = (gcnew System::Windows::Forms::RadioButton());
 			this->rad_S11 = (gcnew System::Windows::Forms::RadioButton());
-			this->btn_Data = (gcnew System::Windows::Forms::Button());
 			this->group_VisaAddr = (gcnew System::Windows::Forms::GroupBox());
 			this->group_SendReceiveMess = (gcnew System::Windows::Forms::GroupBox());
-			this->group_Points = (gcnew System::Windows::Forms::GroupBox());
-			this->numBox_Points = (gcnew System::Windows::Forms::NumericUpDown());
-			this->lbl_sweeppoints = (gcnew System::Windows::Forms::Label());
 			this->rTBX_DataPreview = (gcnew System::Windows::Forms::RichTextBox());
-			this->lbl_ReturnTxt = (gcnew System::Windows::Forms::Label());
-			this->group_SetCommands = (gcnew System::Windows::Forms::GroupBox());
 			this->group_INITScan = (gcnew System::Windows::Forms::GroupBox());
-			this->btn_Continous = (gcnew System::Windows::Forms::Button());
+			this->btn_StartScan = (gcnew System::Windows::Forms::Button());
+			this->btn_ecal = (gcnew System::Windows::Forms::Button());
 			this->group_ReturnData = (gcnew System::Windows::Forms::GroupBox());
+			this->group_foldername = (gcnew System::Windows::Forms::GroupBox());
+			this->txtbx_ExpName = (gcnew System::Windows::Forms::TextBox());
+			this->lbl_name = (gcnew System::Windows::Forms::Label());
+			this->lbl_ExpName = (gcnew System::Windows::Forms::Label());
+			this->btn_ExpName = (gcnew System::Windows::Forms::Button());
+			this->lbl_folderPath = (gcnew System::Windows::Forms::Label());
+			this->btn_folder = (gcnew System::Windows::Forms::Button());
+			this->folderBrowserDialog1 = (gcnew System::Windows::Forms::FolderBrowserDialog());
 			this->Group_Freq->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->BeginInit();
 			this->Span_Units->SuspendLayout();
 			this->Center_Units->SuspendLayout();
 			this->Stop_Units->SuspendLayout();
 			this->Start_Units->SuspendLayout();
 			this->Group_Power->SuspendLayout();
 			this->Power_Units->SuspendLayout();
-			this->Group_Trace->SuspendLayout();
+			this->Group_Channel1->SuspendLayout();
 			this->Group_Sparam->SuspendLayout();
 			this->group_VisaAddr->SuspendLayout();
 			this->group_SendReceiveMess->SuspendLayout();
-			this->group_Points->SuspendLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->BeginInit();
-			this->group_SetCommands->SuspendLayout();
 			this->group_INITScan->SuspendLayout();
 			this->group_ReturnData->SuspendLayout();
+			this->group_foldername->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// button1
@@ -321,7 +357,9 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			// 
 			// Group_Freq
 			// 
+			this->Group_Freq->Controls->Add(this->numBox_Points);
 			this->Group_Freq->Controls->Add(this->Span_Units);
+			this->Group_Freq->Controls->Add(this->lbl_sweeppoints);
 			this->Group_Freq->Controls->Add(this->Center_Units);
 			this->Group_Freq->Controls->Add(this->Stop_Units);
 			this->Group_Freq->Controls->Add(this->Start_Units);
@@ -337,10 +375,20 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->Group_Freq->Controls->Add(this->StartStopRadio);
 			this->Group_Freq->Location = System::Drawing::Point(12, 12);
 			this->Group_Freq->Name = L"Group_Freq";
-			this->Group_Freq->Size = System::Drawing::Size(373, 194);
+			this->Group_Freq->Size = System::Drawing::Size(373, 214);
 			this->Group_Freq->TabIndex = 12;
 			this->Group_Freq->TabStop = false;
 			this->Group_Freq->Text = L"Frequency";
+			// 
+			// numBox_Points
+			// 
+			this->numBox_Points->Location = System::Drawing::Point(117, 181);
+			this->numBox_Points->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20001, 0, 0, 0 });
+			this->numBox_Points->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
+			this->numBox_Points->Name = L"numBox_Points";
+			this->numBox_Points->Size = System::Drawing::Size(64, 20);
+			this->numBox_Points->TabIndex = 1;
+			this->numBox_Points->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 200, 0, 0, 0 });
 			// 
 			// Span_Units
 			// 
@@ -385,6 +433,15 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->Span_GHz->TabStop = true;
 			this->Span_GHz->Text = L"GHz";
 			this->Span_GHz->UseVisualStyleBackColor = true;
+			// 
+			// lbl_sweeppoints
+			// 
+			this->lbl_sweeppoints->AutoSize = true;
+			this->lbl_sweeppoints->Location = System::Drawing::Point(10, 183);
+			this->lbl_sweeppoints->Name = L"lbl_sweeppoints";
+			this->lbl_sweeppoints->Size = System::Drawing::Size(75, 13);
+			this->lbl_sweeppoints->TabIndex = 0;
+			this->lbl_sweeppoints->Text = L"Sweep Points:";
 			// 
 			// Center_Units
 			// 
@@ -612,9 +669,9 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			// 
 			// SetCMDButton
 			// 
-			this->SetCMDButton->Location = System::Drawing::Point(6, 15);
+			this->SetCMDButton->Location = System::Drawing::Point(7, 18);
 			this->SetCMDButton->Name = L"SetCMDButton";
-			this->SetCMDButton->Size = System::Drawing::Size(102, 23);
+			this->SetCMDButton->Size = System::Drawing::Size(108, 23);
 			this->SetCMDButton->TabIndex = 13;
 			this->SetCMDButton->Text = L"Set Commands";
 			this->SetCMDButton->UseVisualStyleBackColor = true;
@@ -625,7 +682,7 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->Group_Power->Controls->Add(this->Power_Units);
 			this->Group_Power->Controls->Add(this->PowerTextBox);
 			this->Group_Power->Controls->Add(this->label6);
-			this->Group_Power->Location = System::Drawing::Point(12, 212);
+			this->Group_Power->Location = System::Drawing::Point(12, 232);
 			this->Group_Power->Name = L"Group_Power";
 			this->Group_Power->Size = System::Drawing::Size(373, 57);
 			this->Group_Power->TabIndex = 14;
@@ -673,60 +730,132 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->label6->Text = L"Trasmit Power:";
 			this->label6->Click += gcnew System::EventHandler(this, &MainForm::label6_Click);
 			// 
-			// Group_Trace
+			// Group_Channel1
 			// 
-			this->Group_Trace->Controls->Add(this->chkbx_Tr2Enable);
-			this->Group_Trace->Controls->Add(this->chkbx_Tr1Enable);
-			this->Group_Trace->Controls->Add(this->ListBox_Trace2);
-			this->Group_Trace->Controls->Add(this->LabelTrace2);
-			this->Group_Trace->Controls->Add(this->labelTrace1);
-			this->Group_Trace->Location = System::Drawing::Point(12, 275);
-			this->Group_Trace->Name = L"Group_Trace";
-			this->Group_Trace->Size = System::Drawing::Size(373, 94);
-			this->Group_Trace->TabIndex = 15;
-			this->Group_Trace->TabStop = false;
-			this->Group_Trace->Text = L"Trace";
+			this->Group_Channel1->Controls->Add(this->chkbx_Ch1_Tr4Enable);
+			this->Group_Channel1->Controls->Add(this->ListBox_Ch1_Trace4);
+			this->Group_Channel1->Controls->Add(this->lbl_ch1trace4);
+			this->Group_Channel1->Controls->Add(this->chkbx_Ch1_Tr3Enable);
+			this->Group_Channel1->Controls->Add(this->ListBox_Ch1_Trace3);
+			this->Group_Channel1->Controls->Add(this->lbl_ch1trace3);
+			this->Group_Channel1->Controls->Add(this->chkbx_Ch1_Tr2Enable);
+			this->Group_Channel1->Controls->Add(this->chkbx_Ch1_Tr1Enable);
+			this->Group_Channel1->Controls->Add(this->ListBox_Ch1_Trace2);
+			this->Group_Channel1->Controls->Add(this->LabelTrace2);
+			this->Group_Channel1->Controls->Add(this->labelTrace1);
+			this->Group_Channel1->Controls->Add(this->ListBox_Ch1_Trace1);
+			this->Group_Channel1->Location = System::Drawing::Point(12, 295);
+			this->Group_Channel1->Name = L"Group_Channel1";
+			this->Group_Channel1->Size = System::Drawing::Size(549, 172);
+			this->Group_Channel1->TabIndex = 15;
+			this->Group_Channel1->TabStop = false;
+			this->Group_Channel1->Text = L"Channel 1";
 			// 
-			// chkbx_Tr2Enable
+			// chkbx_Ch1_Tr4Enable
 			// 
-			this->chkbx_Tr2Enable->AutoSize = true;
-			this->chkbx_Tr2Enable->Location = System::Drawing::Point(242, 19);
-			this->chkbx_Tr2Enable->Name = L"chkbx_Tr2Enable";
-			this->chkbx_Tr2Enable->Size = System::Drawing::Size(59, 17);
-			this->chkbx_Tr2Enable->TabIndex = 4;
-			this->chkbx_Tr2Enable->Text = L"Enable";
-			this->chkbx_Tr2Enable->UseVisualStyleBackColor = true;
-			this->chkbx_Tr2Enable->CheckedChanged += gcnew System::EventHandler(this, &MainForm::chkbx_Tr2Enable_CheckedChanged);
+			this->chkbx_Ch1_Tr4Enable->AutoSize = true;
+			this->chkbx_Ch1_Tr4Enable->Location = System::Drawing::Point(448, 18);
+			this->chkbx_Ch1_Tr4Enable->Name = L"chkbx_Ch1_Tr4Enable";
+			this->chkbx_Ch1_Tr4Enable->Size = System::Drawing::Size(59, 17);
+			this->chkbx_Ch1_Tr4Enable->TabIndex = 10;
+			this->chkbx_Ch1_Tr4Enable->Text = L"Enable";
+			this->chkbx_Ch1_Tr4Enable->UseVisualStyleBackColor = true;
 			// 
-			// chkbx_Tr1Enable
+			// ListBox_Ch1_Trace4
 			// 
-			this->chkbx_Tr1Enable->AutoSize = true;
-			this->chkbx_Tr1Enable->Checked = true;
-			this->chkbx_Tr1Enable->CheckState = System::Windows::Forms::CheckState::Checked;
-			this->chkbx_Tr1Enable->Location = System::Drawing::Point(66, 18);
-			this->chkbx_Tr1Enable->Name = L"chkbx_Tr1Enable";
-			this->chkbx_Tr1Enable->Size = System::Drawing::Size(59, 17);
-			this->chkbx_Tr1Enable->TabIndex = 3;
-			this->chkbx_Tr1Enable->Text = L"Enable";
-			this->chkbx_Tr1Enable->UseVisualStyleBackColor = true;
-			this->chkbx_Tr1Enable->CheckedChanged += gcnew System::EventHandler(this, &MainForm::chkbx_Tr1Enable_CheckedChanged);
-			// 
-			// ListBox_Trace2
-			// 
-			this->ListBox_Trace2->FormattingEnabled = true;
-			this->ListBox_Trace2->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
-				L"Mag Log", L"Smith", L"Phase", L"Polar",
-					L"Lin Mag", L"SWR", L"Real", L"Imaginary", L"Expanded Phase", L"Positive Phase"
+			this->ListBox_Ch1_Trace4->FormattingEnabled = true;
+			this->ListBox_Ch1_Trace4->Items->AddRange(gcnew cli::array< System::Object^  >(17) {
+				L"M Logarithmic", L"M Linear", L"Real",
+					L"Imaginary", L"G Delay", L"SWR", L"Phase", L"U Phase", L"P Phase", L"S Linear", L"S Logarithmic", L"S Complex", L"Smith", L"S Admittance",
+					L"P Linear", L"P Lograithmic", L"Polar"
 			});
-			this->ListBox_Trace2->Location = System::Drawing::Point(194, 36);
-			this->ListBox_Trace2->Name = L"ListBox_Trace2";
-			this->ListBox_Trace2->Size = System::Drawing::Size(120, 43);
-			this->ListBox_Trace2->TabIndex = 2;
+			this->ListBox_Ch1_Trace4->Location = System::Drawing::Point(398, 36);
+			this->ListBox_Ch1_Trace4->Name = L"ListBox_Ch1_Trace4";
+			this->ListBox_Ch1_Trace4->Size = System::Drawing::Size(120, 121);
+			this->ListBox_Ch1_Trace4->TabIndex = 9;
+			// 
+			// lbl_ch1trace4
+			// 
+			this->lbl_ch1trace4->AutoSize = true;
+			this->lbl_ch1trace4->Location = System::Drawing::Point(395, 20);
+			this->lbl_ch1trace4->Name = L"lbl_ch1trace4";
+			this->lbl_ch1trace4->Size = System::Drawing::Size(47, 13);
+			this->lbl_ch1trace4->TabIndex = 8;
+			this->lbl_ch1trace4->Text = L"Trace 4:";
+			// 
+			// chkbx_Ch1_Tr3Enable
+			// 
+			this->chkbx_Ch1_Tr3Enable->AutoSize = true;
+			this->chkbx_Ch1_Tr3Enable->Location = System::Drawing::Point(322, 18);
+			this->chkbx_Ch1_Tr3Enable->Name = L"chkbx_Ch1_Tr3Enable";
+			this->chkbx_Ch1_Tr3Enable->Size = System::Drawing::Size(59, 17);
+			this->chkbx_Ch1_Tr3Enable->TabIndex = 7;
+			this->chkbx_Ch1_Tr3Enable->Text = L"Enable";
+			this->chkbx_Ch1_Tr3Enable->UseVisualStyleBackColor = true;
+			// 
+			// ListBox_Ch1_Trace3
+			// 
+			this->ListBox_Ch1_Trace3->FormattingEnabled = true;
+			this->ListBox_Ch1_Trace3->Items->AddRange(gcnew cli::array< System::Object^  >(17) {
+				L"M Logarithmic", L"M Linear", L"Real",
+					L"Imaginary", L"G Delay", L"SWR", L"Phase", L"U Phase", L"P Phase", L"S Linear", L"S Logarithmic", L"S Complex", L"Smith", L"S Admittance",
+					L"P Linear", L"P Lograithmic", L"Polar"
+			});
+			this->ListBox_Ch1_Trace3->Location = System::Drawing::Point(272, 36);
+			this->ListBox_Ch1_Trace3->Name = L"ListBox_Ch1_Trace3";
+			this->ListBox_Ch1_Trace3->Size = System::Drawing::Size(120, 121);
+			this->ListBox_Ch1_Trace3->TabIndex = 6;
+			// 
+			// lbl_ch1trace3
+			// 
+			this->lbl_ch1trace3->AutoSize = true;
+			this->lbl_ch1trace3->Location = System::Drawing::Point(269, 20);
+			this->lbl_ch1trace3->Name = L"lbl_ch1trace3";
+			this->lbl_ch1trace3->Size = System::Drawing::Size(47, 13);
+			this->lbl_ch1trace3->TabIndex = 5;
+			this->lbl_ch1trace3->Text = L"Trace 3:";
+			// 
+			// chkbx_Ch1_Tr2Enable
+			// 
+			this->chkbx_Ch1_Tr2Enable->AutoSize = true;
+			this->chkbx_Ch1_Tr2Enable->Location = System::Drawing::Point(196, 18);
+			this->chkbx_Ch1_Tr2Enable->Name = L"chkbx_Ch1_Tr2Enable";
+			this->chkbx_Ch1_Tr2Enable->Size = System::Drawing::Size(59, 17);
+			this->chkbx_Ch1_Tr2Enable->TabIndex = 4;
+			this->chkbx_Ch1_Tr2Enable->Text = L"Enable";
+			this->chkbx_Ch1_Tr2Enable->UseVisualStyleBackColor = true;
+			this->chkbx_Ch1_Tr2Enable->CheckedChanged += gcnew System::EventHandler(this, &MainForm::chkbx_Tr2Enable_CheckedChanged);
+			// 
+			// chkbx_Ch1_Tr1Enable
+			// 
+			this->chkbx_Ch1_Tr1Enable->AutoSize = true;
+			this->chkbx_Ch1_Tr1Enable->Checked = true;
+			this->chkbx_Ch1_Tr1Enable->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->chkbx_Ch1_Tr1Enable->Location = System::Drawing::Point(66, 18);
+			this->chkbx_Ch1_Tr1Enable->Name = L"chkbx_Ch1_Tr1Enable";
+			this->chkbx_Ch1_Tr1Enable->Size = System::Drawing::Size(59, 17);
+			this->chkbx_Ch1_Tr1Enable->TabIndex = 3;
+			this->chkbx_Ch1_Tr1Enable->Text = L"Enable";
+			this->chkbx_Ch1_Tr1Enable->UseVisualStyleBackColor = true;
+			this->chkbx_Ch1_Tr1Enable->CheckedChanged += gcnew System::EventHandler(this, &MainForm::chkbx_Tr1Enable_CheckedChanged);
+			// 
+			// ListBox_Ch1_Trace2
+			// 
+			this->ListBox_Ch1_Trace2->FormattingEnabled = true;
+			this->ListBox_Ch1_Trace2->Items->AddRange(gcnew cli::array< System::Object^  >(17) {
+				L"M Logarithmic", L"M Linear", L"Real",
+					L"Imaginary", L"G Delay", L"SWR", L"Phase", L"U Phase", L"P Phase", L"S Linear", L"S Logarithmic", L"S Complex", L"Smith", L"S Admittance",
+					L"P Linear", L"P Lograithmic", L"Polar"
+			});
+			this->ListBox_Ch1_Trace2->Location = System::Drawing::Point(146, 36);
+			this->ListBox_Ch1_Trace2->Name = L"ListBox_Ch1_Trace2";
+			this->ListBox_Ch1_Trace2->Size = System::Drawing::Size(120, 121);
+			this->ListBox_Ch1_Trace2->TabIndex = 2;
 			// 
 			// LabelTrace2
 			// 
 			this->LabelTrace2->AutoSize = true;
-			this->LabelTrace2->Location = System::Drawing::Point(188, 19);
+			this->LabelTrace2->Location = System::Drawing::Point(143, 20);
 			this->LabelTrace2->Name = L"LabelTrace2";
 			this->LabelTrace2->Size = System::Drawing::Size(47, 13);
 			this->LabelTrace2->TabIndex = 1;
@@ -741,28 +870,18 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->labelTrace1->TabIndex = 0;
 			this->labelTrace1->Text = L"Trace 1:";
 			// 
-			// ListBox_Trace1
+			// ListBox_Ch1_Trace1
 			// 
-			this->ListBox_Trace1->FormattingEnabled = true;
-			this->ListBox_Trace1->Items->AddRange(gcnew cli::array< System::Object^  >(10) {
-				L"Mag Log", L"Smith", L"Phase", L"Polar",
-					L"Lin Mag", L"SWR", L"Real", L"Imaginary", L"Expanded Phase", L"Positive Phase"
+			this->ListBox_Ch1_Trace1->FormattingEnabled = true;
+			this->ListBox_Ch1_Trace1->Items->AddRange(gcnew cli::array< System::Object^  >(17) {
+				L"M Logarithmic", L"M Linear", L"Real",
+					L"Imaginary", L"G Delay", L"SWR", L"Phase", L"U Phase", L"P Phase", L"S Linear", L"S Logarithmic", L"S Complex", L"Smith", L"S Admittance",
+					L"P Linear", L"P Lograithmic", L"Polar"
 			});
-			this->ListBox_Trace1->Location = System::Drawing::Point(28, 311);
-			this->ListBox_Trace1->Name = L"ListBox_Trace1";
-			this->ListBox_Trace1->Size = System::Drawing::Size(120, 43);
-			this->ListBox_Trace1->TabIndex = 1;
-			// 
-			// btn_IMM
-			// 
-			this->btn_IMM->Enabled = false;
-			this->btn_IMM->Location = System::Drawing::Point(6, 20);
-			this->btn_IMM->Name = L"btn_IMM";
-			this->btn_IMM->Size = System::Drawing::Size(109, 23);
-			this->btn_IMM->TabIndex = 17;
-			this->btn_IMM->Text = L"Immediate";
-			this->btn_IMM->UseVisualStyleBackColor = true;
-			this->btn_IMM->Click += gcnew System::EventHandler(this, &MainForm::btn_IMM_Click);
+			this->ListBox_Ch1_Trace1->Location = System::Drawing::Point(16, 36);
+			this->ListBox_Ch1_Trace1->Name = L"ListBox_Ch1_Trace1";
+			this->ListBox_Ch1_Trace1->Size = System::Drawing::Size(120, 121);
+			this->ListBox_Ch1_Trace1->TabIndex = 1;
 			// 
 			// Group_Sparam
 			// 
@@ -770,7 +889,7 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->Group_Sparam->Controls->Add(this->rad_S21);
 			this->Group_Sparam->Controls->Add(this->rad_S12);
 			this->Group_Sparam->Controls->Add(this->rad_S11);
-			this->Group_Sparam->Location = System::Drawing::Point(12, 376);
+			this->Group_Sparam->Location = System::Drawing::Point(410, 220);
 			this->Group_Sparam->Name = L"Group_Sparam";
 			this->Group_Sparam->Size = System::Drawing::Size(188, 69);
 			this->Group_Sparam->TabIndex = 18;
@@ -824,16 +943,6 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->rad_S11->Text = L"S11";
 			this->rad_S11->UseVisualStyleBackColor = true;
 			// 
-			// btn_Data
-			// 
-			this->btn_Data->Location = System::Drawing::Point(6, 19);
-			this->btn_Data->Name = L"btn_Data";
-			this->btn_Data->Size = System::Drawing::Size(109, 23);
-			this->btn_Data->TabIndex = 20;
-			this->btn_Data->Text = L"Get Data";
-			this->btn_Data->UseVisualStyleBackColor = true;
-			this->btn_Data->Click += gcnew System::EventHandler(this, &MainForm::btn_Data_Click);
-			// 
 			// group_VisaAddr
 			// 
 			this->group_VisaAddr->Controls->Add(this->label2);
@@ -859,110 +968,141 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->group_SendReceiveMess->TabStop = false;
 			this->group_SendReceiveMess->Text = L"Send/Receive String";
 			// 
-			// group_Points
-			// 
-			this->group_Points->Controls->Add(this->numBox_Points);
-			this->group_Points->Controls->Add(this->lbl_sweeppoints);
-			this->group_Points->Location = System::Drawing::Point(206, 376);
-			this->group_Points->Name = L"group_Points";
-			this->group_Points->Size = System::Drawing::Size(179, 69);
-			this->group_Points->TabIndex = 23;
-			this->group_Points->TabStop = false;
-			this->group_Points->Text = L"Points";
-			// 
-			// numBox_Points
-			// 
-			this->numBox_Points->Location = System::Drawing::Point(83, 16);
-			this->numBox_Points->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 20001, 0, 0, 0 });
-			this->numBox_Points->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 2, 0, 0, 0 });
-			this->numBox_Points->Name = L"numBox_Points";
-			this->numBox_Points->Size = System::Drawing::Size(64, 20);
-			this->numBox_Points->TabIndex = 1;
-			this->numBox_Points->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 200, 0, 0, 0 });
-			// 
-			// lbl_sweeppoints
-			// 
-			this->lbl_sweeppoints->AutoSize = true;
-			this->lbl_sweeppoints->Location = System::Drawing::Point(7, 19);
-			this->lbl_sweeppoints->Name = L"lbl_sweeppoints";
-			this->lbl_sweeppoints->Size = System::Drawing::Size(75, 13);
-			this->lbl_sweeppoints->TabIndex = 0;
-			this->lbl_sweeppoints->Text = L"Sweep Points:";
-			// 
 			// rTBX_DataPreview
 			// 
-			this->rTBX_DataPreview->Location = System::Drawing::Point(8, 48);
+			this->rTBX_DataPreview->Location = System::Drawing::Point(6, 19);
 			this->rTBX_DataPreview->Name = L"rTBX_DataPreview";
 			this->rTBX_DataPreview->Size = System::Drawing::Size(291, 111);
 			this->rTBX_DataPreview->TabIndex = 24;
 			this->rTBX_DataPreview->Text = L"";
 			// 
-			// lbl_ReturnTxt
-			// 
-			this->lbl_ReturnTxt->AutoSize = true;
-			this->lbl_ReturnTxt->Location = System::Drawing::Point(125, 29);
-			this->lbl_ReturnTxt->Name = L"lbl_ReturnTxt";
-			this->lbl_ReturnTxt->Size = System::Drawing::Size(64, 13);
-			this->lbl_ReturnTxt->TabIndex = 25;
-			this->lbl_ReturnTxt->Text = L"File Preview";
-			// 
-			// group_SetCommands
-			// 
-			this->group_SetCommands->Controls->Add(this->SetCMDButton);
-			this->group_SetCommands->Location = System::Drawing::Point(392, 162);
-			this->group_SetCommands->Name = L"group_SetCommands";
-			this->group_SetCommands->Size = System::Drawing::Size(229, 44);
-			this->group_SetCommands->TabIndex = 26;
-			this->group_SetCommands->TabStop = false;
-			this->group_SetCommands->Text = L"Set Scan Parameters";
-			// 
 			// group_INITScan
 			// 
-			this->group_INITScan->Controls->Add(this->btn_Continous);
-			this->group_INITScan->Controls->Add(this->btn_IMM);
-			this->group_INITScan->Location = System::Drawing::Point(392, 212);
+			this->group_INITScan->Controls->Add(this->btn_StartScan);
+			this->group_INITScan->Controls->Add(this->SetCMDButton);
+			this->group_INITScan->Controls->Add(this->btn_ecal);
+			this->group_INITScan->Location = System::Drawing::Point(747, 157);
 			this->group_INITScan->Name = L"group_INITScan";
-			this->group_INITScan->Size = System::Drawing::Size(229, 57);
+			this->group_INITScan->Size = System::Drawing::Size(123, 108);
 			this->group_INITScan->TabIndex = 27;
 			this->group_INITScan->TabStop = false;
 			this->group_INITScan->Text = L"Initiate Scan";
 			// 
-			// btn_Continous
+			// btn_StartScan
 			// 
-			this->btn_Continous->Location = System::Drawing::Point(121, 20);
-			this->btn_Continous->Name = L"btn_Continous";
-			this->btn_Continous->Size = System::Drawing::Size(103, 23);
-			this->btn_Continous->TabIndex = 18;
-			this->btn_Continous->Text = L"Continuous (Stop)";
-			this->btn_Continous->UseVisualStyleBackColor = true;
-			this->btn_Continous->Click += gcnew System::EventHandler(this, &MainForm::btn_Continous_Click);
+			this->btn_StartScan->Location = System::Drawing::Point(7, 74);
+			this->btn_StartScan->Name = L"btn_StartScan";
+			this->btn_StartScan->Size = System::Drawing::Size(108, 23);
+			this->btn_StartScan->TabIndex = 31;
+			this->btn_StartScan->Text = L"Start Scan";
+			this->btn_StartScan->UseVisualStyleBackColor = true;
+			this->btn_StartScan->Click += gcnew System::EventHandler(this, &MainForm::btn_StartScan_Click);
+			// 
+			// btn_ecal
+			// 
+			this->btn_ecal->Location = System::Drawing::Point(7, 45);
+			this->btn_ecal->Name = L"btn_ecal";
+			this->btn_ecal->Size = System::Drawing::Size(108, 23);
+			this->btn_ecal->TabIndex = 29;
+			this->btn_ecal->Text = L"Preform E-cal";
+			this->btn_ecal->UseVisualStyleBackColor = true;
+			this->btn_ecal->Click += gcnew System::EventHandler(this, &MainForm::btn_ecal_Click);
 			// 
 			// group_ReturnData
 			// 
-			this->group_ReturnData->Controls->Add(this->btn_Data);
 			this->group_ReturnData->Controls->Add(this->rTBX_DataPreview);
-			this->group_ReturnData->Controls->Add(this->lbl_ReturnTxt);
-			this->group_ReturnData->Location = System::Drawing::Point(392, 276);
+			this->group_ReturnData->Location = System::Drawing::Point(592, 295);
 			this->group_ReturnData->Name = L"group_ReturnData";
-			this->group_ReturnData->Size = System::Drawing::Size(305, 169);
+			this->group_ReturnData->Size = System::Drawing::Size(305, 139);
 			this->group_ReturnData->TabIndex = 28;
 			this->group_ReturnData->TabStop = false;
 			this->group_ReturnData->Text = L"Network Analyzer Data";
+			// 
+			// group_foldername
+			// 
+			this->group_foldername->Controls->Add(this->txtbx_ExpName);
+			this->group_foldername->Controls->Add(this->lbl_name);
+			this->group_foldername->Controls->Add(this->lbl_ExpName);
+			this->group_foldername->Controls->Add(this->btn_ExpName);
+			this->group_foldername->Controls->Add(this->lbl_folderPath);
+			this->group_foldername->Controls->Add(this->btn_folder);
+			this->group_foldername->Location = System::Drawing::Point(628, 12);
+			this->group_foldername->Name = L"group_foldername";
+			this->group_foldername->Size = System::Drawing::Size(200, 116);
+			this->group_foldername->TabIndex = 30;
+			this->group_foldername->TabStop = false;
+			this->group_foldername->Text = L"Folder Path and Experiment Name";
+			// 
+			// txtbx_ExpName
+			// 
+			this->txtbx_ExpName->Location = System::Drawing::Point(43, 66);
+			this->txtbx_ExpName->Name = L"txtbx_ExpName";
+			this->txtbx_ExpName->Size = System::Drawing::Size(88, 20);
+			this->txtbx_ExpName->TabIndex = 5;
+			// 
+			// lbl_name
+			// 
+			this->lbl_name->AutoSize = true;
+			this->lbl_name->Location = System::Drawing::Point(6, 69);
+			this->lbl_name->Name = L"lbl_name";
+			this->lbl_name->Size = System::Drawing::Size(38, 13);
+			this->lbl_name->TabIndex = 4;
+			this->lbl_name->Text = L"Name:";
+			// 
+			// lbl_ExpName
+			// 
+			this->lbl_ExpName->AutoSize = true;
+			this->lbl_ExpName->Location = System::Drawing::Point(6, 93);
+			this->lbl_ExpName->Name = L"lbl_ExpName";
+			this->lbl_ExpName->Size = System::Drawing::Size(161, 13);
+			this->lbl_ExpName->TabIndex = 3;
+			this->lbl_ExpName->Text = L"EXPERIMENT NAME NOT SET";
+			// 
+			// btn_ExpName
+			// 
+			this->btn_ExpName->Location = System::Drawing::Point(137, 64);
+			this->btn_ExpName->Name = L"btn_ExpName";
+			this->btn_ExpName->Size = System::Drawing::Size(57, 23);
+			this->btn_ExpName->TabIndex = 2;
+			this->btn_ExpName->Text = L"Set";
+			this->btn_ExpName->UseVisualStyleBackColor = true;
+			this->btn_ExpName->Click += gcnew System::EventHandler(this, &MainForm::btn_ExpName_Click);
+			// 
+			// lbl_folderPath
+			// 
+			this->lbl_folderPath->AutoSize = true;
+			this->lbl_folderPath->Location = System::Drawing::Point(6, 45);
+			this->lbl_folderPath->Name = L"lbl_folderPath";
+			this->lbl_folderPath->Size = System::Drawing::Size(132, 13);
+			this->lbl_folderPath->TabIndex = 1;
+			this->lbl_folderPath->Text = L"FOLDER PATH NOT SET";
+			// 
+			// btn_folder
+			// 
+			this->btn_folder->Location = System::Drawing::Point(6, 19);
+			this->btn_folder->Name = L"btn_folder";
+			this->btn_folder->Size = System::Drawing::Size(132, 23);
+			this->btn_folder->TabIndex = 0;
+			this->btn_folder->Text = L"Select Folder";
+			this->btn_folder->UseVisualStyleBackColor = true;
+			this->btn_folder->Click += gcnew System::EventHandler(this, &MainForm::btn_folder_Click);
+			// 
+			// folderBrowserDialog1
+			// 
+			this->folderBrowserDialog1->HelpRequest += gcnew System::EventHandler(this, &MainForm::folderBrowserDialog1_HelpRequest_1);
 			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(909, 457);
+			this->ClientSize = System::Drawing::Size(909, 545);
+			this->Controls->Add(this->group_foldername);
 			this->Controls->Add(this->group_ReturnData);
 			this->Controls->Add(this->group_INITScan);
-			this->Controls->Add(this->group_SetCommands);
-			this->Controls->Add(this->group_Points);
 			this->Controls->Add(this->group_SendReceiveMess);
 			this->Controls->Add(this->group_VisaAddr);
 			this->Controls->Add(this->Group_Sparam);
-			this->Controls->Add(this->ListBox_Trace1);
-			this->Controls->Add(this->Group_Trace);
+			this->Controls->Add(this->Group_Channel1);
 			this->Controls->Add(this->Group_Power);
 			this->Controls->Add(this->Group_Freq);
 			this->Name = L"MainForm";
@@ -970,6 +1110,7 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			this->Group_Freq->ResumeLayout(false);
 			this->Group_Freq->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->EndInit();
 			this->Span_Units->ResumeLayout(false);
 			this->Span_Units->PerformLayout();
 			this->Center_Units->ResumeLayout(false);
@@ -982,21 +1123,18 @@ private: System::Windows::Forms::GroupBox^  group_ReturnData;
 			this->Group_Power->PerformLayout();
 			this->Power_Units->ResumeLayout(false);
 			this->Power_Units->PerformLayout();
-			this->Group_Trace->ResumeLayout(false);
-			this->Group_Trace->PerformLayout();
+			this->Group_Channel1->ResumeLayout(false);
+			this->Group_Channel1->PerformLayout();
 			this->Group_Sparam->ResumeLayout(false);
 			this->Group_Sparam->PerformLayout();
 			this->group_VisaAddr->ResumeLayout(false);
 			this->group_VisaAddr->PerformLayout();
 			this->group_SendReceiveMess->ResumeLayout(false);
 			this->group_SendReceiveMess->PerformLayout();
-			this->group_Points->ResumeLayout(false);
-			this->group_Points->PerformLayout();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->EndInit();
-			this->group_SetCommands->ResumeLayout(false);
 			this->group_INITScan->ResumeLayout(false);
 			this->group_ReturnData->ResumeLayout(false);
-			this->group_ReturnData->PerformLayout();
+			this->group_foldername->ResumeLayout(false);
+			this->group_foldername->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
@@ -1074,7 +1212,7 @@ private: System::Void SetCMDButton_Click(System::Object^  sender, System::EventA
 	returnStatus = Controls_Power();
 	std::cout << returnStatus;
 	std::cout << "\n";
-	returnStatus = Controls_Trace();
+	returnStatus = Controls_Channel_Trace();
 	std::cout << returnStatus;
 	std::cout << "\n";
 	returnStatus = Controls_Points();
@@ -1100,7 +1238,7 @@ private: bool is_number(String^ testString){
 	return(strspn(s.c_str(), "-.0123456789") == s.size()); //Check for valid chars
 }
 
-private: std::string Controls_Trace(void) {
+private: std::string Controls_Channel_Trace(void) {
 	/**
 	*   \brief Sends Trace Controls to NA.
 	*
@@ -1109,28 +1247,56 @@ private: std::string Controls_Trace(void) {
 	*
 	**/
 	std::string returnStatus;
-	std::string linkedList[] = { "MLOG", "SMIT", "PHAS", "POL", "LMAG", "SWR", "REAL", "IMAG", "UPH", "PPH" };
+	std::string linkedList[] = { "MLOG", "MLIN", "REAL", "IMAG", "GDEL", "SWR", "PHAS", "UPH", "PPH", "SLIN", "SLOG" , "SCOM" , "SMIT" , "SADM" , "PLIN", "PLOG", "POL" };
+
+	//Disable all traces before turning them back on again
+	sendSCPI_String(":DISP:WIND1:TRAC1:STAT OFF");
+	sendSCPI_String(":DISP:WIND1:TRAC2:STAT OFF");
+	sendSCPI_String(":DISP:WIND1:TRAC3:STAT OFF");
+	sendSCPI_String(":DISP:WIND1:TRAC4:STAT OFF");
+
+
 
 	String^ traceCMD = ":CALC1:TRAC1:FORM ";
-	String^ tempSelection1 = gcnew String(linkedList[ListBox_Trace1->SelectedIndex].c_str()); //convert string to String^
+	String^ tempSelection1 = gcnew String(linkedList[ListBox_Ch1_Trace1->SelectedIndex].c_str()); //convert string to String^
 	traceCMD = traceCMD + tempSelection1;
-	if (chkbx_Tr1Enable->Checked == true) {
+	if (chkbx_Ch1_Tr1Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
+		sendSCPI_String(":DISP:WIND1:TRAC1:STAT ON");
 	}
 	
 
 	traceCMD = ":CALC1:TRAC2:FORM ";
-	String^ tempSelection = gcnew String(linkedList[ListBox_Trace2->SelectedIndex].c_str());
-	traceCMD = traceCMD + tempSelection;
-	if (chkbx_Tr2Enable->Checked == true) {
+	String^ tempSelection2 = gcnew String(linkedList[ListBox_Ch1_Trace2->SelectedIndex].c_str());
+	traceCMD = traceCMD + tempSelection2;
+	if (chkbx_Ch1_Tr2Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
+		sendSCPI_String(":DISP:WIND1:TRAC2:STAT ON");
 	}
+
+	traceCMD = ":CALC1:TRAC3:FORM ";
+	String^ tempSelection3 = gcnew String(linkedList[ListBox_Ch1_Trace3->SelectedIndex].c_str());
+	traceCMD = traceCMD + tempSelection3;
+	if (chkbx_Ch1_Tr3Enable->Checked == true) {
+		sendSCPI_String(traceCMD);
+		sendSCPI_String(":DISP:WIND1:TRAC3:STAT ON");
+	}
+
+	traceCMD = ":CALC1:TRAC4:FORM ";
+	String^ tempSelection4 = gcnew String(linkedList[ListBox_Ch1_Trace4->SelectedIndex].c_str());
+	traceCMD = traceCMD + tempSelection4;
+	if (chkbx_Ch1_Tr4Enable->Checked == true) {
+		sendSCPI_String(traceCMD);
+		sendSCPI_String(":DISP:WIND1:TRAC4:STAT ON");
+	}
+
+
 
 	sendSCPI_String(":CALC1:TRAC2:FORM?");
 	std::string returnMessage = readSCPI_Buffer();
 	if (convert_vcppString_string(tempSelection1 + "\n") == returnMessage) {
-		if (chkbx_Tr2Enable->Checked == true) {
-			if (convert_vcppString_string(tempSelection + "\n") == returnMessage) {
+		if (chkbx_Ch1_Tr2Enable->Checked == true) {
+			if (convert_vcppString_string(tempSelection2 + "\n") == returnMessage) {
 				returnStatus = "Trace Controls Matched! \n";
 				return returnStatus;
 			}
@@ -1580,52 +1746,8 @@ private: System::Void sendSCPI_String(String^ sendString) {
 	std::cout << SCPIcmd;
 	std::cout << "\"   was sent. \n";
 }
-private: System::Void btn_IMM_Click(System::Object^  sender, System::EventArgs^  e) {
-	//Need to select channel some how...
 
-	sendSCPI_String(":INIT:IMM1");
-}
-private: System::Void btn_Continous_Click(System::Object^  sender, System::EventArgs^  e) {
-	//first check continous state.
-	sendSCPI_String(":INIT:CONT? ");
-	std::string returnMessage = readSCPI_Buffer();
-	if (returnMessage == "1\n") {
-		btn_Continous->Text = "Continuous (Start)"; //is on now, but will be stopped
-		btn_IMM->Enabled = true;
-		sendSCPI_String(":INIT:CONT OFF ");
-	}
-	else {
-		btn_Continous->Text = "Continuous (Stop)"; //is on now, but will be stopped
-		btn_IMM->Enabled = false;
-		sendSCPI_String(":INIT:CONT ON ");
-	}
-}
-
-
-private: System::Void btn_Data_Click(System::Object^  sender, System::EventArgs^  e) {
-
-	String^ tempString;
-
-	if (rad_S11->Checked == true) {
-		tempString = ":SENS:DATA:CORR? S11";
-	}
-	if (rad_S12->Checked == true) {
-		tempString = ":SENS:DATA:CORR? S12";
-	}
-	if (rad_S21->Checked == true) {
-		tempString = ":SENS:DATA:CORR? S21";
-	}
-	if (rad_S22->Checked == true) {
-		tempString = ":SENS:DATA:CORR? S22";
-	}
-	sendSCPI_String(tempString);
-	
-	std::string tempReturn = readSCPI_Buffer();
-	String^ nativeVISAREAD = gcnew String(tempReturn.c_str());
-	saveString2File(nativeVISAREAD);
-}
-
-private: System::Void saveString2File(String^ dataString) {
+private: System::Void saveString2File(String^ dataString, int fileNumber) {
 	/**
 	*   \brief writes passed string to a CSV file
 	*
@@ -1652,30 +1774,42 @@ private: System::Void saveString2File(String^ dataString) {
 	}
 	//NOW ACTUALLY GET THE DATA
 
-	//First open the CSV File
-	std::ofstream csv_fileStream;
-	csv_fileStream.open(CSV_FILE_NAME);
+	//First CREATE and open the CSV File
+	std::string fileNum_string = std::to_string(fileNumber);
+	std::string csv_file_string = folderPath + "\\" + experimentName + "_" + fileNum_string + ".csv";
+	const char *csv_file_const_char = csv_file_string.c_str();
+	FILE *fp = fopen(csv_file_const_char, "ab+");
+	
+
+
+
 	char SCPIcmd[50000]; //Char Array for CMD 
 	String^ buildString;
 	std::string tempTest;
 	//format dataStrig below
 	std::vector<std::string> x = split(convert_vcppString_string(dataString), ',');
 
-	for (int i = 0; i < x.size(); i= i + 2)
+	for (int i = 0; i <= (x.size() - 3); i= i + 2) 
 	{
+		if (i == (x.size() - 4)) {
+			std::cout << "help\n";
+		}
+
 		buildString = buildString + frequencyPoints[i/2] + "," + string_science_to_double(x[i]) + "," + string_science_to_double(x[i + 1]) + "\n";
 	}
-
-	rTBX_DataPreview->Text = "Frequency,Magnitude,Phase\n" + buildString;
-
+	_sleep(5);
+	rTBX_DataPreview->Text = buildString; //PREVIEW BOX UPDATE
+	
 	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(buildString); //PTR TO NATIVE STRING
 	char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
 	strcpy(SCPIcmd, nativeString); //COPY CHAR ARRAY TO SCPIcmd 
 
-	csv_fileStream << "Frequency,Magnitude,Phase\n";
-	csv_fileStream << SCPIcmd;
-	
-	csv_fileStream.close();
+	int buildStringLength = buildString->Length; 
+	fwrite(SCPIcmd, sizeof(char), buildStringLength, fp);
+	fclose(fp);
+
+
+
 }
 
 //split function
@@ -1713,33 +1847,32 @@ private: System::Void textBox1_KeyDown(System::Object^  sender, System::Windows:
 
 
 private: System::Void chkbx_Tr1Enable_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == true)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == true) && (chkbx_Ch1_Tr2Enable->Checked == true)) {
 		//enable all sparams
 		rad_S11->Enabled = true;
 		rad_S12->Enabled = true;
 		rad_S21->Enabled = true;
 		rad_S22->Enabled = true;
-		btn_Data->Enabled = true;
 	}
-	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == true)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == false) && (chkbx_Ch1_Tr2Enable->Checked == true)) {
 		//Only enable S22 param & set it
 		rad_S11->Enabled = false;
 		rad_S12->Enabled = false;
 		rad_S21->Enabled = false;
 		rad_S22->Enabled = true;
 		rad_S22->Checked = true;
-		btn_Data->Enabled = true;
+
 	}
-	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == false)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == true) && (chkbx_Ch1_Tr2Enable->Checked == false)) {
 		//Only enable S22 param & set it
 		rad_S11->Enabled = true;
 		rad_S12->Enabled = false;
 		rad_S21->Enabled = false;
 		rad_S22->Enabled = false;
 		rad_S11->Checked = true;
-		btn_Data->Enabled = true;
+
 	}
-	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == false)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == false) && (chkbx_Ch1_Tr2Enable->Checked == false)) {
 		//disable collect data button and all sparams
 		rad_S11->Enabled = false;
 		rad_S12->Enabled = false;
@@ -1749,37 +1882,36 @@ private: System::Void chkbx_Tr1Enable_CheckedChanged(System::Object^  sender, Sy
 		rad_S12->Checked = false;
 		rad_S21->Checked = false;
 		rad_S22->Checked = false;
-		btn_Data->Enabled = false;
+
 	}
 }
 private: System::Void chkbx_Tr2Enable_CheckedChanged(System::Object^  sender, System::EventArgs^  e) {
-	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == true)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == true) && (chkbx_Ch1_Tr2Enable->Checked == true)) {
 		//enable all sparams
 		rad_S11->Enabled = true;
 		rad_S12->Enabled = true;
 		rad_S21->Enabled = true;
 		rad_S22->Enabled = true;
-		btn_Data->Enabled = true;
+
 	}
-	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == true)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == false) && (chkbx_Ch1_Tr2Enable->Checked == true)) {
 		//Only enable S22 param & set it
 		rad_S11->Enabled = false;
 		rad_S12->Enabled = false;
 		rad_S21->Enabled = false;
 		rad_S22->Enabled = true;
 		rad_S22->Checked = true;
-		btn_Data->Enabled = true;
+
 	}
-	if ((chkbx_Tr1Enable->Checked == true) && (chkbx_Tr2Enable->Checked == false)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == true) && (chkbx_Ch1_Tr2Enable->Checked == false)) {
 		//Only enable S22 param & set it
 		rad_S11->Enabled = true;
 		rad_S12->Enabled = false;
 		rad_S21->Enabled = false;
 		rad_S22->Enabled = false;
 		rad_S11->Checked = true;
-		btn_Data->Enabled = true;
 	}
-	if ((chkbx_Tr1Enable->Checked == false) && (chkbx_Tr2Enable->Checked == false)) {
+	if ((chkbx_Ch1_Tr1Enable->Checked == false) && (chkbx_Ch1_Tr2Enable->Checked == false)) {
 		//disable collect data button and all sparams
 		rad_S11->Enabled = false;
 		rad_S12->Enabled = false;
@@ -1789,9 +1921,128 @@ private: System::Void chkbx_Tr2Enable_CheckedChanged(System::Object^  sender, Sy
 		rad_S12->Checked = false;
 		rad_S21->Checked = false;
 		rad_S22->Checked = false;
-		btn_Data->Enabled = false;
 	}
 }
 
+private: System::Void openFileDialog1_FileOk(System::Object^  sender, System::ComponentModel::CancelEventArgs^  e) {
+}
+private: System::Void folderBrowserDialog1_HelpRequest(System::Object^  sender, System::EventArgs^  e) {
+}
+
+
+private: System::Void btn_ecal_Click(System::Object^  sender, System::EventArgs^  e) {
+	std::cout << "E-CAL Button Pressed\n";
+
+	sendSCPI_String(":SYST:COMM:ECAL:DEF N4691B");
+
+}
+private: System::Void folderBrowserDialog1_HelpRequest_1(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void btn_folder_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	FolderBrowserDialog ^dlg = gcnew FolderBrowserDialog();
+	if (dlg->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+	{
+		String ^folderName = dlg->SelectedPath;
+		folderPath = convert_vcppString_string(folderName);
+		lbl_folderPath->Text = folderName;
+		std::cout << "Folder path set to: ";
+		std::cout << folderPath;
+		std::cout << "\n";
+	}
+
+}
+private: System::Void btn_ExpName_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	experimentName = convert_vcppString_string(txtbx_ExpName->Text);
+	lbl_ExpName->Text = "Experiment is named\"" + txtbx_ExpName->Text + "\" ";
+
+}
+private: System::Void btn_StartScan_Click(System::Object^  sender, System::EventArgs^  e) {
+
+
+	if ((folderPath == "")||(experimentName == ""))
+	{
+		std::cout << "Not valid folder / Experiment Name";
+		MessageBox::Show("Please enter a valid folder and experiment name", "Folder/Name Error", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+	}
+	else
+	{
+		sendSCPI_String(":INIT:CONT? ");
+		std::string returnMessage = readSCPI_Buffer();
+		if (returnMessage == "1\n") {
+			sendSCPI_String(":INIT:CONT OFF");
+		}
+
+		sendSCPI_String(":INIT:IMM1");
+
+
+		sendSCPI_String(":DISP:WIND1:ACT");
+		sendSCPI_String(":DISP:WIND1:TRAC1:STAT ON");
+		sendSCPI_String(":DISP:WIND1:TRAC2:STAT ON");
+		sendSCPI_String(":DISP:WIND1:TRAC3:STAT ON");
+		sendSCPI_String(":DISP:WIND1:TRAC4:STAT ON");
+		sendSCPI_String(":DISP:WIND1:MAX ON");
+		//NEED TO CHANGE NUMBER OF TRACES???
+
+		std::string tempReturn;
+		String^ nativeVISAREAD;
+
+		if (chkbx_Ch1_Tr1Enable->Checked) {
+			sendSCPI_String(":CALC1:PAR1:SEL");
+			sendSCPI_String(":CALC1:DATA:FDAT?");
+			tempReturn = readSCPI_Buffer();
+			nativeVISAREAD = gcnew String(tempReturn.c_str());
+			saveString2File(nativeVISAREAD, 0);
+		}
+		if (chkbx_Ch1_Tr2Enable->Checked) {
+			sendSCPI_String(":CALC1:PAR2:SEL");
+			sendSCPI_String(":CALC1:DATA:FDAT?");
+			tempReturn = readSCPI_Buffer();
+			nativeVISAREAD = gcnew String(tempReturn.c_str());
+			saveString2File(nativeVISAREAD, 1);
+		}
+		if (chkbx_Ch1_Tr3Enable->Checked) {
+			sendSCPI_String(":CALC1:PAR3:SEL");
+			sendSCPI_String(":CALC1:DATA:FDAT?");
+			tempReturn = readSCPI_Buffer();
+			nativeVISAREAD = gcnew String(tempReturn.c_str());
+			saveString2File(nativeVISAREAD, 2);
+		}
+		if (chkbx_Ch1_Tr4Enable->Checked) {
+			sendSCPI_String(":CALC1:PAR4:SEL");
+			sendSCPI_String(":CALC1:DATA:FDAT?");
+			tempReturn = readSCPI_Buffer();
+			nativeVISAREAD = gcnew String(tempReturn.c_str());
+			saveString2File(nativeVISAREAD, 3);
+		}
+
+
+
+
+
+		//old data read
+
+		//String^ tempString;
+
+		//if (rad_S11->Checked == true) {
+		//	tempString = ":SENS:DATA:CORR? S11";
+		//}
+		//if (rad_S12->Checked == true) {
+		//	tempString = ":SENS:DATA:CORR? S12";
+		//}
+		//if (rad_S21->Checked == true) {
+		//	tempString = ":SENS:DATA:CORR? S21";
+		//}
+		//if (rad_S22->Checked == true) {
+		//	tempString = ":SENS:DATA:CORR? S22";
+		//}
+		//sendSCPI_String(tempString);
+
+
+
+		
+	}
+}
 };
 }

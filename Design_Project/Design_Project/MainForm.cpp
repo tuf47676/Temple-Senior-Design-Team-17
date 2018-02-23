@@ -53,6 +53,12 @@ void Main(array<String^>^ args) {
 	//testint
 	//std::cout << "Team Zero Impedance";
 
+
+
+
+
+
+
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Design_Project::MainForm form;
