@@ -2117,18 +2117,6 @@ private: System::Void saveData2File(String^ dataString, std::string name_extensi
 
 	_sleep(5); //Give it some time
 
-	if (name_extension.compare("Trace1")) {
-		rTBX_Trace1->Text = buildString; //PREVIEW BOX UPDATE
-	}
-	if (name_extension.compare("Trace2")) {
-		rTBX_Trace2->Text = buildString; //PREVIEW BOX UPDATE
-	}
-	if (name_extension.compare("Trace3")) {
-		rTBX_Trace3->Text = buildString; //PREVIEW BOX UPDATE
-	}
-	if (name_extension.compare("Trace4")) {
-		rTBX_Trace4->Text = buildString; //PREVIEW BOX UPDATE
-	}
 	
 	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(buildString); //PTR TO NATIVE STRING
 	char* nativeString = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
@@ -2265,6 +2253,7 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			tempReturn = readSCPI_Buffer();
 			nativeVISAREAD = gcnew String(tempReturn.c_str());
 			saveData2File(nativeVISAREAD, "Trace1", 0);
+			rTBX_Trace1->Text = nativeVISAREAD;
 		}
 		if (chkbx_Ch1_Tr2Enable->Checked) {
 			sendSCPI_String(":CALC1:PAR2:SEL");
@@ -2287,6 +2276,7 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			tempReturn = readSCPI_Buffer();
 			nativeVISAREAD = gcnew String(tempReturn.c_str());
 			saveData2File(nativeVISAREAD, "Trace2", 0);
+			rTBX_Trace2->Text = nativeVISAREAD;
 		}
 		if (chkbx_Ch1_Tr3Enable->Checked) {
 			sendSCPI_String(":CALC1:PAR3:SEL");
@@ -2309,6 +2299,7 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			tempReturn = readSCPI_Buffer();
 			nativeVISAREAD = gcnew String(tempReturn.c_str());
 			saveData2File(nativeVISAREAD, "Trace3", 0);
+			rTBX_Trace3->Text = nativeVISAREAD;
 		}
 		if (chkbx_Ch1_Tr4Enable->Checked) {
 			sendSCPI_String(":CALC1:PAR4:SEL");
@@ -2331,6 +2322,7 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			tempReturn = readSCPI_Buffer();
 			nativeVISAREAD = gcnew String(tempReturn.c_str());
 			saveData2File(nativeVISAREAD, "Trace4", 0);
+			rTBX_Trace4->Text = nativeVISAREAD;
 		}
 	}
 }
