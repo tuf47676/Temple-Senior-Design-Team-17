@@ -1,6 +1,4 @@
 ﻿  MainForm.cpp
-c:\users\tuf38533\source\repos\design_project\design_project\MainForm.h(1407): warning C4101: 'nativeString': unreferenced local variable
-c:\users\tuf38533\source\repos\design_project\design_project\MainForm.h(1587): warning C4101: 'frequencyCMD': unreferenced local variable
-c:\users\tuf38533\source\repos\design_project\design_project\MainForm.h(2092): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\tuf38533\source\repos\design_project\design_project\MainForm.h(2113): warning C4018: '<=': signed/unsigned mismatch
-  Design_Project.vcxproj -> C:\Users\tuf38533\source\repos\Design_Project\Debug\Design_Project.exe
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2274): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2295): warning C4018: '<=': signed/unsigned mismatch
+  Design_Project.vcxproj -> C:\Users\Reed\source\repos\Design_Project\Debug\Design_Project.exe

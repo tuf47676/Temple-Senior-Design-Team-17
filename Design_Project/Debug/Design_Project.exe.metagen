@@ -1,4 +1,5 @@
   Design_Project.MainForm.resources - Embedded, ContainedInManifestFile, 
+  Design_Project.TraceControlEdit.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Design_Project, Version=0.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=SHA1, flags=PublicKey
@@ -26,9 +27,11 @@ Assembly WindowsBase, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856a
 	hash=None, flags=None
 Assembly WindowsFormsIntegration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35: 
 	hash=None, flags=None
+Class Design_Project.TraceControlEdit: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(System.Windows.Forms.Form, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
 Class Design_Project.MainForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-Class Design_Project.ScanAgendaForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
-  :System.Windows.Forms.Form
-    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    set_TraceControl(Int32, Byte, Int32, Int32): PrivateScope, Public, HideBySig

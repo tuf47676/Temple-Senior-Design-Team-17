@@ -1,4 +1,5 @@
 #pragma once
+#include "TraceControlEdit.h"
 #include <string.h>
 #include <iostream>
 #include <fstream>
@@ -17,10 +18,9 @@
 #define DEFAULT_LOGICAL_ADDRESS "TCPIP0::192.168.100.5::inst0::INSTR"
 
 
-std::string folderPath;
-std::string experimentName;
 
-char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
+
+//char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
 
 //Error checking constraights
 #define FREQ_MAX 20000000000 //Set to 20GHz
@@ -29,12 +29,15 @@ char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
 
 //Global Strings for VISA lib. Change scope of these later
 //this might no longer be needed. Should remove if possible
-char strResult[256] = { 0 };
-char noErrString[256] = { "+0,\"No error\"\n" };
+//char strResult[256] = { 0 };
+//char noErrString[256] = { "+0,\"No error\"\n" };
+
+
 
 
 namespace Design_Project {
-
+	std::string folderPath;
+	std::string experimentName;
 	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
@@ -52,23 +55,20 @@ namespace Design_Project {
 		MainForm(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Add the constructor code here
-			//
-			
-			//Update LABEL2 with address for display 
-			label2->Text = DEFAULT_LOGICAL_ADDRESS;
-			sendSCPI_String("*IDN?");
-			std::string tempString = readSCPI_Buffer();
-			String^ nativeVISAREAD = gcnew String(tempString.c_str());
-			lbl_IDN_resp->Text = nativeVISAREAD;
-			
+
+			//label2->Text = DEFAULT_LOGICAL_ADDRESS;
+			//sendSCPI_String("*IDN?");
+			//std::string tempString = readSCPI_Buffer();
+			//String^ nativeVISAREAD = gcnew String(tempString.c_str());
+			//lbl_IDN_resp->Text = nativeVISAREAD;
+
 			//default list box selection
 			ListBox_Ch1_Trace1->SelectedIndex = 0;
 			ListBox_Ch1_Trace2->SelectedIndex = 0;
 			ListBox_Ch1_Trace3->SelectedIndex = 0;
-			ListBox_Ch1_Trace4->SelectedIndex = 0;
+			ListBox_Ch1_Trace4->SelectedIndex = 0;	
 		}
+		
 
 	protected:
 		/// <summary>
@@ -83,21 +83,15 @@ namespace Design_Project {
 		}
 
 
-
-
-
-
-
+	TraceControlEdit^ trace1 = gcnew TraceControlEdit(this, 1);
+	TraceControlEdit^ trace2 = gcnew TraceControlEdit(this, 2);
+	TraceControlEdit^ trace3 = gcnew TraceControlEdit(this, 3);
+	TraceControlEdit^ trace4 = gcnew TraceControlEdit(this, 4);
+	
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  lbl_IDN_resp;
-
-
 	private: System::Windows::Forms::Label^  lbl_instIDN;
-
-
-
 	private: System::Windows::Forms::GroupBox^  Group_Freq;
-
 	private: System::Windows::Forms::TextBox^  SpanTextBox;
 	private: System::Windows::Forms::TextBox^  CenterTextBox;
 	private: System::Windows::Forms::TextBox^  StopTextBox;
@@ -107,7 +101,6 @@ namespace Design_Project {
 	private: System::Windows::Forms::Label^  StopFreqLabel;
 	private: System::Windows::Forms::Label^  StartFreqLabel;
 	private: System::Windows::Forms::RadioButton^  CenterSpanRadio;
-
 	private: System::Windows::Forms::RadioButton^  StartStopRadio;
 	private: System::Windows::Forms::Button^  SetCMDButton;
 	private: System::Windows::Forms::GroupBox^  Start_Units;
@@ -129,106 +122,82 @@ namespace Design_Project {
 	private: System::Windows::Forms::GroupBox^  Group_Power;
 	private: System::Windows::Forms::Label^  label6;
 	private: System::Windows::Forms::GroupBox^  Power_Units;
-
 	private: System::Windows::Forms::TextBox^  PowerTextBox;
 	private: System::Windows::Forms::RadioButton^  Power_dBm;
 	private: System::Windows::Forms::GroupBox^  Group_Channel1;
-
-
-
-
-	private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace1;
-
 	private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace2;
-
-
 	private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr2Enable;
-
-
-	private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr1Enable;
-
-
-
-
-
-
-
-
-
-
 	private: System::Windows::Forms::GroupBox^  group_VisaAddr;
-
-
 	private: System::Windows::Forms::NumericUpDown^  numBox_Points;
 	private: System::Windows::Forms::Label^  lbl_sweeppoints;
-private: System::Windows::Forms::RichTextBox^  rTBX_Trace1;
+	private: System::Windows::Forms::RichTextBox^  rTBX_Trace1;
+	private: System::Windows::Forms::GroupBox^  group_INITScan;
+	private: System::Windows::Forms::GroupBox^  group_ReturnData;
+	private: System::Windows::Forms::Button^  btn_ecal;
+	private: System::Windows::Forms::GroupBox^  group_foldername;
+	private: System::Windows::Forms::FolderBrowserDialog^  folderBrowserDialog1;
+	private: System::Windows::Forms::Button^  btn_folder;
+	private: System::Windows::Forms::Label^  lbl_folderPath;
+	private: System::Windows::Forms::Label^  lbl_ExpName;
+	private: System::Windows::Forms::Button^  btn_ExpName;
+	private: System::Windows::Forms::TextBox^  txtbx_ExpName;
+	private: System::Windows::Forms::Label^  lbl_name;
+	private: System::Windows::Forms::Button^  btn_StartScan;
+	private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr4Enable;
+	private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace4;
+	private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr3Enable;
+	private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace3;
+	private: System::Windows::Forms::GroupBox^  group_Tr3;
+	private: System::Windows::Forms::GroupBox^  group_Tr2;
+	private: System::Windows::Forms::GroupBox^  group_Tr2_Sp;
+	private: System::Windows::Forms::RadioButton^  rad_Tr2_S22;
+	private: System::Windows::Forms::RadioButton^  rad_Tr2_S21;
+	private: System::Windows::Forms::RadioButton^  rad_Tr2_S11;
+	private: System::Windows::Forms::RadioButton^  rad_Tr2_S12;
+	private: System::Windows::Forms::GroupBox^  group_Tr4;
+	private: System::Windows::Forms::GroupBox^  group_Tr4_Sp;
+	private: System::Windows::Forms::RadioButton^  rad_Tr4_S22;
+	private: System::Windows::Forms::RadioButton^  rad_Tr4_S21;
+	private: System::Windows::Forms::RadioButton^  rad_Tr4_S11;
+	private: System::Windows::Forms::RadioButton^  rad_Tr4_S12;
+	private: System::Windows::Forms::GroupBox^  group_Tr3_Sp;
+	private: System::Windows::Forms::RadioButton^  rad_Tr3_S22;
+	private: System::Windows::Forms::RadioButton^  rad_Tr3_S21;
+	private: System::Windows::Forms::RadioButton^  rad_Tr3_S11;
+	private: System::Windows::Forms::RadioButton^  rad_Tr3_S12;
+	private: System::Windows::Forms::RichTextBox^  rTBX_Trace4;
+	private: System::Windows::Forms::RichTextBox^  rTBX_Trace3;
+	private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
+	private: System::Windows::Forms::Button^  btn_LoadSettings;
+	private: System::Windows::Forms::GroupBox^  group_Trace1;
+	private: System::Windows::Forms::GroupBox^  group_tr1_sp;
+	private: System::Windows::Forms::RadioButton^  rad_Tr1_S22;
+	private: System::Windows::Forms::RadioButton^  rad_Tr1_S21;
+	private: System::Windows::Forms::RadioButton^  rad_Tr1_S11;
+	private: System::Windows::Forms::RadioButton^  rad_Tr1_S12;
+	private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr1Enable;
+	private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace1;
+	private: System::Windows::Forms::GroupBox^  group_Trace;
+	private: System::Windows::Forms::Button^  btn_Tr1_Edit;
+	private: System::Windows::Forms::Label^  lbl_Tr1_S;
+	private: System::Windows::Forms::Label^  lbl_Tr1_Type;
+	private: System::Windows::Forms::CheckBox^  chkbx_Tr1_Enable;
+	private: System::ComponentModel::Container ^components;
+	private: System::Windows::Forms::Button^  btn_Tr4_Edit;
+	private: System::Windows::Forms::Label^  lbl_Tr4_S;
+	private: System::Windows::Forms::Label^  lbl_Tr4_Type;
+	private: System::Windows::Forms::CheckBox^  chkbx_Tr4_Enable;
+	private: System::Windows::Forms::Button^  btn_Tr3_Edit;
+	private: System::Windows::Forms::Label^  lbl_Tr3_S;
+	private: System::Windows::Forms::Label^  lbl_Tr3_Type;
+	private: System::Windows::Forms::CheckBox^  chkbx_Tr3_Enable;
+	private: System::Windows::Forms::Button^  btn_Tr2_Edit;
+	private: System::Windows::Forms::Label^  lbl_Tr2_S;
+	private: System::Windows::Forms::Label^  lbl_Tr2_Type;
+	private: System::Windows::Forms::CheckBox^  chkbx_Tr2_Enable;
 
 
-
-private: System::Windows::Forms::GroupBox^  group_INITScan;
-private: System::Windows::Forms::GroupBox^  group_ReturnData;
-
-
-
-private: System::Windows::Forms::Button^  btn_ecal;
-
-private: System::Windows::Forms::GroupBox^  group_foldername;
-private: System::Windows::Forms::FolderBrowserDialog^  folderBrowserDialog1;
-private: System::Windows::Forms::Button^  btn_folder;
-private: System::Windows::Forms::Label^  lbl_folderPath;
-private: System::Windows::Forms::Label^  lbl_ExpName;
-private: System::Windows::Forms::Button^  btn_ExpName;
-private: System::Windows::Forms::TextBox^  txtbx_ExpName;
-private: System::Windows::Forms::Label^  lbl_name;
-private: System::Windows::Forms::Button^  btn_StartScan;
-private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr4Enable;
-private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace4;
-
-private: System::Windows::Forms::CheckBox^  chkbx_Ch1_Tr3Enable;
-private: System::Windows::Forms::ListBox^  ListBox_Ch1_Trace3;
-
-private: System::Windows::Forms::GroupBox^  group_Trace1;
-private: System::Windows::Forms::GroupBox^  group_Tr3;
-private: System::Windows::Forms::GroupBox^  group_Tr2;
-private: System::Windows::Forms::GroupBox^  group_Tr2_Sp;
-private: System::Windows::Forms::RadioButton^  rad_Tr2_S22;
-private: System::Windows::Forms::RadioButton^  rad_Tr2_S21;
-private: System::Windows::Forms::RadioButton^  rad_Tr2_S11;
-private: System::Windows::Forms::RadioButton^  rad_Tr2_S12;
-private: System::Windows::Forms::GroupBox^  group_tr1_sp;
-private: System::Windows::Forms::RadioButton^  rad_Tr1_S22;
-private: System::Windows::Forms::RadioButton^  rad_Tr1_S21;
-private: System::Windows::Forms::RadioButton^  rad_Tr1_S11;
-private: System::Windows::Forms::RadioButton^  rad_Tr1_S12;
-private: System::Windows::Forms::GroupBox^  group_Tr4;
-private: System::Windows::Forms::GroupBox^  group_Tr4_Sp;
-private: System::Windows::Forms::RadioButton^  rad_Tr4_S22;
-private: System::Windows::Forms::RadioButton^  rad_Tr4_S21;
-private: System::Windows::Forms::RadioButton^  rad_Tr4_S11;
-private: System::Windows::Forms::RadioButton^  rad_Tr4_S12;
-private: System::Windows::Forms::GroupBox^  group_Tr3_Sp;
-private: System::Windows::Forms::RadioButton^  rad_Tr3_S22;
-private: System::Windows::Forms::RadioButton^  rad_Tr3_S21;
-private: System::Windows::Forms::RadioButton^  rad_Tr3_S11;
-private: System::Windows::Forms::RadioButton^  rad_Tr3_S12;
-private: System::Windows::Forms::RichTextBox^  rTBX_Trace4;
-private: System::Windows::Forms::RichTextBox^  rTBX_Trace3;
-private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
-
-
-
-
-
-
-	protected:
-
-	private:
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		System::ComponentModel::Container ^components;
-
-#pragma region Windows Form Designer generated code
+	#pragma region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -274,6 +243,14 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->PowerTextBox = (gcnew System::Windows::Forms::TextBox());
 			this->label6 = (gcnew System::Windows::Forms::Label());
 			this->Group_Channel1 = (gcnew System::Windows::Forms::GroupBox());
+			this->group_Trace1 = (gcnew System::Windows::Forms::GroupBox());
+			this->group_tr1_sp = (gcnew System::Windows::Forms::GroupBox());
+			this->rad_Tr1_S22 = (gcnew System::Windows::Forms::RadioButton());
+			this->rad_Tr1_S21 = (gcnew System::Windows::Forms::RadioButton());
+			this->rad_Tr1_S11 = (gcnew System::Windows::Forms::RadioButton());
+			this->rad_Tr1_S12 = (gcnew System::Windows::Forms::RadioButton());
+			this->chkbx_Ch1_Tr1Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->ListBox_Ch1_Trace1 = (gcnew System::Windows::Forms::ListBox());
 			this->group_Tr4 = (gcnew System::Windows::Forms::GroupBox());
 			this->group_Tr4_Sp = (gcnew System::Windows::Forms::GroupBox());
 			this->rad_Tr4_S22 = (gcnew System::Windows::Forms::RadioButton());
@@ -298,14 +275,6 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->rad_Tr2_S12 = (gcnew System::Windows::Forms::RadioButton());
 			this->chkbx_Ch1_Tr2Enable = (gcnew System::Windows::Forms::CheckBox());
 			this->ListBox_Ch1_Trace2 = (gcnew System::Windows::Forms::ListBox());
-			this->group_Trace1 = (gcnew System::Windows::Forms::GroupBox());
-			this->group_tr1_sp = (gcnew System::Windows::Forms::GroupBox());
-			this->rad_Tr1_S22 = (gcnew System::Windows::Forms::RadioButton());
-			this->rad_Tr1_S21 = (gcnew System::Windows::Forms::RadioButton());
-			this->rad_Tr1_S11 = (gcnew System::Windows::Forms::RadioButton());
-			this->rad_Tr1_S12 = (gcnew System::Windows::Forms::RadioButton());
-			this->chkbx_Ch1_Tr1Enable = (gcnew System::Windows::Forms::CheckBox());
-			this->ListBox_Ch1_Trace1 = (gcnew System::Windows::Forms::ListBox());
 			this->group_VisaAddr = (gcnew System::Windows::Forms::GroupBox());
 			this->rTBX_Trace1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->group_INITScan = (gcnew System::Windows::Forms::GroupBox());
@@ -323,6 +292,24 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->lbl_folderPath = (gcnew System::Windows::Forms::Label());
 			this->btn_folder = (gcnew System::Windows::Forms::Button());
 			this->folderBrowserDialog1 = (gcnew System::Windows::Forms::FolderBrowserDialog());
+			this->btn_LoadSettings = (gcnew System::Windows::Forms::Button());
+			this->group_Trace = (gcnew System::Windows::Forms::GroupBox());
+			this->btn_Tr4_Edit = (gcnew System::Windows::Forms::Button());
+			this->lbl_Tr4_S = (gcnew System::Windows::Forms::Label());
+			this->lbl_Tr4_Type = (gcnew System::Windows::Forms::Label());
+			this->chkbx_Tr4_Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->btn_Tr3_Edit = (gcnew System::Windows::Forms::Button());
+			this->lbl_Tr3_S = (gcnew System::Windows::Forms::Label());
+			this->lbl_Tr3_Type = (gcnew System::Windows::Forms::Label());
+			this->chkbx_Tr3_Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->btn_Tr2_Edit = (gcnew System::Windows::Forms::Button());
+			this->lbl_Tr2_S = (gcnew System::Windows::Forms::Label());
+			this->lbl_Tr2_Type = (gcnew System::Windows::Forms::Label());
+			this->chkbx_Tr2_Enable = (gcnew System::Windows::Forms::CheckBox());
+			this->btn_Tr1_Edit = (gcnew System::Windows::Forms::Button());
+			this->lbl_Tr1_S = (gcnew System::Windows::Forms::Label());
+			this->lbl_Tr1_Type = (gcnew System::Windows::Forms::Label());
+			this->chkbx_Tr1_Enable = (gcnew System::Windows::Forms::CheckBox());
 			this->Group_Freq->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->BeginInit();
 			this->Span_Units->SuspendLayout();
@@ -332,18 +319,19 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->Group_Power->SuspendLayout();
 			this->Power_Units->SuspendLayout();
 			this->Group_Channel1->SuspendLayout();
+			this->group_Trace1->SuspendLayout();
+			this->group_tr1_sp->SuspendLayout();
 			this->group_Tr4->SuspendLayout();
 			this->group_Tr4_Sp->SuspendLayout();
 			this->group_Tr3->SuspendLayout();
 			this->group_Tr3_Sp->SuspendLayout();
 			this->group_Tr2->SuspendLayout();
 			this->group_Tr2_Sp->SuspendLayout();
-			this->group_Trace1->SuspendLayout();
-			this->group_tr1_sp->SuspendLayout();
 			this->group_VisaAddr->SuspendLayout();
 			this->group_INITScan->SuspendLayout();
 			this->group_ReturnData->SuspendLayout();
 			this->group_foldername->SuspendLayout();
+			this->group_Trace->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// label2
@@ -751,10 +739,10 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			// 
 			// Group_Channel1
 			// 
+			this->Group_Channel1->Controls->Add(this->group_Trace1);
 			this->Group_Channel1->Controls->Add(this->group_Tr4);
 			this->Group_Channel1->Controls->Add(this->group_Tr3);
 			this->Group_Channel1->Controls->Add(this->group_Tr2);
-			this->Group_Channel1->Controls->Add(this->group_Trace1);
 			this->Group_Channel1->Location = System::Drawing::Point(402, 22);
 			this->Group_Channel1->Name = L"Group_Channel1";
 			this->Group_Channel1->Size = System::Drawing::Size(318, 548);
@@ -762,6 +750,98 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->Group_Channel1->TabStop = false;
 			this->Group_Channel1->Text = L"Channel 1";
 			this->Group_Channel1->Enter += gcnew System::EventHandler(this, &MainForm::Group_Channel1_Enter);
+			// 
+			// group_Trace1
+			// 
+			this->group_Trace1->Controls->Add(this->group_tr1_sp);
+			this->group_Trace1->Controls->Add(this->chkbx_Ch1_Tr1Enable);
+			this->group_Trace1->Controls->Add(this->ListBox_Ch1_Trace1);
+			this->group_Trace1->Location = System::Drawing::Point(6, 20);
+			this->group_Trace1->Name = L"group_Trace1";
+			this->group_Trace1->Size = System::Drawing::Size(144, 256);
+			this->group_Trace1->TabIndex = 33;
+			this->group_Trace1->TabStop = false;
+			this->group_Trace1->Text = L"Trace 1";
+			// 
+			// group_tr1_sp
+			// 
+			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S22);
+			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S21);
+			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S11);
+			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S12);
+			this->group_tr1_sp->Location = System::Drawing::Point(6, 169);
+			this->group_tr1_sp->Name = L"group_tr1_sp";
+			this->group_tr1_sp->Size = System::Drawing::Size(131, 76);
+			this->group_tr1_sp->TabIndex = 31;
+			this->group_tr1_sp->TabStop = false;
+			this->group_tr1_sp->Text = L"S-Parameter";
+			// 
+			// rad_Tr1_S22
+			// 
+			this->rad_Tr1_S22->AutoSize = true;
+			this->rad_Tr1_S22->Location = System::Drawing::Point(66, 42);
+			this->rad_Tr1_S22->Name = L"rad_Tr1_S22";
+			this->rad_Tr1_S22->Size = System::Drawing::Size(44, 17);
+			this->rad_Tr1_S22->TabIndex = 7;
+			this->rad_Tr1_S22->Text = L"S22";
+			this->rad_Tr1_S22->UseVisualStyleBackColor = true;
+			// 
+			// rad_Tr1_S21
+			// 
+			this->rad_Tr1_S21->AutoSize = true;
+			this->rad_Tr1_S21->Location = System::Drawing::Point(15, 42);
+			this->rad_Tr1_S21->Name = L"rad_Tr1_S21";
+			this->rad_Tr1_S21->Size = System::Drawing::Size(44, 17);
+			this->rad_Tr1_S21->TabIndex = 6;
+			this->rad_Tr1_S21->Text = L"S21";
+			this->rad_Tr1_S21->UseVisualStyleBackColor = true;
+			// 
+			// rad_Tr1_S11
+			// 
+			this->rad_Tr1_S11->AutoSize = true;
+			this->rad_Tr1_S11->Checked = true;
+			this->rad_Tr1_S11->Location = System::Drawing::Point(15, 19);
+			this->rad_Tr1_S11->Name = L"rad_Tr1_S11";
+			this->rad_Tr1_S11->Size = System::Drawing::Size(44, 17);
+			this->rad_Tr1_S11->TabIndex = 4;
+			this->rad_Tr1_S11->TabStop = true;
+			this->rad_Tr1_S11->Text = L"S11";
+			this->rad_Tr1_S11->UseVisualStyleBackColor = true;
+			// 
+			// rad_Tr1_S12
+			// 
+			this->rad_Tr1_S12->AutoSize = true;
+			this->rad_Tr1_S12->Location = System::Drawing::Point(65, 19);
+			this->rad_Tr1_S12->Name = L"rad_Tr1_S12";
+			this->rad_Tr1_S12->Size = System::Drawing::Size(44, 17);
+			this->rad_Tr1_S12->TabIndex = 5;
+			this->rad_Tr1_S12->Text = L"S12";
+			this->rad_Tr1_S12->UseVisualStyleBackColor = true;
+			// 
+			// chkbx_Ch1_Tr1Enable
+			// 
+			this->chkbx_Ch1_Tr1Enable->AutoSize = true;
+			this->chkbx_Ch1_Tr1Enable->Checked = true;
+			this->chkbx_Ch1_Tr1Enable->CheckState = System::Windows::Forms::CheckState::Checked;
+			this->chkbx_Ch1_Tr1Enable->Location = System::Drawing::Point(6, 19);
+			this->chkbx_Ch1_Tr1Enable->Name = L"chkbx_Ch1_Tr1Enable";
+			this->chkbx_Ch1_Tr1Enable->Size = System::Drawing::Size(59, 17);
+			this->chkbx_Ch1_Tr1Enable->TabIndex = 3;
+			this->chkbx_Ch1_Tr1Enable->Text = L"Enable";
+			this->chkbx_Ch1_Tr1Enable->UseVisualStyleBackColor = true;
+			// 
+			// ListBox_Ch1_Trace1
+			// 
+			this->ListBox_Ch1_Trace1->FormattingEnabled = true;
+			this->ListBox_Ch1_Trace1->Items->AddRange(gcnew cli::array< System::Object^  >(17) {
+				L"M Logarithmic", L"M Linear", L"Real",
+					L"Imaginary", L"G Delay", L"SWR", L"Phase", L"U Phase", L"P Phase", L"S Linear", L"S Logarithmic", L"S Complex", L"Smith", L"S Admittance",
+					L"P Linear", L"P Lograithmic", L"Polar"
+			});
+			this->ListBox_Ch1_Trace1->Location = System::Drawing::Point(6, 42);
+			this->ListBox_Ch1_Trace1->Name = L"ListBox_Ch1_Trace1";
+			this->ListBox_Ch1_Trace1->Size = System::Drawing::Size(131, 121);
+			this->ListBox_Ch1_Trace1->TabIndex = 1;
 			// 
 			// group_Tr4
 			// 
@@ -1033,98 +1113,6 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->ListBox_Ch1_Trace2->Size = System::Drawing::Size(132, 121);
 			this->ListBox_Ch1_Trace2->TabIndex = 2;
 			// 
-			// group_Trace1
-			// 
-			this->group_Trace1->Controls->Add(this->group_tr1_sp);
-			this->group_Trace1->Controls->Add(this->chkbx_Ch1_Tr1Enable);
-			this->group_Trace1->Controls->Add(this->ListBox_Ch1_Trace1);
-			this->group_Trace1->Location = System::Drawing::Point(13, 19);
-			this->group_Trace1->Name = L"group_Trace1";
-			this->group_Trace1->Size = System::Drawing::Size(144, 256);
-			this->group_Trace1->TabIndex = 11;
-			this->group_Trace1->TabStop = false;
-			this->group_Trace1->Text = L"Trace 1";
-			// 
-			// group_tr1_sp
-			// 
-			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S22);
-			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S21);
-			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S11);
-			this->group_tr1_sp->Controls->Add(this->rad_Tr1_S12);
-			this->group_tr1_sp->Location = System::Drawing::Point(6, 169);
-			this->group_tr1_sp->Name = L"group_tr1_sp";
-			this->group_tr1_sp->Size = System::Drawing::Size(131, 76);
-			this->group_tr1_sp->TabIndex = 31;
-			this->group_tr1_sp->TabStop = false;
-			this->group_tr1_sp->Text = L"S-Parameter";
-			// 
-			// rad_Tr1_S22
-			// 
-			this->rad_Tr1_S22->AutoSize = true;
-			this->rad_Tr1_S22->Location = System::Drawing::Point(66, 42);
-			this->rad_Tr1_S22->Name = L"rad_Tr1_S22";
-			this->rad_Tr1_S22->Size = System::Drawing::Size(44, 17);
-			this->rad_Tr1_S22->TabIndex = 7;
-			this->rad_Tr1_S22->Text = L"S22";
-			this->rad_Tr1_S22->UseVisualStyleBackColor = true;
-			// 
-			// rad_Tr1_S21
-			// 
-			this->rad_Tr1_S21->AutoSize = true;
-			this->rad_Tr1_S21->Location = System::Drawing::Point(15, 42);
-			this->rad_Tr1_S21->Name = L"rad_Tr1_S21";
-			this->rad_Tr1_S21->Size = System::Drawing::Size(44, 17);
-			this->rad_Tr1_S21->TabIndex = 6;
-			this->rad_Tr1_S21->Text = L"S21";
-			this->rad_Tr1_S21->UseVisualStyleBackColor = true;
-			// 
-			// rad_Tr1_S11
-			// 
-			this->rad_Tr1_S11->AutoSize = true;
-			this->rad_Tr1_S11->Checked = true;
-			this->rad_Tr1_S11->Location = System::Drawing::Point(15, 19);
-			this->rad_Tr1_S11->Name = L"rad_Tr1_S11";
-			this->rad_Tr1_S11->Size = System::Drawing::Size(44, 17);
-			this->rad_Tr1_S11->TabIndex = 4;
-			this->rad_Tr1_S11->TabStop = true;
-			this->rad_Tr1_S11->Text = L"S11";
-			this->rad_Tr1_S11->UseVisualStyleBackColor = true;
-			// 
-			// rad_Tr1_S12
-			// 
-			this->rad_Tr1_S12->AutoSize = true;
-			this->rad_Tr1_S12->Location = System::Drawing::Point(65, 19);
-			this->rad_Tr1_S12->Name = L"rad_Tr1_S12";
-			this->rad_Tr1_S12->Size = System::Drawing::Size(44, 17);
-			this->rad_Tr1_S12->TabIndex = 5;
-			this->rad_Tr1_S12->Text = L"S12";
-			this->rad_Tr1_S12->UseVisualStyleBackColor = true;
-			// 
-			// chkbx_Ch1_Tr1Enable
-			// 
-			this->chkbx_Ch1_Tr1Enable->AutoSize = true;
-			this->chkbx_Ch1_Tr1Enable->Checked = true;
-			this->chkbx_Ch1_Tr1Enable->CheckState = System::Windows::Forms::CheckState::Checked;
-			this->chkbx_Ch1_Tr1Enable->Location = System::Drawing::Point(6, 19);
-			this->chkbx_Ch1_Tr1Enable->Name = L"chkbx_Ch1_Tr1Enable";
-			this->chkbx_Ch1_Tr1Enable->Size = System::Drawing::Size(59, 17);
-			this->chkbx_Ch1_Tr1Enable->TabIndex = 3;
-			this->chkbx_Ch1_Tr1Enable->Text = L"Enable";
-			this->chkbx_Ch1_Tr1Enable->UseVisualStyleBackColor = true;
-			// 
-			// ListBox_Ch1_Trace1
-			// 
-			this->ListBox_Ch1_Trace1->FormattingEnabled = true;
-			this->ListBox_Ch1_Trace1->Items->AddRange(gcnew cli::array< System::Object^  >(17) {
-				L"M Logarithmic", L"M Linear", L"Real",
-					L"Imaginary", L"G Delay", L"SWR", L"Phase", L"U Phase", L"P Phase", L"S Linear", L"S Logarithmic", L"S Complex", L"Smith", L"S Admittance",
-					L"P Linear", L"P Lograithmic", L"Polar"
-			});
-			this->ListBox_Ch1_Trace1->Location = System::Drawing::Point(6, 42);
-			this->ListBox_Ch1_Trace1->Name = L"ListBox_Ch1_Trace1";
-			this->ListBox_Ch1_Trace1->Size = System::Drawing::Size(131, 121);
-			this->ListBox_Ch1_Trace1->TabIndex = 1;
-			// 
 			// group_VisaAddr
 			// 
 			this->group_VisaAddr->Controls->Add(this->label2);
@@ -1289,11 +1277,200 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			// 
 			this->folderBrowserDialog1->HelpRequest += gcnew System::EventHandler(this, &MainForm::folderBrowserDialog1_HelpRequest_1);
 			// 
+			// btn_LoadSettings
+			// 
+			this->btn_LoadSettings->Location = System::Drawing::Point(908, 188);
+			this->btn_LoadSettings->Name = L"btn_LoadSettings";
+			this->btn_LoadSettings->Size = System::Drawing::Size(84, 23);
+			this->btn_LoadSettings->TabIndex = 31;
+			this->btn_LoadSettings->Text = L"Load Settings";
+			this->btn_LoadSettings->UseVisualStyleBackColor = true;
+			this->btn_LoadSettings->Click += gcnew System::EventHandler(this, &MainForm::btn_LoadSettings_Click);
+			// 
+			// group_Trace
+			// 
+			this->group_Trace->Controls->Add(this->btn_Tr4_Edit);
+			this->group_Trace->Controls->Add(this->lbl_Tr4_S);
+			this->group_Trace->Controls->Add(this->lbl_Tr4_Type);
+			this->group_Trace->Controls->Add(this->chkbx_Tr4_Enable);
+			this->group_Trace->Controls->Add(this->btn_Tr3_Edit);
+			this->group_Trace->Controls->Add(this->lbl_Tr3_S);
+			this->group_Trace->Controls->Add(this->lbl_Tr3_Type);
+			this->group_Trace->Controls->Add(this->chkbx_Tr3_Enable);
+			this->group_Trace->Controls->Add(this->btn_Tr2_Edit);
+			this->group_Trace->Controls->Add(this->lbl_Tr2_S);
+			this->group_Trace->Controls->Add(this->lbl_Tr2_Type);
+			this->group_Trace->Controls->Add(this->chkbx_Tr2_Enable);
+			this->group_Trace->Controls->Add(this->btn_Tr1_Edit);
+			this->group_Trace->Controls->Add(this->lbl_Tr1_S);
+			this->group_Trace->Controls->Add(this->lbl_Tr1_Type);
+			this->group_Trace->Controls->Add(this->chkbx_Tr1_Enable);
+			this->group_Trace->Location = System::Drawing::Point(23, 396);
+			this->group_Trace->Name = L"group_Trace";
+			this->group_Trace->Size = System::Drawing::Size(373, 126);
+			this->group_Trace->TabIndex = 32;
+			this->group_Trace->TabStop = false;
+			this->group_Trace->Text = L"Trace Controls";
+			// 
+			// btn_Tr4_Edit
+			// 
+			this->btn_Tr4_Edit->Location = System::Drawing::Point(270, 95);
+			this->btn_Tr4_Edit->Name = L"btn_Tr4_Edit";
+			this->btn_Tr4_Edit->Size = System::Drawing::Size(75, 21);
+			this->btn_Tr4_Edit->TabIndex = 15;
+			this->btn_Tr4_Edit->Text = L"Edit Trace";
+			this->btn_Tr4_Edit->UseVisualStyleBackColor = true;
+			this->btn_Tr4_Edit->Click += gcnew System::EventHandler(this, &MainForm::btn_Tr4_Edit_Click);
+			// 
+			// lbl_Tr4_S
+			// 
+			this->lbl_Tr4_S->AutoSize = true;
+			this->lbl_Tr4_S->Location = System::Drawing::Point(231, 100);
+			this->lbl_Tr4_S->Name = L"lbl_Tr4_S";
+			this->lbl_Tr4_S->Size = System::Drawing::Size(26, 13);
+			this->lbl_Tr4_S->TabIndex = 14;
+			this->lbl_Tr4_S->Text = L"S11";
+			// 
+			// lbl_Tr4_Type
+			// 
+			this->lbl_Tr4_Type->AutoSize = true;
+			this->lbl_Tr4_Type->Location = System::Drawing::Point(75, 100);
+			this->lbl_Tr4_Type->Name = L"lbl_Tr4_Type";
+			this->lbl_Tr4_Type->Size = System::Drawing::Size(71, 13);
+			this->lbl_Tr4_Type->TabIndex = 13;
+			this->lbl_Tr4_Type->Text = L"Type: M LOG";
+			// 
+			// chkbx_Tr4_Enable
+			// 
+			this->chkbx_Tr4_Enable->AutoSize = true;
+			this->chkbx_Tr4_Enable->Location = System::Drawing::Point(9, 100);
+			this->chkbx_Tr4_Enable->Name = L"chkbx_Tr4_Enable";
+			this->chkbx_Tr4_Enable->Size = System::Drawing::Size(63, 17);
+			this->chkbx_Tr4_Enable->TabIndex = 12;
+			this->chkbx_Tr4_Enable->Text = L"Trace 4";
+			this->chkbx_Tr4_Enable->UseVisualStyleBackColor = true;
+			// 
+			// btn_Tr3_Edit
+			// 
+			this->btn_Tr3_Edit->Location = System::Drawing::Point(270, 69);
+			this->btn_Tr3_Edit->Name = L"btn_Tr3_Edit";
+			this->btn_Tr3_Edit->Size = System::Drawing::Size(75, 21);
+			this->btn_Tr3_Edit->TabIndex = 11;
+			this->btn_Tr3_Edit->Text = L"Edit Trace";
+			this->btn_Tr3_Edit->UseVisualStyleBackColor = true;
+			this->btn_Tr3_Edit->Click += gcnew System::EventHandler(this, &MainForm::btn_Tr3_Edit_Click);
+			// 
+			// lbl_Tr3_S
+			// 
+			this->lbl_Tr3_S->AutoSize = true;
+			this->lbl_Tr3_S->Location = System::Drawing::Point(231, 74);
+			this->lbl_Tr3_S->Name = L"lbl_Tr3_S";
+			this->lbl_Tr3_S->Size = System::Drawing::Size(26, 13);
+			this->lbl_Tr3_S->TabIndex = 10;
+			this->lbl_Tr3_S->Text = L"S11";
+			// 
+			// lbl_Tr3_Type
+			// 
+			this->lbl_Tr3_Type->AutoSize = true;
+			this->lbl_Tr3_Type->Location = System::Drawing::Point(75, 74);
+			this->lbl_Tr3_Type->Name = L"lbl_Tr3_Type";
+			this->lbl_Tr3_Type->Size = System::Drawing::Size(71, 13);
+			this->lbl_Tr3_Type->TabIndex = 9;
+			this->lbl_Tr3_Type->Text = L"Type: M LOG";
+			// 
+			// chkbx_Tr3_Enable
+			// 
+			this->chkbx_Tr3_Enable->AutoSize = true;
+			this->chkbx_Tr3_Enable->Location = System::Drawing::Point(9, 74);
+			this->chkbx_Tr3_Enable->Name = L"chkbx_Tr3_Enable";
+			this->chkbx_Tr3_Enable->Size = System::Drawing::Size(63, 17);
+			this->chkbx_Tr3_Enable->TabIndex = 8;
+			this->chkbx_Tr3_Enable->Text = L"Trace 3";
+			this->chkbx_Tr3_Enable->UseVisualStyleBackColor = true;
+			// 
+			// btn_Tr2_Edit
+			// 
+			this->btn_Tr2_Edit->Location = System::Drawing::Point(270, 42);
+			this->btn_Tr2_Edit->Name = L"btn_Tr2_Edit";
+			this->btn_Tr2_Edit->Size = System::Drawing::Size(75, 21);
+			this->btn_Tr2_Edit->TabIndex = 7;
+			this->btn_Tr2_Edit->Text = L"Edit Trace";
+			this->btn_Tr2_Edit->UseVisualStyleBackColor = true;
+			this->btn_Tr2_Edit->Click += gcnew System::EventHandler(this, &MainForm::btn_Tr2_Edit_Click);
+			// 
+			// lbl_Tr2_S
+			// 
+			this->lbl_Tr2_S->AutoSize = true;
+			this->lbl_Tr2_S->Location = System::Drawing::Point(231, 47);
+			this->lbl_Tr2_S->Name = L"lbl_Tr2_S";
+			this->lbl_Tr2_S->Size = System::Drawing::Size(26, 13);
+			this->lbl_Tr2_S->TabIndex = 6;
+			this->lbl_Tr2_S->Text = L"S11";
+			// 
+			// lbl_Tr2_Type
+			// 
+			this->lbl_Tr2_Type->AutoSize = true;
+			this->lbl_Tr2_Type->Location = System::Drawing::Point(75, 47);
+			this->lbl_Tr2_Type->Name = L"lbl_Tr2_Type";
+			this->lbl_Tr2_Type->Size = System::Drawing::Size(71, 13);
+			this->lbl_Tr2_Type->TabIndex = 5;
+			this->lbl_Tr2_Type->Text = L"Type: M LOG";
+			// 
+			// chkbx_Tr2_Enable
+			// 
+			this->chkbx_Tr2_Enable->AutoSize = true;
+			this->chkbx_Tr2_Enable->Location = System::Drawing::Point(9, 47);
+			this->chkbx_Tr2_Enable->Name = L"chkbx_Tr2_Enable";
+			this->chkbx_Tr2_Enable->Size = System::Drawing::Size(63, 17);
+			this->chkbx_Tr2_Enable->TabIndex = 4;
+			this->chkbx_Tr2_Enable->Text = L"Trace 2";
+			this->chkbx_Tr2_Enable->UseVisualStyleBackColor = true;
+			// 
+			// btn_Tr1_Edit
+			// 
+			this->btn_Tr1_Edit->Location = System::Drawing::Point(270, 15);
+			this->btn_Tr1_Edit->Name = L"btn_Tr1_Edit";
+			this->btn_Tr1_Edit->Size = System::Drawing::Size(75, 21);
+			this->btn_Tr1_Edit->TabIndex = 3;
+			this->btn_Tr1_Edit->Text = L"Edit Trace";
+			this->btn_Tr1_Edit->UseVisualStyleBackColor = true;
+			this->btn_Tr1_Edit->Click += gcnew System::EventHandler(this, &MainForm::btn_Tr1_Edit_Click);
+			// 
+			// lbl_Tr1_S
+			// 
+			this->lbl_Tr1_S->AutoSize = true;
+			this->lbl_Tr1_S->Location = System::Drawing::Point(231, 20);
+			this->lbl_Tr1_S->Name = L"lbl_Tr1_S";
+			this->lbl_Tr1_S->Size = System::Drawing::Size(26, 13);
+			this->lbl_Tr1_S->TabIndex = 2;
+			this->lbl_Tr1_S->Text = L"S11";
+			// 
+			// lbl_Tr1_Type
+			// 
+			this->lbl_Tr1_Type->AutoSize = true;
+			this->lbl_Tr1_Type->Location = System::Drawing::Point(75, 20);
+			this->lbl_Tr1_Type->Name = L"lbl_Tr1_Type";
+			this->lbl_Tr1_Type->Size = System::Drawing::Size(71, 13);
+			this->lbl_Tr1_Type->TabIndex = 1;
+			this->lbl_Tr1_Type->Text = L"Type: M LOG";
+			// 
+			// chkbx_Tr1_Enable
+			// 
+			this->chkbx_Tr1_Enable->AutoSize = true;
+			this->chkbx_Tr1_Enable->Location = System::Drawing::Point(9, 19);
+			this->chkbx_Tr1_Enable->Name = L"chkbx_Tr1_Enable";
+			this->chkbx_Tr1_Enable->Size = System::Drawing::Size(63, 17);
+			this->chkbx_Tr1_Enable->TabIndex = 0;
+			this->chkbx_Tr1_Enable->Text = L"Trace 1";
+			this->chkbx_Tr1_Enable->UseVisualStyleBackColor = true;
+			// 
 			// MainForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1195, 590);
+			this->Controls->Add(this->group_Trace);
+			this->Controls->Add(this->btn_LoadSettings);
 			this->Controls->Add(this->group_foldername);
 			this->Controls->Add(this->group_ReturnData);
 			this->Controls->Add(this->group_INITScan);
@@ -1320,6 +1497,10 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->Power_Units->ResumeLayout(false);
 			this->Power_Units->PerformLayout();
 			this->Group_Channel1->ResumeLayout(false);
+			this->group_Trace1->ResumeLayout(false);
+			this->group_Trace1->PerformLayout();
+			this->group_tr1_sp->ResumeLayout(false);
+			this->group_tr1_sp->PerformLayout();
 			this->group_Tr4->ResumeLayout(false);
 			this->group_Tr4->PerformLayout();
 			this->group_Tr4_Sp->ResumeLayout(false);
@@ -1332,21 +1513,19 @@ private: System::Windows::Forms::RichTextBox^  rTBX_Trace2;
 			this->group_Tr2->PerformLayout();
 			this->group_Tr2_Sp->ResumeLayout(false);
 			this->group_Tr2_Sp->PerformLayout();
-			this->group_Trace1->ResumeLayout(false);
-			this->group_Trace1->PerformLayout();
-			this->group_tr1_sp->ResumeLayout(false);
-			this->group_tr1_sp->PerformLayout();
 			this->group_VisaAddr->ResumeLayout(false);
 			this->group_VisaAddr->PerformLayout();
 			this->group_INITScan->ResumeLayout(false);
 			this->group_ReturnData->ResumeLayout(false);
 			this->group_foldername->ResumeLayout(false);
 			this->group_foldername->PerformLayout();
+			this->group_Trace->ResumeLayout(false);
+			this->group_Trace->PerformLayout();
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
-
+		
 
 
 
@@ -1404,7 +1583,6 @@ private: bool is_number(String^ testString){
 
 	//Next 4 lines are string conversion
 	IntPtr ptrToNativeString; //Pointer for String to Char conversion
-	char* nativeString; // Static Char used in conversion process
 	ptrToNativeString = Marshal::StringToHGlobalAnsi(testString); //PTR TO NATIVE STRING
 	std::string s = static_cast<char*>(ptrToNativeString.ToPointer()); //CAST POINT AS STATIC CHAR
 
@@ -1584,7 +1762,6 @@ private: std::string Controls_Frequency(void) {
 	**/
 
 	int exponent; //String used to add zeros based on GHz, Mhz, and kHz selection
-	String^ frequencyCMD; //Working variable for forming the string .... TO BE DELETED
 	
 	String^ frequencyStartCMD = ":SENS1:FREQ:STAR ";
 	String^ frequencyStopCMD = ":SENS1:FREQ:STOP ";
@@ -1841,6 +2018,11 @@ private: std::string convert_vcppString_string(String^ vcppString) {
 	return (std::string)charBuffer;
 }
 
+private: String^ convert_string_vcppString(std::string in_string) {
+	String^ nativeVISAREAD = gcnew String(in_string.c_str());
+	return nativeVISAREAD;
+}
+
 private: std::string readSCPI_Buffer(System::Void) {
 	/**
 	*   \brief Reads the SCPI buffer
@@ -1918,7 +2100,7 @@ private: System::Void saveSettings2File(std::string name_extension) {
 
 
 	//Frequency controls
-	buildString = buildString + "Frequency Control(True=Start_False=Center)," + StartStopRadio->Checked + "\n";
+	buildString = buildString + "Frequency Control(True=Start_False=Center)," + StartStopRadio->Checked + ",\n";
 
 	if (Start_GHz->Checked) {
 		exponent_temp = "GHz";
@@ -1929,7 +2111,7 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (Start_kHz->Checked) {
 		exponent_temp = "kHz";
 	}
-	buildString = buildString + "Frequency Start," + StartTextBox->Text + "," + exponent_temp + "\n";
+	buildString = buildString + "Frequency Start," + StartTextBox->Text + "," + exponent_temp + ",\n";
 
 	if (Stop_GHz->Checked) {
 		exponent_temp = "GHz";
@@ -1940,7 +2122,7 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (Stop_kHz->Checked) {
 		exponent_temp = "kHz";
 	}
-	buildString = buildString + "Frequency Stop," + StopTextBox->Text + "," + exponent_temp + "\n";
+	buildString = buildString + "Frequency Stop," + StopTextBox->Text + "," + exponent_temp + ",\n";
 
 	if (Center_GHz->Checked) {
 		exponent_temp = "GHz";
@@ -1951,7 +2133,7 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (Center_kHz->Checked) {
 		exponent_temp = "kHz";
 	}
-	buildString = buildString + "Frequency Center," + CenterTextBox->Text + "," + exponent_temp + "\n";
+	buildString = buildString + "Frequency Center," + CenterTextBox->Text + "," + exponent_temp + ",\n";
 
 	if (Span_GHz->Checked) {
 		exponent_temp = "GHz";
@@ -1962,17 +2144,17 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (Span_kHz->Checked) {
 		exponent_temp = "kHz";
 	}
-	buildString = buildString + "Frequency Span," + SpanTextBox->Text + "," + exponent_temp + "\n";
+	buildString = buildString + "Frequency Span," + SpanTextBox->Text + "," + exponent_temp + ",\n";
 
-	buildString = buildString + "Frequency Points," + numBox_Points->Text + "\n";
+	buildString = buildString + "Frequency Points," + numBox_Points->Text + ",\n";
 
 	//Power
-	buildString = buildString + "Power," + PowerTextBox->Text + "\n";
+	buildString = buildString + "Power," + PowerTextBox->Text + ",\n";
 	
 	//Trace 1
-	buildString = buildString + "Trace 1 Enable," + chkbx_Ch1_Tr1Enable->Checked + "\n";
+	buildString = buildString + "Trace 1 Enable," + chkbx_Ch1_Tr1Enable->Checked + ",\n";
 
-	buildString = buildString + "Trace 1 Type," + ListBox_Ch1_Trace1->SelectedIndex + "\n";
+	buildString = buildString + "Trace 1 Type," + ListBox_Ch1_Trace1->SelectedIndex + ",\n";
 
 	if (rad_Tr1_S11->Checked) {
 		s_param_temp = "S11";
@@ -1986,12 +2168,12 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (rad_Tr1_S22->Checked) {
 		s_param_temp = "S22";
 	}
-	buildString = buildString + "Trace 1 S parameter," + s_param_temp + "\n";
+	buildString = buildString + "Trace 1 S parameter," + s_param_temp + ",\n";
 
 	//Trace 2
-	buildString = buildString + "Trace 2 Enable," + chkbx_Ch1_Tr2Enable->Checked + "\n";
+	buildString = buildString + "Trace 2 Enable," + chkbx_Ch1_Tr2Enable->Checked + ",\n";
 
-	buildString = buildString + "Trace 2 Type," + ListBox_Ch1_Trace2->SelectedIndex + "\n";
+	buildString = buildString + "Trace 2 Type," + ListBox_Ch1_Trace2->SelectedIndex + ",\n";
 
 	if (rad_Tr2_S11->Checked) {
 		s_param_temp = "S11";
@@ -2005,12 +2187,12 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (rad_Tr2_S22->Checked) {
 		s_param_temp = "S22";
 	}
-	buildString = buildString + "Trace 2 S parameter," + s_param_temp + "\n";
+	buildString = buildString + "Trace 2 S parameter," + s_param_temp + ",\n";
 
 	//Trace 3
-	buildString = buildString + "Trace 3 Enable," + chkbx_Ch1_Tr3Enable->Checked + "\n";
+	buildString = buildString + "Trace 3 Enable," + chkbx_Ch1_Tr3Enable->Checked + ",\n";
 
-	buildString = buildString + "Trace 3 Type," + ListBox_Ch1_Trace3->SelectedIndex + "\n";
+	buildString = buildString + "Trace 3 Type," + ListBox_Ch1_Trace3->SelectedIndex + ",\n";
 
 	if (rad_Tr3_S11->Checked) {
 		s_param_temp = "S11";
@@ -2024,13 +2206,13 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (rad_Tr3_S22->Checked) {
 		s_param_temp = "S22";
 	}
-	buildString = buildString + "Trace 3 S parameter," + s_param_temp + "\n";
+	buildString = buildString + "Trace 3 S parameter," + s_param_temp + ",\n";
 
 
 	//Trace 4
-	buildString = buildString + "Trace 4 Enable," + chkbx_Ch1_Tr4Enable->Checked + "\n";
+	buildString = buildString + "Trace 4 Enable," + chkbx_Ch1_Tr4Enable->Checked + ",\n";
 
-	buildString = buildString + "Trace 4 Type," + ListBox_Ch1_Trace4->SelectedIndex + "\n";
+	buildString = buildString + "Trace 4 Type," + ListBox_Ch1_Trace4->SelectedIndex + ",\n";
 
 	if (rad_Tr4_S11->Checked) {
 		s_param_temp = "S11";
@@ -2044,7 +2226,7 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	if (rad_Tr4_S22->Checked) {
 		s_param_temp = "S22";
 	}
-	buildString = buildString + "Trace 4 S parameter," + s_param_temp + "\n";
+	buildString = buildString + "Trace 4 S parameter," + s_param_temp + ",\n";
 
 
 
@@ -2335,6 +2517,201 @@ private: System::Void Group_Channel1_Enter(System::Object^  sender, System::Even
 private: System::Void rTBX_Trace3_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 }
 private: System::Void StartTextBox_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void btn_LoadSettings_Click(System::Object^  sender, System::EventArgs^  e) {
+
+
+	OpenFileDialog^ openFileDialog1 = gcnew OpenFileDialog;
+
+	openFileDialog1->InitialDirectory = "%docdir%";
+	openFileDialog1->Filter = "csv files (*.csv)|*.csv";
+	openFileDialog1->FilterIndex = 1;
+	openFileDialog1->RestoreDirectory = true;
+
+	if (openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+	{
+		//print file selection to console
+		std::cout << "The following CSV file was attempted to be laoded: \n";
+		std::cout << convert_vcppString_string( openFileDialog1->FileName);
+		std::cout << "\n";
+
+
+		//std::ifstream classFile());
+
+		std::ifstream in;
+		in.open(convert_vcppString_string(openFileDialog1->FileName));
+		std::vector<char*> values;
+
+		const int MAXSIZE = 126;
+
+		char thisVal[MAXSIZE];
+
+		while (in.getline(thisVal, MAXSIZE, ',')) {
+			values.resize(values.size() + 1);
+			values.back() = new char[MAXSIZE];
+			strcpy(values.back(), thisVal);
+		}
+		in.close();
+
+		if (convert_string_vcppString((std::string)values[1])->Equals("True"))
+		{
+			StartStopRadio->Checked = TRUE;
+			CenterSpanRadio->Checked = FALSE;
+		}
+		else {
+			StartStopRadio->Checked = FALSE;
+			CenterSpanRadio->Checked = TRUE;
+		}
+
+		
+
+		//Start controls
+		StartTextBox->Text = convert_string_vcppString(values[3]);
+		if (convert_string_vcppString((std::string)values[4])->Equals("GHz")) {
+			Start_GHz->Checked = TRUE;
+			Start_MHz->Checked = FALSE;
+			Start_kHz->Checked = FALSE;
+		}
+		else if(convert_string_vcppString((std::string)values[4])->Equals("MHz"))
+		{
+			Start_GHz->Checked = FALSE;
+			Start_MHz->Checked = TRUE;
+			Start_kHz->Checked = FALSE;
+		}
+		else if (convert_string_vcppString((std::string)values[4])->Equals("kHz"))
+		{
+			Start_GHz->Checked = FALSE;
+			Start_MHz->Checked = FALSE;
+			Start_kHz->Checked = TRUE;
+		}
+		//Stop Controls
+		StopTextBox->Text = convert_string_vcppString(values[6]);
+		if (convert_string_vcppString((std::string)values[7])->Equals("GHz")) {
+			Stop_GHz->Checked = TRUE;
+			Stop_MHz->Checked = FALSE;
+			Stop_kHz->Checked = FALSE;
+		}
+		else if (convert_string_vcppString((std::string)values[7])->Equals("MHz"))
+		{
+			Stop_GHz->Checked = FALSE;
+			Stop_MHz->Checked = TRUE;
+			Stop_kHz->Checked = FALSE;
+		}
+		else if (convert_string_vcppString((std::string)values[7])->Equals("kHz"))
+		{
+			Stop_GHz->Checked = FALSE;
+			Stop_MHz->Checked = FALSE;
+			Stop_kHz->Checked = TRUE;
+		}
+		//Center Controls
+		CenterTextBox->Text = convert_string_vcppString(values[9]);
+		if (convert_string_vcppString((std::string)values[10])->Equals("GHz")) {
+			Center_GHz->Checked = TRUE;
+			Center_MHz->Checked = FALSE;
+			Center_kHz->Checked = FALSE;
+		}
+		else if (convert_string_vcppString((std::string)values[10])->Equals("MHz"))
+		{
+			Center_GHz->Checked = FALSE;
+			Center_MHz->Checked = TRUE;
+			Center_kHz->Checked = FALSE;
+		}
+		else if (convert_string_vcppString((std::string)values[10])->Equals("kHz"))
+		{
+			Center_GHz->Checked = FALSE;
+			Center_MHz->Checked = FALSE;
+			Center_kHz->Checked = TRUE;
+		}
+		//Span Controls
+		SpanTextBox->Text = convert_string_vcppString(values[12]);
+		if (convert_string_vcppString((std::string)values[13])->Equals("GHz")) {
+			Span_GHz->Checked = TRUE;
+			Span_MHz->Checked = FALSE;
+			Span_kHz->Checked = FALSE;
+		}
+		else if (convert_string_vcppString((std::string)values[13])->Equals("MHz"))
+		{
+			Span_GHz->Checked = FALSE;
+			Span_MHz->Checked = TRUE;
+			Span_kHz->Checked = FALSE;
+		}
+		else if (convert_string_vcppString((std::string)values[13])->Equals("kHz"))
+		{
+			Span_GHz->Checked = FALSE;
+			Span_MHz->Checked = FALSE;
+			Span_kHz->Checked = TRUE;
+		}
+		//Points controls
+		numBox_Points->Text = convert_string_vcppString(values[15]);
+		//Power
+		PowerTextBox->Text = convert_string_vcppString(values[17]);
+
+	}
+}
+private: System::Void btn_Tr1_Edit_Click(System::Object^  sender, System::EventArgs^  e) {
+	trace1->Show();
+	this->Hide();
+}
+private: System::Void btn_Tr2_Edit_Click(System::Object^  sender, System::EventArgs^  e) {
+	trace2->Show();
+	this->Hide();
+}
+private: System::Void btn_Tr3_Edit_Click(System::Object^  sender, System::EventArgs^  e) {
+	trace3->Show();
+	this->Hide();
+}
+private: System::Void btn_Tr4_Edit_Click(System::Object^  sender, System::EventArgs^  e) {
+	trace4->Show();
+	this->Hide();
+}
+
+
+
+public: System::Void set_TraceControl(int TrNumber, boolean enable, int TrType, int TrSParam) {
+
+	std::string linkedList_Type[] = { "Magnitude Logarithmic", "Magnitude Linear", "Real", "Imaginary", "Group Delay", "SWR", "Phase", "Unwrapped Phase", "P Phase", "S Linear", "S Logarithmic", "S Complex", "Smith", "S Admittance", "P Linear", "P Logarithmic", "Polar" };
+	std::string linkedList_Sparam[] = { "S11", "S12", "S21", "S22" };
+
+	if (TrNumber == 1) {
+		if (enable) {
+			chkbx_Tr1_Enable->Checked = TRUE;
+		}
+		else {
+			chkbx_Tr1_Enable->Checked = FALSE;
+		}
+		lbl_Tr1_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
+		lbl_Tr1_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	}
+	if (TrNumber == 2) {
+		if (enable) {
+			chkbx_Tr2_Enable->Checked = TRUE;
+		}
+		else {
+			chkbx_Tr2_Enable->Checked = FALSE;
+		}
+		lbl_Tr2_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
+		lbl_Tr2_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	}
+	if (TrNumber == 3) {
+		if (enable) {
+			chkbx_Tr3_Enable->Checked = TRUE;
+		}
+		else {
+			chkbx_Tr3_Enable->Checked = FALSE;
+		}
+		lbl_Tr3_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
+		lbl_Tr3_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	}
+	if (TrNumber == 4) {
+		if (enable) {
+			chkbx_Tr4_Enable->Checked = TRUE;
+		}
+		else {
+			chkbx_Tr4_Enable->Checked = FALSE;
+		}
+		lbl_Tr4_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
+		lbl_Tr4_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	}
 }
 };
 }

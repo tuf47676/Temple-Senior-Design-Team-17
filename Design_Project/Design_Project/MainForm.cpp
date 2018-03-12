@@ -1,6 +1,4 @@
-﻿//#include "stdafx.h"
-
-#include <string.h>
+﻿#include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "C:\Program Files (x86)\IVI Foundation\VISA\WinNT\agvisa\include\visatype.h"
@@ -11,10 +9,9 @@
 #include <cmath>
 #include <chrono>
 #include <ctime>
-//#include "engine.h"
 #pragma warning(disable:4996)
 #include "MainForm.h"
-#include "ScanAgendaForm.h"
+
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -62,7 +59,7 @@ void Main(array<String^>^ args) {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Design_Project::MainForm form;
-//	Design_Project::ScanAgendaForm form;
+
 	Application::Run(%form);
 
 
