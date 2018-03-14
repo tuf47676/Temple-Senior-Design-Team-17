@@ -30,8 +30,8 @@ Assembly WindowsFormsIntegration, Version=4.0.0.0, Culture=neutral, PublicKeyTok
 Class Design_Project.TraceControlEdit: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(System.Windows.Forms.Form, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    set_memory_address(Int32*, Int32*, Int32*): PrivateScope, Public, HideBySig
 Class Design_Project.MainForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
-  Methods:
-    set_TraceControl(Int32, Byte, Int32, Int32): PrivateScope, Public, HideBySig

@@ -1,4 +1,9 @@
 ﻿  MainForm.cpp
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2274): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2295): warning C4018: '<=': signed/unsigned mismatch
+c:\users\reed\source\repos\design_project\design_project\TraceControlEdit.h(234): warning C4101: 'tempSparam': unreferenced local variable
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2297): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2318): warning C4018: '<=': signed/unsigned mismatch
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2754): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2827): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2901): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\reed\source\repos\design_project\design_project\MainForm.h(2976): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
   Design_Project.vcxproj -> C:\Users\Reed\source\repos\Design_Project\Debug\Design_Project.exe

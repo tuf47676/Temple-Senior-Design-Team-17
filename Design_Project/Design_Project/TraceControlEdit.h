@@ -1,4 +1,5 @@
 #pragma once
+
 //#include "MainForm.h"
 
 
@@ -24,6 +25,9 @@ namespace Design_Project {
 			mainform = tempMainForm;
 			traceIDNumber = tempTraceNum;
 			lbl_TraceNumber->Text = "Trace "+ traceIDNumber + " Controls:";
+			
+			ListBox_TraceType->SelectedIndex = 0;
+
 			//
 			//TODO: Add the constructor code here
 			//
@@ -52,6 +56,10 @@ namespace Design_Project {
 	private: System::Windows::Forms::Button^  btn_Cancel;
 	private: System::Windows::Forms::Form ^ mainform;
 	private: int traceIDNumber;
+	private: int* address_traceType;
+	private: int* address_traceSParam;
+	private: int* address_traceEnable;
+
 	protected:
 
 	protected:
@@ -212,24 +220,37 @@ namespace Design_Project {
 
 		}
 #pragma endregion
+
+
+	//Address are being passed in
+	public: System::Void set_memory_address(int* trEnable, int* trType, int* trSParam) {
+		address_traceEnable = reinterpret_cast<int*>(trEnable);
+		address_traceType = reinterpret_cast<int*>(trType);
+		address_traceSParam = reinterpret_cast<int*>(trSParam);
+	}
+
+
 	private: System::Void btn_OK_Click(System::Object^  sender, System::EventArgs^  e) {
 		int tempSparam;
 		if (rad_S11->Checked) {
-			tempSparam = 1;
+			*address_traceSParam = 1;
 		}
 		else if (rad_S12->Checked) {
-			tempSparam = 2;
+			*address_traceSParam = 2;
 
 		}
 		else if (rad_S21->Checked) {
-			tempSparam = 3;
+			*address_traceSParam = 3;
 
 		}
 		else if (rad_S22->Checked) {
-			tempSparam = 4;
+			*address_traceSParam = 4;
 
 		}
-	//	set_TraceControl(traceIDNumber, chx_EnableTrace->Checked, ListBox_TraceType->SelectedIndex, tempSparam);
+		
+		*address_traceType = ListBox_TraceType->SelectedIndex;
+		*address_traceEnable = chx_EnableTrace->Checked;
+
 		this->Hide();//Hide trace control window
 		mainform->Show();
 	}

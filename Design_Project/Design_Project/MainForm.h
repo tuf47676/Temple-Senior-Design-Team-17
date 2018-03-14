@@ -56,17 +56,33 @@ namespace Design_Project {
 		{
 			InitializeComponent();
 
-			//label2->Text = DEFAULT_LOGICAL_ADDRESS;
-			//sendSCPI_String("*IDN?");
-			//std::string tempString = readSCPI_Buffer();
-			//String^ nativeVISAREAD = gcnew String(tempString.c_str());
-			//lbl_IDN_resp->Text = nativeVISAREAD;
 
 			//default list box selection
 			ListBox_Ch1_Trace1->SelectedIndex = 0;
 			ListBox_Ch1_Trace2->SelectedIndex = 0;
 			ListBox_Ch1_Trace3->SelectedIndex = 0;
 			ListBox_Ch1_Trace4->SelectedIndex = 0;	
+
+
+			pin_ptr<int> temp_Tr1Type = &Tr1Type;
+			pin_ptr<int> temp_Tr2Type = &Tr2Type;
+			pin_ptr<int> temp_Tr3Type = &Tr3Type;
+			pin_ptr<int> temp_Tr4Type = &Tr4Type;
+
+			pin_ptr<int> temp_Tr1SParam = &Tr1SParam;
+			pin_ptr<int> temp_Tr2SParam = &Tr2SParam;
+			pin_ptr<int> temp_Tr3SParam = &Tr3SParam;
+			pin_ptr<int> temp_Tr4SParam = &Tr4SParam;
+
+			pin_ptr<int> temp_Tr1Enable = &Tr1Enable;
+			pin_ptr<int> temp_Tr2Enable = &Tr2Enable;
+			pin_ptr<int> temp_Tr3Enable = &Tr3Enable;
+			pin_ptr<int> temp_Tr4Enable = &Tr4Enable;
+
+			trace1->set_memory_address(temp_Tr1Enable, temp_Tr1Type, temp_Tr1SParam);
+			trace2->set_memory_address(temp_Tr2Enable, temp_Tr2Type, temp_Tr2SParam);
+			trace3->set_memory_address(temp_Tr3Enable, temp_Tr3Type, temp_Tr3SParam);
+			trace4->set_memory_address(temp_Tr4Enable, temp_Tr4Type, temp_Tr4SParam);
 		}
 		
 
@@ -82,12 +98,18 @@ namespace Design_Project {
 			}
 		}
 
+		//int TrNumber, boolean enable, int TrType, int TrSParam
 
+	private: int Tr1Type, Tr2Type, Tr3Type, Tr4Type;
+	private: int Tr1Enable, Tr2Enable, Tr3Enable, Tr4Enable;
+	private: int Tr1SParam, Tr2SParam, Tr3SParam, Tr4SParam;
+	
 	TraceControlEdit^ trace1 = gcnew TraceControlEdit(this, 1);
 	TraceControlEdit^ trace2 = gcnew TraceControlEdit(this, 2);
 	TraceControlEdit^ trace3 = gcnew TraceControlEdit(this, 3);
 	TraceControlEdit^ trace4 = gcnew TraceControlEdit(this, 4);
 	
+
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  lbl_IDN_resp;
 	private: System::Windows::Forms::Label^  lbl_instIDN;
@@ -194,6 +216,7 @@ namespace Design_Project {
 	private: System::Windows::Forms::Button^  btn_Tr2_Edit;
 	private: System::Windows::Forms::Label^  lbl_Tr2_S;
 	private: System::Windows::Forms::Label^  lbl_Tr2_Type;
+
 	private: System::Windows::Forms::CheckBox^  chkbx_Tr2_Enable;
 
 
@@ -1609,7 +1632,7 @@ private: std::string Controls_Channel_Trace(void) {
 
 
 	String^ traceCMD = ":CALC1:TRAC1:FORM ";
-	String^ tempSelection1 = gcnew String(linkedList[ListBox_Ch1_Trace1->SelectedIndex].c_str()); //convert string to String^
+	String^ tempSelection1 = gcnew String(linkedList[Tr1Type].c_str()); //convert string to String^
 	traceCMD = traceCMD + tempSelection1;
 	if (chkbx_Ch1_Tr1Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
@@ -1618,7 +1641,7 @@ private: std::string Controls_Channel_Trace(void) {
 	
 
 	traceCMD = ":CALC1:TRAC2:FORM ";
-	String^ tempSelection2 = gcnew String(linkedList[ListBox_Ch1_Trace2->SelectedIndex].c_str());
+	String^ tempSelection2 = gcnew String(linkedList[Tr2Type].c_str());
 	traceCMD = traceCMD + tempSelection2;
 	if (chkbx_Ch1_Tr2Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
@@ -1626,7 +1649,7 @@ private: std::string Controls_Channel_Trace(void) {
 	}
 
 	traceCMD = ":CALC1:TRAC3:FORM ";
-	String^ tempSelection3 = gcnew String(linkedList[ListBox_Ch1_Trace3->SelectedIndex].c_str());
+	String^ tempSelection3 = gcnew String(linkedList[Tr3Type].c_str());
 	traceCMD = traceCMD + tempSelection3;
 	if (chkbx_Ch1_Tr3Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
@@ -1634,7 +1657,7 @@ private: std::string Controls_Channel_Trace(void) {
 	}
 
 	traceCMD = ":CALC1:TRAC4:FORM ";
-	String^ tempSelection4 = gcnew String(linkedList[ListBox_Ch1_Trace4->SelectedIndex].c_str());
+	String^ tempSelection4 = gcnew String(linkedList[Tr4Type].c_str());
 	traceCMD = traceCMD + tempSelection4;
 	if (chkbx_Ch1_Tr4Enable->Checked == true) {
 		sendSCPI_String(traceCMD);
@@ -2412,22 +2435,22 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 		std::string tempReturn;
 		String^ nativeVISAREAD;
 
-		if (chkbx_Ch1_Tr1Enable->Checked) {
+		if (Tr1Enable == 1) {
 
 			//Enable trace
 			sendSCPI_String(":CALC1:PAR1:SEL");
 			
 			//Set S-param
-			if (rad_Tr1_S11->Checked) {
+			if (Tr1SParam == 1) {
 				sendSCPI_String(":CALC:PAR1:DEF S11");
 			}
-			if (rad_Tr1_S12->Checked) {
+			if (Tr1SParam == 2) {
 				sendSCPI_String(":CALC:PAR1:DEF S12");
 			}
-			if (rad_Tr1_S21->Checked) {
+			if (Tr1SParam == 3) {
 				sendSCPI_String(":CALC:PAR1:DEF S21");
 			}
-			if (rad_Tr1_S22->Checked) {
+			if (Tr1SParam == 4) {
 				sendSCPI_String(":CALC:PAR1:DEF S22");
 			}
 
@@ -2437,20 +2460,20 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			saveData2File(nativeVISAREAD, "Trace1", 0);
 			rTBX_Trace1->Text = nativeVISAREAD;
 		}
-		if (chkbx_Ch1_Tr2Enable->Checked) {
+		if (Tr2Enable == 1) {
 			sendSCPI_String(":CALC1:PAR2:SEL");
 
 			//Set S-param
-			if (rad_Tr2_S11->Checked) {
+			if (Tr2SParam == 1) {
 				sendSCPI_String(":CALC:PAR2:DEF S11");
 			}
-			if (rad_Tr2_S12->Checked) {
+			if (Tr2SParam == 2) {
 				sendSCPI_String(":CALC:PAR2:DEF S12");
 			}
-			if (rad_Tr2_S21->Checked) { 
+			if (Tr2SParam == 3) {
 				sendSCPI_String(":CALC:PAR2:DEF S21");
 			}
-			if (rad_Tr2_S22->Checked) {
+			if (Tr2SParam == 4) {
 				sendSCPI_String(":CALC:PAR2:DEF S22");
 			}
 
@@ -2460,20 +2483,20 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			saveData2File(nativeVISAREAD, "Trace2", 0);
 			rTBX_Trace2->Text = nativeVISAREAD;
 		}
-		if (chkbx_Ch1_Tr3Enable->Checked) {
+		if (Tr3Enable == 1) {
 			sendSCPI_String(":CALC1:PAR3:SEL");
 
 			//Set S-param
-			if (rad_Tr3_S11->Checked) {
+			if (Tr3SParam == 1) {
 				sendSCPI_String(":CALC:PAR3:DEF S11");
 			}
-			if (rad_Tr3_S12->Checked) {
+			if (Tr3SParam == 2) {
 				sendSCPI_String(":CALC:PAR3:DEF S12");
 			}
-			if (rad_Tr3_S21->Checked) {
+			if (Tr3SParam == 3) {
 				sendSCPI_String(":CALC:PAR3:DEF S21");
 			}
-			if (rad_Tr3_S22->Checked) {
+			if (Tr3SParam == 4) {
 				sendSCPI_String(":CALC:PAR3:DEF S22");
 			}
 
@@ -2483,20 +2506,20 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			saveData2File(nativeVISAREAD, "Trace3", 0);
 			rTBX_Trace3->Text = nativeVISAREAD;
 		}
-		if (chkbx_Ch1_Tr4Enable->Checked) {
+		if (Tr4Enable == 1) {
 			sendSCPI_String(":CALC1:PAR4:SEL");
 
 			//Set S-param
-			if (rad_Tr4_S11->Checked) {
+			if (Tr4SParam == 1) {
 				sendSCPI_String(":CALC:PAR4:DEF S11");
 			}
-			if (rad_Tr4_S12->Checked) {
+			if (Tr4SParam == 2) {
 				sendSCPI_String(":CALC:PAR4:DEF S12");
 			}
-			if (rad_Tr4_S21->Checked) {
+			if (Tr4SParam == 3) {
 				sendSCPI_String(":CALC:PAR4:DEF S21");
 			}
-			if (rad_Tr4_S22->Checked) {
+			if (Tr4SParam == 4) {
 				sendSCPI_String(":CALC:PAR4:DEF S22");
 			}
 
@@ -2665,53 +2688,307 @@ private: System::Void btn_Tr4_Edit_Click(System::Object^  sender, System::EventA
 	this->Hide();
 }
 
+protected: virtual void OnVisibleChanged(EventArgs^ e) override
+{
+	//Update Trace 1
+	
+	if (Tr1Enable) {
+		chkbx_Tr1_Enable->Checked = TRUE;
+	}
+	else {
+		chkbx_Tr1_Enable->Checked = FALSE;
+	}
+
+	if (Tr1Type == 0) {
+		lbl_Tr1_Type->Text = "Type: Magnitude Logarithmic";
+	}
+	if (Tr1Type == 1) {
+		lbl_Tr1_Type->Text = "Type: Magnitude Linear";
+	}
+	if (Tr1Type == 2) {
+		lbl_Tr1_Type->Text = "Type: Real";
+	}
+	if (Tr1Type == 3) {
+		lbl_Tr1_Type->Text = "Type: Imaginary";
+	}
+	if (Tr1Type == 4) {
+		lbl_Tr1_Type->Text = "Type: Group Delay";
+	}
+	if (Tr1Type == 5) {
+		lbl_Tr1_Type->Text = "Type: SWR";
+	}
+	if (Tr1Type == 6) {
+		lbl_Tr1_Type->Text = "Type: Phase";
+	}
+	if (Tr1Type == 7) {
+		lbl_Tr1_Type->Text = "Type: Unwrapped Phase";
+	}
+	if (Tr1Type == 8) {
+		lbl_Tr1_Type->Text = "Type: P Phase";
+	}
+	if (Tr1Type == 9) {
+		lbl_Tr1_Type->Text = "Type: S Linear";
+	}
+	if (Tr1Type == 10) {
+		lbl_Tr1_Type->Text = "Type: S Logarithmic";
+	}
+	if (Tr1Type == 11) {
+		lbl_Tr1_Type->Text = "Type: S Complex";
+	}
+	if (Tr1Type == 12) {
+		lbl_Tr1_Type->Text = "Type: Smith";
+	}
+	if (Tr1Type == 13) {
+		lbl_Tr1_Type->Text = "Type: S Admittance";
+	}
+	if (Tr1Type == 14) {
+		lbl_Tr1_Type->Text = "Type: S P Linear";
+	}
+	if (Tr1Type == 15) {
+		lbl_Tr1_Type->Text = "Type: P Logarithmic";
+	}
+	if (Tr1Type == 16) {
+		lbl_Tr1_Type->Text = "Type: Polar";
+	}
+
+	if (Tr1SParam == 1 | Tr1SParam == 0) {
+		lbl_Tr1_S->Text = "S11";
+	}
+	if (Tr1SParam == 2) {
+		lbl_Tr1_S->Text = "S12";
+	}
+	if (Tr1SParam == 3) {
+		lbl_Tr1_S->Text = "S21";
+	}
+	if (Tr1SParam == 4) {
+		lbl_Tr1_S->Text = "S22";
+	}
+	
+	//Update Trace 2
+	if (Tr2Enable) {
+		chkbx_Tr2_Enable->Checked = TRUE;
+	}
+	else {
+		chkbx_Tr2_Enable->Checked = FALSE;
+	}
+
+	if (Tr2Type == 0) {
+		lbl_Tr2_Type->Text = "Type: Magnitude Logarithmic";
+	}
+	if (Tr2Type == 1) {
+		lbl_Tr2_Type->Text = "Type: Magnitude Linear";
+	}
+	if (Tr2Type == 2) {
+		lbl_Tr2_Type->Text = "Type: Real";
+	}
+	if (Tr2Type == 3) {
+		lbl_Tr2_Type->Text = "Type: Imaginary";
+	}
+	if (Tr2Type == 4) {
+		lbl_Tr2_Type->Text = "Type: Group Delay";
+	}
+	if (Tr2Type == 5) {
+		lbl_Tr2_Type->Text = "Type: SWR";
+	}
+	if (Tr2Type == 6) {
+		lbl_Tr2_Type->Text = "Type: Phase";
+	}
+	if (Tr2Type == 7) {
+		lbl_Tr2_Type->Text = "Type: Unwrapped Phase";
+	}
+	if (Tr2Type == 8) {
+		lbl_Tr2_Type->Text = "Type: P Phase";
+	}
+	if (Tr2Type == 9) {
+		lbl_Tr2_Type->Text = "Type: S Linear";
+	}
+	if (Tr2Type == 10) {
+		lbl_Tr2_Type->Text = "Type: S Logarithmic";
+	}
+	if (Tr2Type == 11) {
+		lbl_Tr2_Type->Text = "Type: S Complex";
+	}
+	if (Tr2Type == 12) {
+		lbl_Tr2_Type->Text = "Type: Smith";
+	}
+	if (Tr2Type == 13) {
+		lbl_Tr2_Type->Text = "Type: S Admittance";
+	}
+	if (Tr2Type == 14) {
+		lbl_Tr2_Type->Text = "Type: S P Linear";
+	}
+	if (Tr2Type == 15) {
+		lbl_Tr2_Type->Text = "Type: P Logarithmic";
+	}
+	if (Tr2Type == 16) {
+		lbl_Tr2_Type->Text = "Type: Polar";
+	}
+
+	if (Tr2SParam == 1 | Tr2SParam == 0) {
+		lbl_Tr2_S->Text = "S11";
+	}
+	if (Tr2SParam == 2) {
+		lbl_Tr2_S->Text = "S12";
+	}
+	if (Tr2SParam == 3) {
+		lbl_Tr2_S->Text = "S21";
+	}
+	if (Tr2SParam == 4) {
+		lbl_Tr2_S->Text = "S22";
+	}
+
+	//Update Trace 3
+	if (Tr3Enable) {
+		chkbx_Tr3_Enable->Checked = TRUE;
+	}
+	else {
+		chkbx_Tr3_Enable->Checked = FALSE;
+	}
+	
+	if (Tr3Type == 0) {
+		lbl_Tr3_Type->Text = "Type: Magnitude Logarithmic";
+	}
+	if (Tr3Type == 1) {
+		lbl_Tr3_Type->Text = "Type: Magnitude Linear";
+	}
+	if (Tr3Type == 2) {
+		lbl_Tr3_Type->Text = "Type: Real";
+	}
+	if (Tr3Type == 3) {
+		lbl_Tr3_Type->Text = "Type: Imaginary";
+	}
+	if (Tr3Type == 4) {
+		lbl_Tr3_Type->Text = "Type: Group Delay";
+	}
+	if (Tr3Type == 5) {
+		lbl_Tr3_Type->Text = "Type: SWR";
+	}
+	if (Tr3Type == 6) {
+		lbl_Tr3_Type->Text = "Type: Phase";
+	}
+	if (Tr3Type == 7) {
+		lbl_Tr3_Type->Text = "Type: Unwrapped Phase";
+	}
+	if (Tr3Type == 8) {
+		lbl_Tr3_Type->Text = "Type: P Phase";
+	}
+	if (Tr3Type == 9) {
+		lbl_Tr3_Type->Text = "Type: S Linear";
+	}
+	if (Tr3Type == 10) {
+		lbl_Tr3_Type->Text = "Type: S Logarithmic";
+	}
+	if (Tr3Type == 11) {
+		lbl_Tr3_Type->Text = "Type: S Complex";
+	}
+	if (Tr3Type == 12) {
+		lbl_Tr3_Type->Text = "Type: Smith";
+	}
+	if (Tr3Type == 13) {
+		lbl_Tr3_Type->Text = "Type: S Admittance";
+	}
+	if (Tr3Type == 14) {
+		lbl_Tr3_Type->Text = "Type: S P Linear";
+	}
+	if (Tr3Type == 15) {
+		lbl_Tr3_Type->Text = "Type: P Logarithmic";
+	}
+	if (Tr3Type == 16) {
+		lbl_Tr3_Type->Text = "Type: Polar";
+	}
 
 
-public: System::Void set_TraceControl(int TrNumber, boolean enable, int TrType, int TrSParam) {
+	if (Tr3SParam == 1 | Tr3SParam == 0) {
+		lbl_Tr3_S->Text = "S11";
+	}
+	if (Tr3SParam == 2) {
+		lbl_Tr3_S->Text = "S12";
+	}
+	if (Tr3SParam == 3) {
+		lbl_Tr3_S->Text = "S21";
+	}
+	if (Tr3SParam == 4) {
+		lbl_Tr3_S->Text = "S22";
+	}
 
-	std::string linkedList_Type[] = { "Magnitude Logarithmic", "Magnitude Linear", "Real", "Imaginary", "Group Delay", "SWR", "Phase", "Unwrapped Phase", "P Phase", "S Linear", "S Logarithmic", "S Complex", "Smith", "S Admittance", "P Linear", "P Logarithmic", "Polar" };
-	std::string linkedList_Sparam[] = { "S11", "S12", "S21", "S22" };
+	//Update Trace 4
+	if (Tr4Enable) {
+		chkbx_Tr4_Enable->Checked = TRUE;
+	}
+	else {
+		chkbx_Tr4_Enable->Checked = FALSE;
+	}
+	
 
-	if (TrNumber == 1) {
-		if (enable) {
-			chkbx_Tr1_Enable->Checked = TRUE;
-		}
-		else {
-			chkbx_Tr1_Enable->Checked = FALSE;
-		}
-		lbl_Tr1_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
-		lbl_Tr1_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	if (Tr4Type == 0) {
+		lbl_Tr4_Type->Text = "Type: Magnitude Logarithmic";
 	}
-	if (TrNumber == 2) {
-		if (enable) {
-			chkbx_Tr2_Enable->Checked = TRUE;
-		}
-		else {
-			chkbx_Tr2_Enable->Checked = FALSE;
-		}
-		lbl_Tr2_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
-		lbl_Tr2_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	if (Tr4Type == 1) {
+		lbl_Tr4_Type->Text = "Type: Magnitude Linear";
 	}
-	if (TrNumber == 3) {
-		if (enable) {
-			chkbx_Tr3_Enable->Checked = TRUE;
-		}
-		else {
-			chkbx_Tr3_Enable->Checked = FALSE;
-		}
-		lbl_Tr3_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
-		lbl_Tr3_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	if (Tr4Type == 2) {
+		lbl_Tr4_Type->Text = "Type: Real";
 	}
-	if (TrNumber == 4) {
-		if (enable) {
-			chkbx_Tr4_Enable->Checked = TRUE;
-		}
-		else {
-			chkbx_Tr4_Enable->Checked = FALSE;
-		}
-		lbl_Tr4_Type->Text = convert_string_vcppString(linkedList_Type[TrType]);
-		lbl_Tr4_S->Text = convert_string_vcppString(linkedList_Sparam[TrSParam]);
+	if (Tr4Type == 3) {
+		lbl_Tr4_Type->Text = "Type: Imaginary";
 	}
+	if (Tr4Type == 4) {
+		lbl_Tr4_Type->Text = "Type: Group Delay";
+	}
+	if (Tr4Type == 5) {
+		lbl_Tr4_Type->Text = "Type: SWR";
+	}
+	if (Tr4Type == 6) {
+		lbl_Tr4_Type->Text = "Type: Phase";
+	}
+	if (Tr4Type == 7) {
+		lbl_Tr4_Type->Text = "Type: Unwrapped Phase";
+	}
+	if (Tr4Type == 8) {
+		lbl_Tr4_Type->Text = "Type: P Phase";
+	}
+	if (Tr4Type == 9) {
+		lbl_Tr4_Type->Text = "Type: S Linear";
+	}
+	if (Tr4Type == 10) {
+		lbl_Tr4_Type->Text = "Type: S Logarithmic";
+	}
+	if (Tr4Type == 11) {
+		lbl_Tr4_Type->Text = "Type: S Complex";
+	}
+	if (Tr4Type == 12) {
+		lbl_Tr4_Type->Text = "Type: Smith";
+	}
+	if (Tr4Type == 13) {
+		lbl_Tr4_Type->Text = "Type: S Admittance";
+	}
+	if (Tr4Type == 14) {
+		lbl_Tr4_Type->Text = "Type: S P Linear";
+	}
+	if (Tr4Type == 15) {
+		lbl_Tr4_Type->Text = "Type: P Logarithmic";
+	}
+	if (Tr4Type == 16) {
+		lbl_Tr4_Type->Text = "Type: Polar";
+	}
+
+
+	if (Tr4SParam == 1 | Tr4SParam == 0) {
+		lbl_Tr4_S->Text = "S11";
+	}
+	if (Tr4SParam == 2) {
+		lbl_Tr4_S->Text = "S12";
+	}
+	if (Tr4SParam == 3) {
+		lbl_Tr4_S->Text = "S21";
+	}
+	if (Tr4SParam == 4) {
+		lbl_Tr4_S->Text = "S22";
+	}
+
+	
+
 }
+
 };
 }
