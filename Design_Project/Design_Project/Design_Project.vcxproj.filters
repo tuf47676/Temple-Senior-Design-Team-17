@@ -21,6 +21,9 @@
     <ClCompile Include="TraceControlEdit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CurrentlyScanning.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainForm.h">
@@ -29,10 +32,24 @@
     <ClInclude Include="TraceControlEdit.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="CurrentlyScanning.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MainForm.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
+    <EmbeddedResource Include="TraceControlEdit.resx">
+      <Filter>Resource Files</Filter>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Red_Cross.png">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="Green_Check.png">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

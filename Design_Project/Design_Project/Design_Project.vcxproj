@@ -141,10 +141,14 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CurrentlyScanning.cpp" />
     <ClCompile Include="MainForm.cpp" />
     <ClCompile Include="TraceControlEdit.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CurrentlyScanning.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
     <ClInclude Include="MainForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -153,12 +157,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CurrentlyScanning.resx">
+      <DependentUpon>CurrentlyScanning.h</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.h</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TraceControlEdit.resx">
       <DependentUpon>TraceControlEdit.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Green_Check.png" />
+    <Image Include="Red_Cross.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
