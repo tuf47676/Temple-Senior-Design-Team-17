@@ -1,0 +1,14 @@
+﻿  MyForm.cpp
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(309): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(310): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(311): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(312): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(316): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(317): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(318): warning C4553: '==': operator has no effect; did you intend '='?
+c:\users\tuf59113\source\repos\project1\project1\MyForm.h(319): warning C4553: '==': operator has no effect; did you intend '='?
+MyForm.cpp(51): warning C4101: 'status': unreferenced local variable
+MyForm.cpp(59): warning C4101: 'bytes_sent': unreferenced local variable
+MyForm.cpp(59): warning C4101: 'bytes_rec': unreferenced local variable
+MyForm.obj : warning LNK4248: unresolved typeref token (01000026) for 'sp_port'; image may not run
+  Project1.vcxproj -> C:\Users\tuf59113\source\repos\Project1\Debug\Project1.exe
