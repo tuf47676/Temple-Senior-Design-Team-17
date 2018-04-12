@@ -43,13 +43,8 @@
     <EmbeddedResource Include="TraceControlEdit.resx">
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Red_Cross.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="Green_Check.png">
-      <Filter>Source Files</Filter>
-    </Image>
+    <EmbeddedResource Include="CurrentlyScanning.resx">
+      <Filter>Resource Files</Filter>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

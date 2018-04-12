@@ -50,9 +50,10 @@ namespace Design_Project {
 	private: int numbox_X, numbox_Y, totalScanPoints, currentScanPoint;
 
 
-	public: System::Void updateVisuals(int currentScanPoint, int currentTime) {
-		lbl_FractionComplete->Text = "Completion: " + currentScanPoint + "/" + totalScanPoints;
-		Sleep(100);
+	public: System::Void updateVisuals(int x, int y, int currentTime) {
+		int currentScanPoint = (y*numbox_Y) + x;
+		lbl_FractionComplete->Text = "Completion: " + currentScanPoint + "/" + totalScanPoints + "\nX Position: " + x + "\nY Position: " + y;
+		Refresh();
 	}
 
 

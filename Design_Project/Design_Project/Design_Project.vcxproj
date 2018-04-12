@@ -167,10 +167,6 @@
       <DependentUpon>TraceControlEdit.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="Green_Check.png" />
-    <Image Include="Red_Cross.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

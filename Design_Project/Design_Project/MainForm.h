@@ -67,9 +67,15 @@ namespace Design_Project {
 			std::cout << "\n\n";
 			
 			//Update NA info
+			ViSession viDefaultRM, Instrument;
+			ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
+			ViUInt32 actual;
+			viOpenDefaultRM(&viDefaultRM);
+			viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
+
 			lbl_ipAdress->Text = DEFAULT_LOGICAL_ADDRESS;
-			sendSCPI_String("*IDN?");
-			lbl_IDN_resp->Text = convert_string_vcppString(readSCPI_Buffer());
+			sendSCPI_String("*IDN?", &Instrument);
+			lbl_IDN_resp->Text = convert_string_vcppString(readSCPI_Buffer(&Instrument));
 
 			//Disable scan buttons
 			SetCMDButton->Enabled = FALSE;
@@ -1352,17 +1358,23 @@ private: System::Void CenterSpanRadio_CheckedChanged(System::Object^  sender, Sy
 private: System::Void SetCMDButton_Click(System::Object^  sender, System::EventArgs^  e) {
 	std::string returnStatus; //used to catch the what the functions return
 
+	ViSession viDefaultRM, Instrument;
+	ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
+	viOpenDefaultRM(&viDefaultRM);
+	viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
+
+
 	std::cout << "The BUTTON SetCMDButton was pressed \n";
-	returnStatus = Controls_Frequency();
+	returnStatus = Controls_Frequency(&Instrument);
 	std::cout << returnStatus;
 	std::cout << "\n";
-	returnStatus = Controls_Power();
+	returnStatus = Controls_Power(&Instrument);
 	std::cout << returnStatus;
 	std::cout << "\n";
-	returnStatus = Controls_Channel_Trace();
+	returnStatus = Controls_Channel_Trace(&Instrument);
 	std::cout << returnStatus;
 	std::cout << "\n";
-	returnStatus = Controls_Points();
+	returnStatus = Controls_Points(&Instrument);
 	std::cout << returnStatus;
 	std::cout << "\n";
 	std::cout << "\n";
@@ -1389,7 +1401,7 @@ private: bool is_number(String^ testString){
 	return(strspn(s.c_str(), "-.0123456789") == s.size()); //Check for valid chars
 }
 
-private: std::string Controls_Channel_Trace(void) {
+private: std::string Controls_Channel_Trace(ViSession* Instrument) {
 	/**
 	*   \brief Sends Trace Controls to NA.
 	*
@@ -1401,10 +1413,10 @@ private: std::string Controls_Channel_Trace(void) {
 	std::string linkedList[] = { "MLOG", "MLIN", "REAL", "IMAG", "GDEL", "SWR", "PHAS", "UPH", "PPH", "SLIN", "SLOG" , "SCOM" , "SMIT" , "SADM" , "PLIN", "PLOG", "POL" };
 
 	//Disable all traces before turning them back on again
-	sendSCPI_String(":DISP:WIND1:TRAC1:STAT OFF");
-	sendSCPI_String(":DISP:WIND1:TRAC2:STAT OFF");
-	sendSCPI_String(":DISP:WIND1:TRAC3:STAT OFF");
-	sendSCPI_String(":DISP:WIND1:TRAC4:STAT OFF");
+	sendSCPI_String(":DISP:WIND1:TRAC1:STAT OFF", Instrument);
+	sendSCPI_String(":DISP:WIND1:TRAC2:STAT OFF", Instrument);
+	sendSCPI_String(":DISP:WIND1:TRAC3:STAT OFF", Instrument);
+	sendSCPI_String(":DISP:WIND1:TRAC4:STAT OFF", Instrument);
 
 
 
@@ -1412,8 +1424,8 @@ private: std::string Controls_Channel_Trace(void) {
 	String^ tempSelection1 = gcnew String(linkedList[Tr1Type].c_str()); //convert string to String^
 	traceCMD = traceCMD + tempSelection1;
 	if (Tr1Enable == 1) {
-		sendSCPI_String(traceCMD);
-		sendSCPI_String(":DISP:WIND1:TRAC1:STAT ON");
+		sendSCPI_String(traceCMD, Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC1:STAT ON", Instrument);
 	}
 	
 
@@ -1421,24 +1433,24 @@ private: std::string Controls_Channel_Trace(void) {
 	String^ tempSelection2 = gcnew String(linkedList[Tr2Type].c_str());
 	traceCMD = traceCMD + tempSelection2;
 	if (Tr2Enable == 1) {
-		sendSCPI_String(traceCMD);
-		sendSCPI_String(":DISP:WIND1:TRAC2:STAT ON");
+		sendSCPI_String(traceCMD, Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC2:STAT ON", Instrument);
 	}
 
 	traceCMD = ":CALC1:TRAC3:FORM ";
 	String^ tempSelection3 = gcnew String(linkedList[Tr3Type].c_str());
 	traceCMD = traceCMD + tempSelection3;
 	if (Tr3Enable == 1) {
-		sendSCPI_String(traceCMD);
-		sendSCPI_String(":DISP:WIND1:TRAC3:STAT ON");
+		sendSCPI_String(traceCMD, Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC3:STAT ON", Instrument);
 	}
 
 	traceCMD = ":CALC1:TRAC4:FORM ";
 	String^ tempSelection4 = gcnew String(linkedList[Tr4Type].c_str());
 	traceCMD = traceCMD + tempSelection4;
 	if (Tr4Enable == 1) {
-		sendSCPI_String(traceCMD);
-		sendSCPI_String(":DISP:WIND1:TRAC4:STAT ON");
+		sendSCPI_String(traceCMD, Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC4:STAT ON", Instrument);
 	}
 
 	//Check if no traces are selected
@@ -1478,7 +1490,7 @@ private: std::string Controls_Channel_Trace(void) {
 	
 }
 
-private: std::string Controls_Power(void) {
+private: std::string Controls_Power(ViSession* Instrument) {
 	/**
 	*   \brief Forms, checks and sends Power Controls to NA.
 	*
@@ -1511,13 +1523,13 @@ private: std::string Controls_Power(void) {
 	}
 
 	powerCMD = powerCMD + powerNum;
-	sendSCPI_String(powerCMD);
+	sendSCPI_String(powerCMD, Instrument);
 	
 	//INCOMPLETE CODE BELOW!!!!!!
 
 	//Power should be checked now
-	sendSCPI_String(":SOUR:POW:LEV:IMM:AMPL?");
-	std::string returnMessage = readSCPI_Buffer();
+	sendSCPI_String(":SOUR:POW:LEV:IMM:AMPL?", Instrument);
+	std::string returnMessage = readSCPI_Buffer(Instrument);
 	double retPower = string_science_to_double(returnMessage);
 	if (retPower == powerNum) {
 		returnMessage = "Power Control Matched! \n";
@@ -1530,7 +1542,7 @@ private: std::string Controls_Power(void) {
 	
 }
 
-private: std::string Controls_Points(void) {
+private: std::string Controls_Points(ViSession* Instrument) {
 	/**
 	*   \brief Forms, checks and sends number of points in sweep to NA.
 	*
@@ -1541,12 +1553,12 @@ private: std::string Controls_Points(void) {
 	**/
 	String^ pointsCMD = ":SENS1:SWE:POIN ";
 	pointsCMD = pointsCMD + numBox_Points->Value;
-	sendSCPI_String(pointsCMD);
+	sendSCPI_String(pointsCMD, Instrument);
 
 	//error checking
 	pointsCMD = ":SENS1:SWE:POIN?";
-	sendSCPI_String(pointsCMD);
-	std::string tempReturn = readSCPI_Buffer();
+	sendSCPI_String(pointsCMD, Instrument);
+	std::string tempReturn = readSCPI_Buffer(Instrument);
 	if (string_to_double(tempReturn) == ((double)numBox_Points->Value)) {
 		return "Points Control Matched! \n";
 	}
@@ -1555,7 +1567,7 @@ private: std::string Controls_Points(void) {
 }
 
 
-private: std::string Controls_Frequency(void) {
+private: std::string Controls_Frequency(ViSession* Instrument) {
 	/**
 	*   \brief Forms, checks and sends Frequency Controls to NA.
 	*
@@ -1646,17 +1658,17 @@ private: std::string Controls_Frequency(void) {
 			returnStatus = "Start and Stop Frequencies are in range\n";
 			std::cout << returnStatus;
 			frequencyStartCMD = frequencyStartCMD + frequencyStartNum;
-			sendSCPI_String(frequencyStartCMD);
+			sendSCPI_String(frequencyStartCMD, Instrument);
 			frequencyStopCMD = frequencyStopCMD + frequencyStopNum;
-			sendSCPI_String(frequencyStopCMD);
+			sendSCPI_String(frequencyStopCMD, Instrument);
 
 			//start and stop parameters should be checked now
-			sendSCPI_String(":SENS1:FREQ:STAR?");
-			std::string returnMessage = readSCPI_Buffer();
+			sendSCPI_String(":SENS1:FREQ:STAR?", Instrument);
+			std::string returnMessage = readSCPI_Buffer(Instrument);
 			double retStartFreq = string_science_to_double(returnMessage);
 
-			sendSCPI_String(":SENS1:FREQ:STOP?");
-			returnMessage = readSCPI_Buffer();
+			sendSCPI_String(":SENS1:FREQ:STOP?", Instrument);
+			returnMessage = readSCPI_Buffer(Instrument);
 			double retStopFreq = string_science_to_double(returnMessage);
 
 			if ((retStartFreq == frequencyStartNum)&&(retStopFreq == frequencyStopNum)) {
@@ -1738,17 +1750,17 @@ private: std::string Controls_Frequency(void) {
 			returnStatus = "Center and Span Frequencies are in range\n";
 			std::cout << returnStatus;
 			frequencyCenterCMD = frequencyCenterCMD + frequencyCenterNum;
-			sendSCPI_String(frequencyCenterCMD);
+			sendSCPI_String(frequencyCenterCMD, Instrument);
 			frequencySpanCMD = frequencySpanCMD + frequencySpanNum;
-			sendSCPI_String(frequencySpanCMD);
+			sendSCPI_String(frequencySpanCMD, Instrument);
 
 			//start and stop parameters should be checked now
-			sendSCPI_String(":SENS1:FREQ:CENT?");
-			std::string returnMessage = readSCPI_Buffer();
+			sendSCPI_String(":SENS1:FREQ:CENT?", Instrument);
+			std::string returnMessage = readSCPI_Buffer(Instrument);
 			double retCenterFreq = string_science_to_double(returnMessage);
 
-			sendSCPI_String(":SENS1:FREQ:SPAN?");
-			returnMessage = readSCPI_Buffer();
+			sendSCPI_String(":SENS1:FREQ:SPAN?", Instrument);
+			returnMessage = readSCPI_Buffer(Instrument);
 			double retSpanFreq = string_science_to_double(returnMessage);
 
 			if ((retCenterFreq == frequencyCenterNum) && (retSpanFreq == frequencySpanNum)) {
@@ -1830,7 +1842,7 @@ private: String^ convert_string_vcppString(std::string in_string) {
 	return nativeVISAREAD;
 }
 
-private: std::string readSCPI_Buffer(System::Void) {
+private: std::string readSCPI_Buffer(ViSession* Instrument) {
 	/**
 	*   \brief Reads the SCPI buffer
 	*
@@ -1841,18 +1853,18 @@ private: std::string readSCPI_Buffer(System::Void) {
 	**/
 
 	//Open COM
-	ViSession viDefaultRM, Instrument;
+	/*ViSession viDefaultRM, Instrument;
 	ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
 	viOpenDefaultRM(&viDefaultRM);
-	viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
+	viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);*/
 	char buf[50000]; //Reduce buffer size once issue is found
 
-	viScanf(Instrument, "%t", &buf); //Read buffer into memory
+	viScanf(*Instrument, "%t", &buf); //Read buffer into memory
 
 	std::cout << "The visa buffer was read:  \n";
 	std::cout << buf;
 	std::cout << "\n";
-	viClose(Instrument); //Close COM
+	//viClose(Instrument); //Close COM
 
 	String^ nativeVISAREAD;
 	nativeVISAREAD = Marshal::PtrToStringAnsi((IntPtr)buf); //Convert to native string
@@ -1861,7 +1873,7 @@ private: std::string readSCPI_Buffer(System::Void) {
 
 }
 
-private: System::Void sendSCPI_String(String^ sendString) {
+private: System::Void sendSCPI_String(String^ sendString, ViSession* Instrument) {
 	/**
 	*   \brief Sends the passed String^ over the SCPI interface 
 	*
@@ -1874,19 +1886,13 @@ private: System::Void sendSCPI_String(String^ sendString) {
 
 	//Next 5 lines initialize the Instrument communications
 	//This process needs to occur before sending a command. This function will open and close the comm for every cmd sent
-	ViSession viDefaultRM, Instrument;
-	ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
-	ViUInt32 actual;
-	viOpenDefaultRM(&viDefaultRM);
-	viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
-	//End of communications opening
 
+	//End of communications opening
+	ViPUInt32 actual;
 	std::string temp = convert_vcppString_string(sendString);
-	const char *SCPIcmd = temp.c_str();
-	
-								   
-	viWrite(Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), &actual); //Send cmd on SPCI interface
-	viClose(Instrument); //Close the comm
+	const char *SCPIcmd = temp.c_str();								   
+	viWrite(*Instrument, (ViBuf)SCPIcmd, (ViUInt32)strlen(SCPIcmd), actual); //Send cmd on SPCI interface
+	//viClose(Instrument); //Close the comm
 
 	//Next three lines makes entry in console log
 	std::cout << "The command:  \"";
@@ -2059,6 +2065,46 @@ private: System::Void saveSettings2File(std::string name_extension) {
 
 }
 
+private: System::Void saveFrequencyList(ViSession* Instrument) {
+	
+	std::string csv_file_string_Freq = folderPath + "\\" + experimentName + "\\" + experimentName + "_Frequency" + ".csv";
+	const char *csv_file_const_char_Freq = csv_file_string_Freq.c_str();
+	FILE *fp_Freq = fopen(csv_file_const_char_Freq, "w");
+
+	char SCPIcmd_Freq[50000]; //Char Array for CMD 
+	String^ buildString_Freq;
+
+	//start, stop, points parameters will be read from machine, not UI
+	sendSCPI_String(":SENS1:FREQ:STAR?", Instrument);
+	std::string returnMessage = readSCPI_Buffer(Instrument);
+	double retStartFreq = string_science_to_double(returnMessage);
+
+	sendSCPI_String(":SENS1:FREQ:STOP?", Instrument);
+	returnMessage = readSCPI_Buffer(Instrument);
+	double retStopFreq = string_science_to_double(returnMessage);
+
+	sendSCPI_String(":SENS1:SWE:POIN?", Instrument);
+	returnMessage = readSCPI_Buffer(Instrument);
+	int retPointsNum = string_to_double(returnMessage);
+
+	double frequencyPoints;
+	double delta = (retStopFreq - retStartFreq) / (retPointsNum);
+	for (int l = 0; l < retPointsNum; l++) {
+		frequencyPoints = retStartFreq + delta*l; //Compute frequency
+
+		buildString_Freq = buildString_Freq + frequencyPoints + "\n"; //Convert into string
+	}
+
+	//Convert Data Types
+	IntPtr ptrToNativeString_Freq = Marshal::StringToHGlobalAnsi(buildString_Freq); //PTR TO NATIVE STRING
+	char* nativeString_Freq = static_cast<char*>(ptrToNativeString_Freq.ToPointer()); //CAST POINT AS STATIC CHAR
+	strcpy(SCPIcmd_Freq, nativeString_Freq); //COPY CHAR ARRAY TO SCPIcmd 
+
+												//Write File
+	int buildStringLength_Freq = buildString_Freq->Length;
+	fwrite(SCPIcmd_Freq, sizeof(char), buildStringLength_Freq, fp_Freq);
+	fclose(fp_Freq);
+}
 
 private: int saveData2File(String^ dataString, int traceNumber, int fileNumber) {
 	/**
@@ -2072,66 +2118,20 @@ private: int saveData2File(String^ dataString, int traceNumber, int fileNumber) 
 	std::cout << "       FILENUMBER ";
 	std::cout << fileNumber;
 	std::cout << " ======\n";
-	//Create Frequency List (Only do for first postion), this will actually be erased and saved by the amount of traces
-	if (fileNumber == 0) {
-		std::string csv_file_string_Freq = folderPath + "\\" + experimentName + "\\" + experimentName + "_Frequency" + ".csv";
-		const char *csv_file_const_char_Freq = csv_file_string_Freq.c_str();
-		FILE *fp_Freq = fopen(csv_file_const_char_Freq, "w");
-
-		char SCPIcmd_Freq[50000]; //Char Array for CMD 
-		String^ buildString_Freq;
-
-		//start, stop, points parameters will be read from machine, not UI
-		sendSCPI_String(":SENS1:FREQ:STAR?");
-		std::string returnMessage = readSCPI_Buffer();
-		double retStartFreq = string_science_to_double(returnMessage);
-
-		sendSCPI_String(":SENS1:FREQ:STOP?");
-		returnMessage = readSCPI_Buffer();
-		double retStopFreq = string_science_to_double(returnMessage);
-
-		sendSCPI_String(":SENS1:SWE:POIN?");
-		returnMessage = readSCPI_Buffer();
-		int retPointsNum = string_to_double(returnMessage);
-
-		double frequencyPoints;
-		double delta = (retStopFreq - retStartFreq) / (retPointsNum);
-		for (int l = 0; l < retPointsNum; l++) {
-			frequencyPoints = retStartFreq + delta*l; //Compute frequency
-
-			buildString_Freq = buildString_Freq + frequencyPoints + "\n"; //Convert into string
-		}
-
-		//Convert Data Types
-		IntPtr ptrToNativeString_Freq = Marshal::StringToHGlobalAnsi(buildString_Freq); //PTR TO NATIVE STRING
-		char* nativeString_Freq = static_cast<char*>(ptrToNativeString_Freq.ToPointer()); //CAST POINT AS STATIC CHAR
-		strcpy(SCPIcmd_Freq, nativeString_Freq); //COPY CHAR ARRAY TO SCPIcmd 
-
-		//Write File
-		int buildStringLength_Freq = buildString_Freq->Length;
-		fwrite(SCPIcmd_Freq, sizeof(char), buildStringLength_Freq, fp_Freq);
-		fclose(fp_Freq);
-
-	}
+	
 
 	//First CREATE and open the CSV File
-	std::string fileNum_string = std::to_string(fileNumber);
+	std::string fileNum_string = std::to_string(fileNumber + 1);
 	std::string traceNumber_string = std::to_string(traceNumber);
 	//Creates folder of experiment name
-	std::string csv_file_string = folderPath + "\\" + experimentName + "\\" + experimentName + "_Trace" + traceNumber_string + "_Location_" + fileNum_string + ".csv";
+	std::string csv_file_string = folderPath + "\\" + experimentName + "\\" + "Trace" + traceNumber_string + "_Location_" + fileNum_string + ".csv";
 	const char *csv_file_const_char = csv_file_string.c_str();
 	FILE *fp = fopen(csv_file_const_char, "w");
 	
 	char SCPIcmd[50000]; //Char Array for CMD 
 	String^ buildString;
 	
-	//Check for a nearly empty string
-	//have had issues with incomplete visa responses when preforming 50 scans repeatedly
-	if (dataString->Length <= 20) {
-		MessageBox::Show("ERROR", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 
-		return 0;
-	}
 
 
 	//format dataStrig below
@@ -2240,7 +2240,11 @@ private: System::Void btn_ExpName_Click(System::Object^  sender, System::EventAr
 }
 private: System::Void btn_StartScan_Click(System::Object^  sender, System::EventArgs^  e) {
 
-	
+	ViSession viDefaultRM, Instrument;
+	ViRsrc TxtAddress = DEFAULT_LOGICAL_ADDRESS;
+	ViUInt32 actual;
+	viOpenDefaultRM(&viDefaultRM);
+	viOpen(viDefaultRM, TxtAddress, VI_NULL, VI_NULL, &Instrument);
 
 	if ((folderPath == "")||(experimentName == ""))
 	{
@@ -2250,20 +2254,20 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 	else
 	{
 		//check for continuous mesurement and disable
-		sendSCPI_String(":INIT:CONT? ");
-		std::string returnMessage = readSCPI_Buffer();
+		sendSCPI_String(":INIT:CONT? ", &Instrument);
+		std::string returnMessage = readSCPI_Buffer(&Instrument);
 		if (returnMessage == "1\n") {
-			sendSCPI_String(":INIT:CONT OFF");
+			sendSCPI_String(":INIT:CONT OFF", &Instrument);
 		}
 
-		sendSCPI_String(":DISP:WIND1:ACT");
-		sendSCPI_String(":DISP:WIND1:TRAC1:STAT ON");
-		sendSCPI_String(":DISP:WIND1:TRAC2:STAT ON");
-		sendSCPI_String(":DISP:WIND1:TRAC3:STAT ON");
-		sendSCPI_String(":DISP:WIND1:TRAC4:STAT ON");
-		sendSCPI_String(":CALC1:PAR:COUNT 4"); //Enable 4 traces
+		sendSCPI_String(":DISP:WIND1:ACT", &Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC1:STAT ON", &Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC2:STAT ON", &Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC3:STAT ON", &Instrument);
+		sendSCPI_String(":DISP:WIND1:TRAC4:STAT ON", &Instrument);
+		sendSCPI_String(":CALC1:PAR:COUNT 4", &Instrument); //Enable 4 traces
 
-		sendSCPI_String(":DISP:WIND1:MAX ON");
+		sendSCPI_String(":DISP:WIND1:MAX ON", &Instrument);
 
 		//Save Numbox Points to interger
 		int numbox_X = string_to_double(convert_vcppString_string(numbox_Xpoints->Text));
@@ -2273,13 +2277,16 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 		CurrentlyScanning^ ScanForm = gcnew CurrentlyScanning(this, numbox_X, numbox_Y);
 		ScanForm->Show();
 
+		//Make CSV File of freqs
+		saveFrequencyList(&Instrument);
+
 
 		for (int y = 0; y < numbox_Y; y++) {
 			for (int x = 0; x < numbox_X; x++) {
 				//take Single Shot
-				takeSingleShotAndSave((y*numbox_Y) + x);
+				takeSingleShotAndSave((y*numbox_Y) + x, &Instrument);
 				Sleep(10);
-				ScanForm->updateVisuals(((y*numbox_Y) + x), 0);
+				ScanForm->updateVisuals(x, y, 0);
 				Sleep(100);
 				
 			}
@@ -2288,8 +2295,8 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 	}
 }
 
-private: System::Void takeSingleShotAndSave(int position) {
-	sendSCPI_String(":INIT:IMM1");
+private: System::Void takeSingleShotAndSave(int position, ViSession* Instrument) {
+	sendSCPI_String(":INIT:IMM1", Instrument);
 	int delayTime = 100;
 	std::string tempReturn;
 	String^ nativeVISAREAD;
@@ -2297,29 +2304,29 @@ private: System::Void takeSingleShotAndSave(int position) {
 	if (Tr1Enable == 1) {
 
 		//Enable trace
-		sendSCPI_String(":CALC1:PAR1:SEL");
+		sendSCPI_String(":CALC1:PAR1:SEL", Instrument);
 
 		//Set S-param
 		if (Tr1SParam == 1) {
-			sendSCPI_String(":CALC:PAR1:DEF S11");
+			sendSCPI_String(":CALC:PAR1:DEF S11", Instrument);
 		}
 		if (Tr1SParam == 2) {
-			sendSCPI_String(":CALC:PAR1:DEF S12");
+			sendSCPI_String(":CALC:PAR1:DEF S12", Instrument);
 		}
 		if (Tr1SParam == 3) {
-			sendSCPI_String(":CALC:PAR1:DEF S21");
+			sendSCPI_String(":CALC:PAR1:DEF S21", Instrument);
 		}
 		if (Tr1SParam == 4) {
-			sendSCPI_String(":CALC:PAR1:DEF S22");
+			sendSCPI_String(":CALC:PAR1:DEF S22", Instrument);
 		}
 
-		sendSCPI_String(":CALC1:DATA:FDAT?");
+		sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
 		Sleep(delayTime);
-		tempReturn = readSCPI_Buffer();
+		tempReturn = readSCPI_Buffer(Instrument);
 		if (tempReturn.length() == 0) {
 			MessageBox::Show("ERROR IN SCAN!\Click Okay to try again", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-			sendSCPI_String(":CALC1:DATA:FDAT?");
-			tempReturn = readSCPI_Buffer();
+			sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
+			tempReturn = readSCPI_Buffer(Instrument);
 			if (tempReturn.length() == 0) {
 				MessageBox::Show("ERROR IN SCAN, AGAIN", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
@@ -2328,29 +2335,29 @@ private: System::Void takeSingleShotAndSave(int position) {
 		saveData2File(nativeVISAREAD, 1, position);
 	}
 	if (Tr2Enable == 1) {
-		sendSCPI_String(":CALC1:PAR2:SEL");
+		sendSCPI_String(":CALC1:PAR2:SEL", Instrument);
 
 		//Set S-param
 		if (Tr2SParam == 1) {
-			sendSCPI_String(":CALC:PAR2:DEF S11");
+			sendSCPI_String(":CALC:PAR2:DEF S11", Instrument);
 		}
 		if (Tr2SParam == 2) {
-			sendSCPI_String(":CALC:PAR2:DEF S12");
+			sendSCPI_String(":CALC:PAR2:DEF S12", Instrument);
 		}
 		if (Tr2SParam == 3) {
-			sendSCPI_String(":CALC:PAR2:DEF S21");
+			sendSCPI_String(":CALC:PAR2:DEF S21", Instrument);
 		}
 		if (Tr2SParam == 4) {
-			sendSCPI_String(":CALC:PAR2:DEF S22");
+			sendSCPI_String(":CALC:PAR2:DEF S22", Instrument);
 		}
 
-		sendSCPI_String(":CALC1:DATA:FDAT?");
+		sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
 		Sleep(delayTime);
-		tempReturn = readSCPI_Buffer();
+		tempReturn = readSCPI_Buffer(Instrument);
 		if (tempReturn.length() == 0) {
 			MessageBox::Show("ERROR IN SCAN!\Click Okay to try again", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-			sendSCPI_String(":CALC1:DATA:FDAT?");
-			tempReturn = readSCPI_Buffer();
+			sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
+			tempReturn = readSCPI_Buffer(Instrument);
 			if (tempReturn.length() == 0) {
 				MessageBox::Show("ERROR IN SCAN, AGAIN", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
@@ -2359,29 +2366,29 @@ private: System::Void takeSingleShotAndSave(int position) {
 		saveData2File(nativeVISAREAD, 2, position);
 	}
 	if (Tr3Enable == 1) {
-		sendSCPI_String(":CALC1:PAR3:SEL");
+		sendSCPI_String(":CALC1:PAR3:SEL", Instrument);
 
 		//Set S-param
 		if (Tr3SParam == 1) {
-			sendSCPI_String(":CALC:PAR3:DEF S11");
+			sendSCPI_String(":CALC:PAR3:DEF S11", Instrument);
 		}
 		if (Tr3SParam == 2) {
-			sendSCPI_String(":CALC:PAR3:DEF S12");
+			sendSCPI_String(":CALC:PAR3:DEF S12", Instrument);
 		}
 		if (Tr3SParam == 3) {
-			sendSCPI_String(":CALC:PAR3:DEF S21");
+			sendSCPI_String(":CALC:PAR3:DEF S21", Instrument);
 		}
 		if (Tr3SParam == 4) {
-			sendSCPI_String(":CALC:PAR3:DEF S22");
+			sendSCPI_String(":CALC:PAR3:DEF S22", Instrument);
 		}
 
-		sendSCPI_String(":CALC1:DATA:FDAT?");
+		sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
 		Sleep(delayTime);
-		tempReturn = readSCPI_Buffer();
+		tempReturn = readSCPI_Buffer(Instrument);
 		if (tempReturn.length() == 0) {
 			MessageBox::Show("ERROR IN SCAN!\Click Okay to try again", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-			sendSCPI_String(":CALC1:DATA:FDAT?");
-			tempReturn = readSCPI_Buffer();
+			sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
+			tempReturn = readSCPI_Buffer(Instrument);
 			if (tempReturn.length() == 0) {
 				MessageBox::Show("ERROR IN SCAN, AGAIN", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
@@ -2390,29 +2397,29 @@ private: System::Void takeSingleShotAndSave(int position) {
 		saveData2File(nativeVISAREAD, 3, position);
 	}
 	if (Tr4Enable == 1) {
-		sendSCPI_String(":CALC1:PAR4:SEL");
+		sendSCPI_String(":CALC1:PAR4:SEL", Instrument);
 
 		//Set S-param
 		if (Tr4SParam == 1) {
-			sendSCPI_String(":CALC:PAR4:DEF S11");
+			sendSCPI_String(":CALC:PAR4:DEF S11", Instrument);
 		}
 		if (Tr4SParam == 2) {
-			sendSCPI_String(":CALC:PAR4:DEF S12");
+			sendSCPI_String(":CALC:PAR4:DEF S12", Instrument);
 		}
 		if (Tr4SParam == 3) {
-			sendSCPI_String(":CALC:PAR4:DEF S21");
+			sendSCPI_String(":CALC:PAR4:DEF S21", Instrument);
 		}
 		if (Tr4SParam == 4) {
-			sendSCPI_String(":CALC:PAR4:DEF S22");
+			sendSCPI_String(":CALC:PAR4:DEF S22", Instrument);
 		}
 
-		sendSCPI_String(":CALC1:DATA:FDAT?");
+		sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
 		Sleep(delayTime);
-		tempReturn = readSCPI_Buffer();
+		tempReturn = readSCPI_Buffer(Instrument);
 		if (tempReturn.length() == 0) {
 			MessageBox::Show("ERROR IN SCAN!\Click Okay to try again", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-			sendSCPI_String(":CALC1:DATA:FDAT?");
-			tempReturn = readSCPI_Buffer();
+			sendSCPI_String(":CALC1:DATA:FDAT?", Instrument);
+			tempReturn = readSCPI_Buffer(Instrument);
 			if (tempReturn.length() == 0) {
 				MessageBox::Show("ERROR IN SCAN, AGAIN", "ERROR", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 			}
