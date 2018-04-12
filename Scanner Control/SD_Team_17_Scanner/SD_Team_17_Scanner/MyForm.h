@@ -31,6 +31,8 @@ bool GoHome(HANDLE *hComm, char ComPortName[]);
 bool SetAcelandVel(HANDLE *hComm, char ComPortName[]);
 double ConvertCmtoSteps(double cm);
 bool GoToFirstPos(HANDLE *hComm, char ComPortName[], int xstart_steps, int ystart_steps);
+bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_size,
+	int yPoints, int row_size, int y_index, bool new_line);
 
 HANDLE hComm;                          // Handle to the Serial port	
 char   ComPortName[] = "COM1";         // Name of the Serial port(May Change) to be opened
@@ -114,6 +116,8 @@ namespace SD_Team_17_Scanner {
 		double xstart_cm, xstop_cm, ystart_cm, ystop_cm;
 		int xstart_steps, xstop_steps, xPoints, xstep_size;
 		int ystart_steps, ystop_steps, yPoints, ystep_size;
+	private: System::Windows::Forms::Button^  btnStart;
+			 int row_size; //need to know row size to return to start of the row
 
 
 
@@ -141,6 +145,7 @@ namespace SD_Team_17_Scanner {
 			this->btn_ScannerHome = (gcnew System::Windows::Forms::Button());
 			this->Get_UserInput = (gcnew System::Windows::Forms::Button());
 			this->btnFirst_Pos = (gcnew System::Windows::Forms::Button());
+			this->btnStart = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numbox_Xpoints))->BeginInit();
 			this->groupBox1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numbox_Ypoints))->BeginInit();
@@ -301,7 +306,7 @@ namespace SD_Team_17_Scanner {
 			// 
 			// btnFirst_Pos
 			// 
-			this->btnFirst_Pos->Location = System::Drawing::Point(81, 288);
+			this->btnFirst_Pos->Location = System::Drawing::Point(28, 291);
 			this->btnFirst_Pos->Name = L"btnFirst_Pos";
 			this->btnFirst_Pos->Size = System::Drawing::Size(100, 23);
 			this->btnFirst_Pos->TabIndex = 10;
@@ -309,11 +314,22 @@ namespace SD_Team_17_Scanner {
 			this->btnFirst_Pos->UseVisualStyleBackColor = true;
 			this->btnFirst_Pos->Click += gcnew System::EventHandler(this, &MyForm::btnFirst_Pos_Click);
 			// 
+			// btnStart
+			// 
+			this->btnStart->Location = System::Drawing::Point(160, 290);
+			this->btnStart->Name = L"btnStart";
+			this->btnStart->Size = System::Drawing::Size(75, 23);
+			this->btnStart->TabIndex = 11;
+			this->btnStart->Text = L"Start Scan";
+			this->btnStart->UseVisualStyleBackColor = true;
+			this->btnStart->Click += gcnew System::EventHandler(this, &MyForm::btnStart_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(259, 339);
+			this->Controls->Add(this->btnStart);
 			this->Controls->Add(this->btnFirst_Pos);
 			this->Controls->Add(this->Get_UserInput);
 			this->Controls->Add(this->btn_ScannerHome);
@@ -332,16 +348,16 @@ namespace SD_Team_17_Scanner {
 
 		}
 #pragma endregion
-	private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
-	}
-	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-	}
-	private: System::Void textBox2_TextChanged(System::Object^  sender, System::EventArgs^  e) {
-	}
-	private: System::Void numericUpDown1_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
-	}
-	private: System::Void textBox1_TextChanged_1(System::Object^  sender, System::EventArgs^  e) {
-	}
+private: System::Void MyForm_Load(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void textBox2_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void numericUpDown1_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void textBox1_TextChanged_1(System::Object^  sender, System::EventArgs^  e) {
+}
 private: System::Void textBox2_TextChanged_1(System::Object^  sender, System::EventArgs^  e) {
 }
 private: System::Void numericUpDown1_ValueChanged_1(System::Object^  sender, System::EventArgs^  e) {
@@ -384,7 +400,7 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 
 	xstep_size = (xstop_steps - xstart_steps) / xPoints; //obtain the number of steps between each column
 	ystep_size = (ystop_steps - ystart_steps) / yPoints; //obtain the number of steps between each row
-
+	row_size = xstep_size*(xPoints - 1);
 }
 
 private: double string_to_double(const std::string& s) {
@@ -432,6 +448,29 @@ private: System::Void btnFirst_Pos_Click(System::Object^  sender, System::EventA
 	SetRxMask(&hComm);					      //Set Receive Mask
 	SetAcelandVel(&hComm, ComPortName);
 	GoToFirstPos(&hComm, ComPortName, xstart_steps, ystart_steps);
+	ClosePort(&hComm, ComPortName);
+}
+
+private: System::Void btnStart_Click(System::Object^  sender, System::EventArgs^  e) {
+	bool new_line = false;
+	InitPort(&hComm, ComPortName);           //Initialize Serial Port
+	SetRxMask(&hComm);					      //Set Receive Mask
+	SetAcelandVel(&hComm, ComPortName);
+
+	//execute a for loop to go through all scan points
+	for (size_t i = 0; i < yPoints; i++) {
+		for (size_t j = 0; j < xPoints; j++) {
+			if (j == xPoints - 1) {
+				new_line = true;
+			}
+			else 
+				new_line = false;
+
+			Sleep(2000);
+			GoToNextPos(&hComm, ComPortName, xstep_size, ystep_size,
+				yPoints, row_size, i, new_line);
+		}
+	}
 	ClosePort(&hComm, ComPortName);
 }
 };

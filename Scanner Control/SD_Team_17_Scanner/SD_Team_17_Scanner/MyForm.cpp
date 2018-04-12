@@ -15,16 +15,16 @@ using namespace System::Windows::Forms;
 
 //Function Prototypes
 //
-bool InitPort(HANDLE *hComm, char ComPortName[]); //open serial port, set parameters & timeouts
-bool SetRxMask(HANDLE *hComm);
-bool ClosePort(HANDLE *hComm, char ComPortName[]); //close serial port
-bool WriteCmd(HANDLE *hComm, char lpBuffer[], char ComPortName[]);
-bool ReadRsp(HANDLE *hComm, char ComPortName[]);
-bool GoHome(HANDLE *hComm, char ComPortName[]);
-bool SetHome(HANDLE *hComm, char ComPortName[]);
-bool SetAcelandVel(HANDLE *hComm, char ComPortName[]);
-double ConvertCmtoSteps(double cm);
-bool GoToFirstPos(HANDLE *hComm, char ComPortName[], int xstart_steps, int ystart_steps);
+//bool InitPort(HANDLE *hComm, char ComPortName[]); //open serial port, set parameters & timeouts
+//bool SetRxMask(HANDLE *hComm);
+//bool ClosePort(HANDLE *hComm, char ComPortName[]); //close serial port
+//bool WriteCmd(HANDLE *hComm, char lpBuffer[], char ComPortName[]);
+//bool ReadRsp(HANDLE *hComm, char ComPortName[]);
+//bool GoHome(HANDLE *hComm, char ComPortName[]);
+//bool SetHome(HANDLE *hComm, char ComPortName[]);
+//bool SetAcelandVel(HANDLE *hComm, char ComPortName[]);
+//double ConvertCmtoSteps(double cm);
+//bool GoToFirstPos(HANDLE *hComm, char ComPortName[], int xstart_steps, int ystart_steps);
 
 
 
@@ -227,11 +227,11 @@ bool GoHome(HANDLE *hComm, char ComPortName[]) {
 
 	//move x and y motor to (0,0) position
 	//
-	char lpBuffer[] = "D-250000 1G T20 2G ";
+	char lpBuffer[] = "D-250000 1G T10 2G ";
 	WriteCmd(hComm, lpBuffer, ComPortName);
 	ReadRsp(hComm, ComPortName);
 
-	Sleep(35000);
+	Sleep(3500);
 
 	//move just off limit switches
 	//
@@ -282,4 +282,33 @@ bool GoToFirstPos(HANDLE * hComm, char ComPortName[], int xstart_steps, int ysta
 	ReadRsp(hComm, ComPortName);
 
 	return true;
+}
+
+bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_size, 
+	int yPoints, int row_size, int y_index, bool new_line)
+{
+	char lpBuffer[64];
+	if (new_line==false) {
+		//move horizontally by xstep_size
+		sprintf(lpBuffer, "D%d 1G ", xstep_size);
+		WriteCmd(hComm, lpBuffer, ComPortName);
+		ReadRsp(hComm, ComPortName);
+
+		return true;
+	}
+	else if (new_line==true && y_index != (yPoints-1)) {
+		//return to the start of the row and then move down by ystep_size
+		sprintf(lpBuffer, "D-%d 1G ", row_size);
+		WriteCmd(hComm, lpBuffer, ComPortName);
+		ReadRsp(hComm, ComPortName);
+		Sleep(10000);
+		sprintf(lpBuffer, "D%d 2G ", ystep_size);
+		WriteCmd(hComm, lpBuffer, ComPortName);
+		ReadRsp(hComm, ComPortName);
+
+		return true;
+	}
+	else {
+		return false;
+	}
 }

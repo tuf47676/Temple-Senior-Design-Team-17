@@ -1,8 +1,10 @@
 ﻿  MyForm.cpp
-c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(356): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(363): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(367): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(374): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(372): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(379): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(383): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(390): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(395): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(399): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(461): warning C4018: '<': signed/unsigned mismatch
+c:\users\tuf59113\desktop\sd_team_17_scanner\sd_team_17_scanner\MyForm.h(462): warning C4018: '<': signed/unsigned mismatch
   SD_Team_17_Scanner.vcxproj -> C:\Users\tuf59113\Desktop\SD_Team_17_Scanner\Debug\SD_Team_17_Scanner.exe
