@@ -1,35 +1,37 @@
-﻿  CurrentlyScanning.cpp
-  MainForm.cpp
-c:\users\reed\source\repos\design_project\design_project\TraceControlEdit.h(234): warning C4101: 'tempSparam': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2327): warning C4129: 'C': unrecognized character escape sequence
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2358): warning C4129: 'C': unrecognized character escape sequence
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2389): warning C4129: 'C': unrecognized character escape sequence
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2420): warning C4129: 'C': unrecognized character escape sequence
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(72): warning C4101: 'actual': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2088): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2155): warning C4018: '<=': signed/unsigned mismatch
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2273): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2274): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2245): warning C4101: 'actual': unreferenced local variable
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2568): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2569): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2570): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2572): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2573): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2574): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2576): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2577): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2578): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2580): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2581): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2582): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2672): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2745): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2819): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
-c:\users\reed\source\repos\design_project\design_project\MainForm.h(2894): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
-  TraceControlEdit.cpp
-c:\users\reed\source\repos\design_project\design_project\TraceControlEdit.h(234): warning C4101: 'tempSparam': unreferenced local variable
-  Generating Code...
-c:\users\reed\source\repos\design_project\design_project\mainform.h(1894): warning C4700: uninitialized local variable 'actual' used
-  .NETFramework,Version=v4.6.1.AssemblyAttributes.cpp
-  Design_Project.vcxproj -> C:\Users\Reed\source\repos\Design_Project\Debug\Design_Project.exe
+﻿  MainForm.cpp
+c:\users\tuf47676\source\repos\design_project\design_project\TraceControlEdit.h(234): warning C4101: 'tempSparam': unreferenced local variable
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2442): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2473): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2504): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2535): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(93): warning C4101: 'actual': unreferenced local variable
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1841): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1848): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1852): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1859): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1864): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1868): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2179): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2246): warning C4018: '<=': signed/unsigned mismatch
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2364): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2365): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2336): warning C4101: 'actual': unreferenced local variable
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2683): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2684): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2685): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2687): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2688): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2689): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2691): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2692): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2693): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2695): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2696): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2697): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2787): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2860): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2934): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(3009): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+MainForm.cpp(293): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\mainform.h(1985): warning C4700: uninitialized local variable 'actual' used
+  Design_Project.vcxproj -> C:\Users\tuf47676\source\repos\Design_Project\Debug\Design_Project.exe

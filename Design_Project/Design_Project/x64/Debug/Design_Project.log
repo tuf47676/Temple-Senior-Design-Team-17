@@ -1,6 +1,42 @@
-﻿  MainForm.cpp
-c:\users\tuf38533\source\repos\design_project\design_project\MainForm.h(1096): warning C4101: 'nativeString': unreferenced local variable
-c:\users\tuf38533\source\repos\design_project\design_project\MainForm.h(1248): warning C4101: 'frequencyCMD': unreferenced local variable
-c:\users\tuf38533\source\repos\design_project\design_project\MainForm.h(1647): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+﻿  CurrentlyScanning.cpp
+  MainForm.cpp
+c:\users\tuf47676\source\repos\design_project\design_project\TraceControlEdit.h(234): warning C4101: 'tempSparam': unreferenced local variable
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2439): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2470): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2501): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2532): warning C4129: 'C': unrecognized character escape sequence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(93): warning C4101: 'actual': unreferenced local variable
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1841): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1848): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1852): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1859): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1864): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(1868): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2179): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2364): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2365): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2336): warning C4101: 'actual': unreferenced local variable
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2680): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2681): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2682): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2684): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2685): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2686): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2688): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2689): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2690): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2692): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2693): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2694): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2784): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2857): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(2931): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\tuf47676\source\repos\design_project\design_project\MainForm.h(3006): warning C4554: '|': check operator precedence for possible error; use parentheses to clarify precedence
+MainForm.cpp(178): warning C4267: '=': conversion from 'size_t' to 'DWORD', possible loss of data
+MainForm.cpp(293): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  TraceControlEdit.cpp
+c:\users\tuf47676\source\repos\design_project\design_project\TraceControlEdit.h(234): warning C4101: 'tempSparam': unreferenced local variable
+  Generating Code...
+c:\users\tuf47676\source\repos\design_project\design_project\mainform.h(1985): warning C4700: uninitialized local variable 'actual' used
   .NETFramework,Version=v4.6.1.AssemblyAttributes.cpp
 LINK : fatal error LNK1561: entry point must be defined

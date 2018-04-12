@@ -21,7 +21,28 @@
 //Mention Visa connection string here.
 #define DEFAULT_LOGICAL_ADDRESS "TCPIP0::192.168.100.5::inst0::INSTR"
 
+//Function Prototypes
+//
+bool InitPort(HANDLE *hComm, char ComPortName[]); //open serial port, set parameters & timeouts
+bool SetRxMask(HANDLE *hComm);
+bool ClosePort(HANDLE *hComm, char ComPortName[]); //close serial port
+bool WriteCmd(HANDLE *hComm, char lpBuffer[], char ComPortName[]);
+bool ReadRsp(HANDLE *hComm, char ComPortName[]);
+bool GoHome(HANDLE *hComm, char ComPortName[]);
+bool SetAcelandVel(HANDLE *hComm, char ComPortName[]);
+double ConvertCmtoSteps(double cm);
+int ConvertStepstoSeconds(int steps);
+bool GoToFirstPos(HANDLE *hComm, char ComPortName[], int xstart_steps, int ystart_steps);
+bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_size, int xPoints,
+	int yPoints, int row_size, int x_index, int y_index, bool new_line, bool line_scan);
 
+HANDLE hComm;                          // Handle to the Serial port	
+char   ComPortName[] = "COM1";         // Name of the Serial port(May Change) to be opened
+BOOL   Status;
+DWORD dwEventMask, NoBytesRead;        // Event mask to trigger
+char  TempChar, SerialBuffer[256];     // Buffer Containing Rxed Data, Bytes read by ReadFile()
+int i = 0;
+bool scan = 1;
 
 
 //char instAdd[] = DEFAULT_LOGICAL_ADDRESS;
@@ -103,6 +124,10 @@ namespace Design_Project {
 	private: int Tr1Type, Tr2Type, Tr3Type, Tr4Type;
 	private: int Tr1Enable, Tr2Enable, Tr3Enable, Tr4Enable;
 	private: int Tr1SParam, Tr2SParam, Tr3SParam, Tr4SParam;
+		double xstart_cm, xstop_cm, ystart_cm, ystop_cm;
+		int xstart_steps, xstop_steps, xPoints, xstep_size;
+		int ystart_steps, ystop_steps, yPoints, ystep_size;
+		int row_size; //need to know row size to return to start of the row
 	
 	TraceControlEdit^ trace1 = gcnew TraceControlEdit(this, 1);
 	TraceControlEdit^ trace2 = gcnew TraceControlEdit(this, 2);
@@ -220,15 +245,19 @@ private: System::Windows::Forms::NumericUpDown^  numbox_Ypoints;
 
 
 private: System::Windows::Forms::Label^  lbl_YDim_Points;
-private: System::Windows::Forms::TextBox^  textBox5;
-private: System::Windows::Forms::TextBox^  textBox6;
+private: System::Windows::Forms::TextBox^  txtbx_YStop;
+
+private: System::Windows::Forms::TextBox^  txtbx_YStart;
+
 private: System::Windows::Forms::Label^  lbl_YDim_Stop;
 private: System::Windows::Forms::Label^  lbl_YDim_Start;
 private: System::Windows::Forms::GroupBox^  group_XDim;
 private: System::Windows::Forms::NumericUpDown^  numbox_Xpoints;
+private: System::Windows::Forms::TextBox^  txtbx_XStop;
 
-private: System::Windows::Forms::TextBox^  textBox2;
-private: System::Windows::Forms::TextBox^  textBox1;
+
+private: System::Windows::Forms::TextBox^  txtbx_XStart;
+
 private: System::Windows::Forms::Label^  lbl_XDim_Points;
 private: System::Windows::Forms::Label^  lbl_XDim_Stop;
 private: System::Windows::Forms::Label^  lbl_XDim_Start;
@@ -237,6 +266,7 @@ private: System::Windows::Forms::Label^  lbl_loadSettings;
 private: System::Windows::Forms::Label^  label1;
 private: System::Windows::Forms::Label^  lbl_initScan_steps;
 private: System::Windows::Forms::Button^  btn_ScannerHome;
+private: System::Windows::Forms::Button^  btnFirst_Pos;
 
 
 	private: System::Windows::Forms::CheckBox^  chkbx_Tr2_Enable;
@@ -323,14 +353,14 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			this->group_YDim = (gcnew System::Windows::Forms::GroupBox());
 			this->numbox_Ypoints = (gcnew System::Windows::Forms::NumericUpDown());
 			this->lbl_YDim_Points = (gcnew System::Windows::Forms::Label());
-			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
-			this->textBox6 = (gcnew System::Windows::Forms::TextBox());
+			this->txtbx_YStop = (gcnew System::Windows::Forms::TextBox());
+			this->txtbx_YStart = (gcnew System::Windows::Forms::TextBox());
 			this->lbl_YDim_Stop = (gcnew System::Windows::Forms::Label());
 			this->lbl_YDim_Start = (gcnew System::Windows::Forms::Label());
 			this->group_XDim = (gcnew System::Windows::Forms::GroupBox());
 			this->numbox_Xpoints = (gcnew System::Windows::Forms::NumericUpDown());
-			this->textBox2 = (gcnew System::Windows::Forms::TextBox());
-			this->textBox1 = (gcnew System::Windows::Forms::TextBox());
+			this->txtbx_XStop = (gcnew System::Windows::Forms::TextBox());
+			this->txtbx_XStart = (gcnew System::Windows::Forms::TextBox());
 			this->lbl_XDim_Points = (gcnew System::Windows::Forms::Label());
 			this->lbl_XDim_Stop = (gcnew System::Windows::Forms::Label());
 			this->lbl_XDim_Start = (gcnew System::Windows::Forms::Label());
@@ -338,6 +368,7 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			this->lbl_initScan_steps = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->lbl_loadSettings = (gcnew System::Windows::Forms::Label());
+			this->btnFirst_Pos = (gcnew System::Windows::Forms::Button());
 			this->Group_Freq->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->BeginInit();
 			this->Span_Units->SuspendLayout();
@@ -1082,6 +1113,7 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			// 
 			// group_AntennaPos
 			// 
+			this->group_AntennaPos->Controls->Add(this->btnFirst_Pos);
 			this->group_AntennaPos->Controls->Add(this->btn_ScannerHome);
 			this->group_AntennaPos->Controls->Add(this->group_YDim);
 			this->group_AntennaPos->Controls->Add(this->group_XDim);
@@ -1091,6 +1123,7 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			this->group_AntennaPos->TabIndex = 33;
 			this->group_AntennaPos->TabStop = false;
 			this->group_AntennaPos->Text = L"Antenna Positions";
+			this->group_AntennaPos->Enter += gcnew System::EventHandler(this, &MainForm::group_AntennaPos_Enter);
 			// 
 			// btn_ScannerHome
 			// 
@@ -1100,13 +1133,14 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			this->btn_ScannerHome->TabIndex = 2;
 			this->btn_ScannerHome->Text = L"Move to Home";
 			this->btn_ScannerHome->UseVisualStyleBackColor = true;
+			this->btn_ScannerHome->Click += gcnew System::EventHandler(this, &MainForm::btn_ScannerHome_Click);
 			// 
 			// group_YDim
 			// 
 			this->group_YDim->Controls->Add(this->numbox_Ypoints);
 			this->group_YDim->Controls->Add(this->lbl_YDim_Points);
-			this->group_YDim->Controls->Add(this->textBox5);
-			this->group_YDim->Controls->Add(this->textBox6);
+			this->group_YDim->Controls->Add(this->txtbx_YStop);
+			this->group_YDim->Controls->Add(this->txtbx_YStart);
 			this->group_YDim->Controls->Add(this->lbl_YDim_Stop);
 			this->group_YDim->Controls->Add(this->lbl_YDim_Start);
 			this->group_YDim->Location = System::Drawing::Point(10, 127);
@@ -1134,19 +1168,19 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			this->lbl_YDim_Points->TabIndex = 5;
 			this->lbl_YDim_Points->Text = L"Number of Points";
 			// 
-			// textBox5
+			// txtbx_YStop
 			// 
-			this->textBox5->Location = System::Drawing::Point(102, 43);
-			this->textBox5->Name = L"textBox5";
-			this->textBox5->Size = System::Drawing::Size(100, 20);
-			this->textBox5->TabIndex = 7;
+			this->txtbx_YStop->Location = System::Drawing::Point(102, 43);
+			this->txtbx_YStop->Name = L"txtbx_YStop";
+			this->txtbx_YStop->Size = System::Drawing::Size(100, 20);
+			this->txtbx_YStop->TabIndex = 7;
 			// 
-			// textBox6
+			// txtbx_YStart
 			// 
-			this->textBox6->Location = System::Drawing::Point(102, 17);
-			this->textBox6->Name = L"textBox6";
-			this->textBox6->Size = System::Drawing::Size(100, 20);
-			this->textBox6->TabIndex = 6;
+			this->txtbx_YStart->Location = System::Drawing::Point(102, 17);
+			this->txtbx_YStart->Name = L"txtbx_YStart";
+			this->txtbx_YStart->Size = System::Drawing::Size(100, 20);
+			this->txtbx_YStart->TabIndex = 6;
 			// 
 			// lbl_YDim_Stop
 			// 
@@ -1169,8 +1203,8 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			// group_XDim
 			// 
 			this->group_XDim->Controls->Add(this->numbox_Xpoints);
-			this->group_XDim->Controls->Add(this->textBox2);
-			this->group_XDim->Controls->Add(this->textBox1);
+			this->group_XDim->Controls->Add(this->txtbx_XStop);
+			this->group_XDim->Controls->Add(this->txtbx_XStart);
 			this->group_XDim->Controls->Add(this->lbl_XDim_Points);
 			this->group_XDim->Controls->Add(this->lbl_XDim_Stop);
 			this->group_XDim->Controls->Add(this->lbl_XDim_Start);
@@ -1190,19 +1224,19 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			this->numbox_Xpoints->TabIndex = 5;
 			this->numbox_Xpoints->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
-			// textBox2
+			// txtbx_XStop
 			// 
-			this->textBox2->Location = System::Drawing::Point(102, 43);
-			this->textBox2->Name = L"textBox2";
-			this->textBox2->Size = System::Drawing::Size(100, 20);
-			this->textBox2->TabIndex = 4;
+			this->txtbx_XStop->Location = System::Drawing::Point(102, 43);
+			this->txtbx_XStop->Name = L"txtbx_XStop";
+			this->txtbx_XStop->Size = System::Drawing::Size(100, 20);
+			this->txtbx_XStop->TabIndex = 4;
 			// 
-			// textBox1
+			// txtbx_XStart
 			// 
-			this->textBox1->Location = System::Drawing::Point(102, 17);
-			this->textBox1->Name = L"textBox1";
-			this->textBox1->Size = System::Drawing::Size(100, 20);
-			this->textBox1->TabIndex = 3;
+			this->txtbx_XStart->Location = System::Drawing::Point(102, 17);
+			this->txtbx_XStart->Name = L"txtbx_XStart";
+			this->txtbx_XStart->Size = System::Drawing::Size(100, 20);
+			this->txtbx_XStart->TabIndex = 3;
 			// 
 			// lbl_XDim_Points
 			// 
@@ -1276,6 +1310,16 @@ private: System::Windows::Forms::Button^  btn_ScannerHome;
 			this->lbl_loadSettings->Size = System::Drawing::Size(129, 13);
 			this->lbl_loadSettings->TabIndex = 32;
 			this->lbl_loadSettings->Text = L"Load previous settings file";
+			// 
+			// btnFirst_Pos
+			// 
+			this->btnFirst_Pos->Location = System::Drawing::Point(170, 233);
+			this->btnFirst_Pos->Name = L"btnFirst_Pos";
+			this->btnFirst_Pos->Size = System::Drawing::Size(104, 23);
+			this->btnFirst_Pos->TabIndex = 3;
+			this->btnFirst_Pos->Text = L"Move to Start";
+			this->btnFirst_Pos->UseVisualStyleBackColor = true;
+			this->btnFirst_Pos->Click += gcnew System::EventHandler(this, &MainForm::btnFirst_Pos_Click);
 			// 
 			// MainForm
 			// 
@@ -1377,6 +1421,7 @@ private: System::Void SetCMDButton_Click(System::Object^  sender, System::EventA
 	returnStatus = Controls_Points(&Instrument);
 	std::cout << returnStatus;
 	std::cout << "\n";
+	Controls_Scanner();
 	std::cout << "\n";
 
 	saveSettings2File("Settings");
@@ -1785,6 +1830,52 @@ private: std::string Controls_Frequency(ViSession* Instrument) {
 	//Return statement
 	//returnStatus = "Maybe it worked...";
 	return returnStatus;
+}
+
+private: System::Void Controls_Scanner() {
+	//X Information
+	//
+	String^ xstart_native = txtbx_XStart->Text; //obtain user input for first X Position
+	const std::string xstart_norm = convert_vcppString_string(xstart_native); //convert to normal string
+	xstart_cm = string_to_double(xstart_norm); //convert string to double
+	xstart_steps = ConvertCmtoSteps(xstart_cm); //convert user input of CM to Steps
+	std::cout << xstart_steps;
+	std::cout << "\n";
+
+	String^ xstop_native = txtbx_XStop->Text; //obtain user input for Last X Position
+	const std::string xstop_norm = convert_vcppString_string(xstop_native); //convert to normal string
+	xstop_cm = string_to_double(xstop_norm); //convert string to double
+	xstop_steps = ConvertCmtoSteps(xstop_cm); //convert user input of CM to Steps 
+
+	String^ xPoints_native = numbox_Xpoints->Text; //obtain user input for number of columns
+	const std::string xPoints_norm = convert_vcppString_string(xPoints_native); //convert to normal string
+	xPoints = string_to_double(xPoints_norm); //convert string to double
+
+											  //Y Information
+											  //
+	String^ ystart_native = txtbx_YStart->Text; //obtain user input for first Y Position
+	const std::string ystart_norm = convert_vcppString_string(ystart_native); //convert to normal string
+	ystart_cm = string_to_double(ystart_norm); //convert string to double
+	ystart_steps = ConvertCmtoSteps(ystart_cm); //convert user input of CM to Steps
+
+	String^ ystop_native = txtbx_YStop->Text; //obtain user input for Last Y Position
+	const std::string ystop_norm = convert_vcppString_string(ystop_native); //convert to normal string
+	ystop_cm = string_to_double(ystop_norm); //convert string to double
+	ystop_steps = ConvertCmtoSteps(ystop_cm); //convert user input of CM to Steps
+
+	String^ yPoints_native = numbox_Ypoints->Text; //obtain user input for number of rows
+	const std::string yPoints_norm = convert_vcppString_string(yPoints_native); //convert to normal string
+	yPoints = string_to_double(yPoints_norm); //convert string to double
+
+	xstep_size = (xstop_steps - xstart_steps) / xPoints; //obtain the number of steps between each column
+	ystep_size = (ystop_steps - ystart_steps) / yPoints; //obtain the number of steps between each row
+	row_size = xstep_size*(xPoints - 1);
+
+	std::cout << "\nX step size: " << xstep_size << "\nY step size: " << ystep_size;
+
+	if (yPoints == 1) {
+		std::cout << "\n\nThis will be a line scan.\n";
+	}
 }
 
 private: double string_to_double(const std::string& s) {
@@ -2280,15 +2371,39 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 		//Make CSV File of freqs
 		saveFrequencyList(&Instrument);
 
+		bool new_line = false;
+		bool line_scan;
+		InitPort(&hComm, ComPortName);           //Initialize Serial Port
+		SetRxMask(&hComm);					      //Set Receive Mask
+		SetAcelandVel(&hComm, ComPortName);
+
+		//determine whether this is a line scan or not
+		//
+		if (yPoints == 1) {
+			line_scan = true;
+		}
+		else {
+			line_scan = false;
+		}
 
 		for (int y = 0; y < numbox_Y; y++) {
 			for (int x = 0; x < numbox_X; x++) {
 				//take Single Shot
+
+				_sleep(2000);
+
 				takeSingleShotAndSave((y*numbox_Y) + x, &Instrument);
-				Sleep(10);
-				ScanForm->updateVisuals(x, y, 0);
-				Sleep(100);
 				
+				ScanForm->updateVisuals(x, y, 0);
+				_sleep(2000);
+
+				if (x == xPoints - 1) {
+					new_line = true;
+				}
+				else
+					new_line = false;
+				GoToNextPos(&hComm, ComPortName, xstep_size, ystep_size, xPoints,
+					yPoints, row_size, x, y, new_line, line_scan);
 			}
 		}
 		ScanForm->Hide();
@@ -2960,6 +3075,22 @@ private: System::Void chkbx_Tr4_Enable_CheckedChanged(System::Object^  sender, S
 	else {
 		Tr4Enable = 0;
 	}
+}
+private: System::Void group_AntennaPos_Enter(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void btn_ScannerHome_Click(System::Object^  sender, System::EventArgs^  e) {
+	InitPort(&hComm, ComPortName);           //Initialize Serial Port
+	SetRxMask(&hComm);					      //Set Receive Mask
+	SetAcelandVel(&hComm, ComPortName);
+	GoHome(&hComm, ComPortName);
+	ClosePort(&hComm, ComPortName);
+}
+private: System::Void btnFirst_Pos_Click(System::Object^  sender, System::EventArgs^  e) {
+	InitPort(&hComm, ComPortName);           //Initialize Serial Port
+	SetRxMask(&hComm);					      //Set Receive Mask
+	SetAcelandVel(&hComm, ComPortName);
+	GoToFirstPos(&hComm, ComPortName, xstart_steps, ystart_steps);
+	ClosePort(&hComm, ComPortName);
 }
 };
 }
