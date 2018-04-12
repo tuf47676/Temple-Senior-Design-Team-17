@@ -30,9 +30,10 @@ bool GoHome(HANDLE *hComm, char ComPortName[]);
 //bool SetHome(HANDLE *hComm, char ComPortName[]);
 bool SetAcelandVel(HANDLE *hComm, char ComPortName[]);
 double ConvertCmtoSteps(double cm);
+int ConvertStepstoSeconds(int steps);
 bool GoToFirstPos(HANDLE *hComm, char ComPortName[], int xstart_steps, int ystart_steps);
 bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_size,
-	int yPoints, int row_size, int y_index, bool new_line);
+	int yPoints, int row_size, int y_index, bool new_line, bool line_scan);
 
 HANDLE hComm;                          // Handle to the Serial port	
 char   ComPortName[] = "COM1";         // Name of the Serial port(May Change) to be opened
@@ -401,6 +402,12 @@ private: System::Void button1_Click(System::Object^  sender, System::EventArgs^ 
 	xstep_size = (xstop_steps - xstart_steps) / xPoints; //obtain the number of steps between each column
 	ystep_size = (ystop_steps - ystart_steps) / yPoints; //obtain the number of steps between each row
 	row_size = xstep_size*(xPoints - 1);
+
+	std::cout << "\nX step size: " << xstep_size << "\nY step size: " << ystep_size;
+
+	if (yPoints == 1) {
+		std::cout << "\n\nThis will be a line scan.\n";
+	}
 }
 
 private: double string_to_double(const std::string& s) {
@@ -453,11 +460,22 @@ private: System::Void btnFirst_Pos_Click(System::Object^  sender, System::EventA
 
 private: System::Void btnStart_Click(System::Object^  sender, System::EventArgs^  e) {
 	bool new_line = false;
+	bool line_scan;
 	InitPort(&hComm, ComPortName);           //Initialize Serial Port
 	SetRxMask(&hComm);					      //Set Receive Mask
 	SetAcelandVel(&hComm, ComPortName);
 
+	//determine whether this is a line scan or not
+	//
+	if (yPoints == 1) {
+		line_scan = true;
+	}
+	else {
+		line_scan = false;
+	}
+
 	//execute a for loop to go through all scan points
+	//
 	for (size_t i = 0; i < yPoints; i++) {
 		for (size_t j = 0; j < xPoints; j++) {
 			if (j == xPoints - 1) {
@@ -466,9 +484,9 @@ private: System::Void btnStart_Click(System::Object^  sender, System::EventArgs^
 			else 
 				new_line = false;
 
-			Sleep(2000);
+			//Sleep(2000);
 			GoToNextPos(&hComm, ComPortName, xstep_size, ystep_size,
-				yPoints, row_size, i, new_line);
+				yPoints, row_size, i, new_line, line_scan);
 		}
 	}
 	ClosePort(&hComm, ComPortName);

@@ -13,20 +13,9 @@
 using namespace System;
 using namespace System::Windows::Forms;
 
-//Function Prototypes
-//
-//bool InitPort(HANDLE *hComm, char ComPortName[]); //open serial port, set parameters & timeouts
-//bool SetRxMask(HANDLE *hComm);
-//bool ClosePort(HANDLE *hComm, char ComPortName[]); //close serial port
-//bool WriteCmd(HANDLE *hComm, char lpBuffer[], char ComPortName[]);
-//bool ReadRsp(HANDLE *hComm, char ComPortName[]);
-//bool GoHome(HANDLE *hComm, char ComPortName[]);
-//bool SetHome(HANDLE *hComm, char ComPortName[]);
-//bool SetAcelandVel(HANDLE *hComm, char ComPortName[]);
-//double ConvertCmtoSteps(double cm);
-//bool GoToFirstPos(HANDLE *hComm, char ComPortName[], int xstart_steps, int ystart_steps);
-
-
+#define RESOLUTION 12800 //in steps/rev
+#define ACCELERATION 1 //in rev/sec^2
+#define VELOCITY 1 //in rev/sec
 
 [STAThreadAttribute]
 void Main(array<String^>^ args) {
@@ -254,7 +243,7 @@ bool GoHome(HANDLE *hComm, char ComPortName[]) {
 //Enable Limit Switches, Set to Normal Mode, Set Acceleration, Set Velocity
 //
 bool SetAcelandVel(HANDLE *hComm, char ComPortName[]) {
-	char lpBuffer[] = "LD0 MN A1 V1 ";
+	char lpBuffer[] = "LD0 MN A2 V1 ";
 	WriteCmd(hComm, lpBuffer, ComPortName);
 	return true;
 }
@@ -274,6 +263,15 @@ double ConvertCmtoSteps(double cm) {
 	return Steps;
 }
 
+//Convert movement steps into time in milliseconds based on motor settings
+int ConvertStepstoSeconds(int steps) {
+	//seconds = revs/sec; revs = steps/resolution
+	double seconds = steps*VELOCITY / RESOLUTION;
+	int time = seconds * 1000;
+
+	return time;
+}
+
 bool GoToFirstPos(HANDLE * hComm, char ComPortName[], int xstart_steps, int ystart_steps)
 {
 	char lpBuffer[64];
@@ -285,26 +283,35 @@ bool GoToFirstPos(HANDLE * hComm, char ComPortName[], int xstart_steps, int ysta
 }
 
 bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_size, 
-	int yPoints, int row_size, int y_index, bool new_line)
+	int yPoints, int row_size, int y_index, bool new_line, bool line_scan)
 {
 	char lpBuffer[64];
-	if (new_line==false) {
+	if (new_line==false || line_scan==true) {
 		//move horizontally by xstep_size
+		//
 		sprintf(lpBuffer, "D%d 1G ", xstep_size);
 		WriteCmd(hComm, lpBuffer, ComPortName);
 		ReadRsp(hComm, ComPortName);
 
+		//delay so mount has time to reach desired position
+		Sleep(ConvertStepstoSeconds(xstep_size)+100);
+
 		return true;
 	}
-	else if (new_line==true && y_index != (yPoints-1)) {
-		//return to the start of the row and then move down by ystep_size
+	else if (new_line==true && y_index != (yPoints-1) && line_scan==false) {
+		//return to the start of the row
+		//
 		sprintf(lpBuffer, "D-%d 1G ", row_size);
 		WriteCmd(hComm, lpBuffer, ComPortName);
 		ReadRsp(hComm, ComPortName);
-		Sleep(10000);
+		//Sleep(10000);
+		Sleep(ConvertStepstoSeconds(xstep_size * 4) + 100);
+		//move down by ystep_size
+		//
 		sprintf(lpBuffer, "D%d 2G ", ystep_size);
 		WriteCmd(hComm, lpBuffer, ComPortName);
 		ReadRsp(hComm, ComPortName);
+		Sleep(ConvertStepstoSeconds(ystep_size) + 100);
 
 		return true;
 	}
