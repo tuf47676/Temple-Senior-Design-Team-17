@@ -48,11 +48,18 @@ namespace Design_Project {
 
 	private: System::ComponentModel::Container ^components;
 	private: int numbox_X, numbox_Y, totalScanPoints, currentScanPoint;
+	private: long int startTime, currentTime, elapsedTime;
+	public: System::Void setStartTime(void) {
+		startTime = (long int)time(NULL);
+	}
 
-
-	public: System::Void updateVisuals(int x, int y, int currentTime) {
+	public: System::Void updateVisuals(int x, int y) {
 		int currentScanPoint = (y*numbox_Y) + x;
-		lbl_FractionComplete->Text = "Completion: " + currentScanPoint + "/" + totalScanPoints + "\nX Position: " + x + "\nY Position: " + y;
+		x++;//start count at one
+		y++;//start count at one.
+		currentTime = (long int)time(NULL);
+		elapsedTime = currentTime - startTime;
+		lbl_FractionComplete->Text = "Completion: " + currentScanPoint + "/" + totalScanPoints + "\nX Position: " + x + "\nY Position: " + y + "\nElasped Time: " + elapsedTime;
 		Refresh();
 	}
 
@@ -85,7 +92,7 @@ namespace Design_Project {
 			this->lbl_FractionComplete->AutoSize = true;
 			this->lbl_FractionComplete->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular,
 				System::Drawing::GraphicsUnit::Point, static_cast<System::Byte>(0)));
-			this->lbl_FractionComplete->Location = System::Drawing::Point(235, 84);
+			this->lbl_FractionComplete->Location = System::Drawing::Point(12, 9);
 			this->lbl_FractionComplete->Name = L"lbl_FractionComplete";
 			this->lbl_FractionComplete->Size = System::Drawing::Size(70, 25);
 			this->lbl_FractionComplete->TabIndex = 1;

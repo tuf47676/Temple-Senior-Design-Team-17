@@ -309,6 +309,12 @@ bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_s
 	int yPoints, int row_size, int x_index, int y_index, bool new_line, bool line_scan)
 {
 	char lpBuffer[64];
+
+	std::cout << "++++++++++++++++++++++++++++++++++++++++\n";
+	std::cout << "+     Moving to next scan position     +\n";
+	std::cout << "++++++++++++++++++++++++++++++++++++++++\n";
+
+
 	if (new_line == false) {
 		if (x_index != xPoints - 1) {
 			//move horizontally by xstep_size
@@ -318,7 +324,7 @@ bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_s
 			ReadRsp(hComm, ComPortName);
 
 			//delay so mount has time to reach desired position
-			Sleep(ConvertStepstoSeconds(xstep_size) + 100);
+			Sleep(ConvertStepstoSeconds(xstep_size) + 300);
 		}
 
 		return true;
@@ -330,13 +336,13 @@ bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_s
 		WriteCmd(hComm, lpBuffer, ComPortName);
 		ReadRsp(hComm, ComPortName);
 		//Sleep(10000);
-		Sleep(ConvertStepstoSeconds(xstep_size * 4) + 100);
+		Sleep(ConvertStepstoSeconds(xstep_size * 4) + 300);
 		//move down by ystep_size
 		//
 		sprintf(lpBuffer, "D%d 2G ", ystep_size);
 		WriteCmd(hComm, lpBuffer, ComPortName);
 		ReadRsp(hComm, ComPortName);
-		Sleep(ConvertStepstoSeconds(ystep_size) + 100);
+		Sleep(ConvertStepstoSeconds(ystep_size) + 300);
 
 		return true;
 	}

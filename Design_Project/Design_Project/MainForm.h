@@ -2134,7 +2134,13 @@ private: System::Void saveSettings2File(std::string name_extension) {
 	buildString = buildString + "Trace 4 S parameter," + Tr4SParam + "," + s_param_temp + ",\n";
 
 
+	buildString = buildString + "X Antenna Start ," + txtbx_XStart->Text + ",\n";
+	buildString = buildString + "X Antenna Stop ," + txtbx_XStop->Text + ",\n";
+	buildString = buildString + "X Antenna Points ," + numbox_Xpoints->Text + ",\n";
 
+	buildString = buildString + "Y Antenna Start ," + txtbx_YStart->Text + ",\n";
+	buildString = buildString + "Y Antenna Stop ," + txtbx_YStop->Text + ",\n";
+	buildString = buildString + "Y Antenna Points ," + numbox_Ypoints->Text + ",\n";
 
 	//CHANGE DATA TYPES
 	IntPtr ptrToNativeString = Marshal::StringToHGlobalAnsi(buildString); //PTR TO NATIVE STRING
@@ -2367,15 +2373,13 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 		//Create new object for scan form
 		CurrentlyScanning^ ScanForm = gcnew CurrentlyScanning(this, numbox_X, numbox_Y);
 		ScanForm->Show();
-
+		ScanForm->setStartTime();
 		//Make CSV File of freqs
 		saveFrequencyList(&Instrument);
 
 		bool new_line = false;
 		bool line_scan;
-		InitPort(&hComm, ComPortName);           //Initialize Serial Port
-		SetRxMask(&hComm);					      //Set Receive Mask
-		SetAcelandVel(&hComm, ComPortName);
+
 
 		//determine whether this is a line scan or not
 		//
@@ -2389,13 +2393,16 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 		for (int y = 0; y < numbox_Y; y++) {
 			for (int x = 0; x < numbox_X; x++) {
 				//take Single Shot
+				InitPort(&hComm, ComPortName);           //Initialize Serial Port
+				SetRxMask(&hComm);					      //Set Receive Mask
+				SetAcelandVel(&hComm, ComPortName);
 
-				_sleep(2000);
+				Sleep(100);
 
 				takeSingleShotAndSave((y*numbox_Y) + x, &Instrument);
 				
-				ScanForm->updateVisuals(x, y, 0);
-				_sleep(2000);
+				ScanForm->updateVisuals(x, y);
+				Sleep(100);
 
 				if (x == xPoints - 1) {
 					new_line = true;
@@ -2404,10 +2411,13 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 					new_line = false;
 				GoToNextPos(&hComm, ComPortName, xstep_size, ystep_size, xPoints,
 					yPoints, row_size, x, y, new_line, line_scan);
+				ClosePort(&hComm, ComPortName);
 			}
 		}
 		ScanForm->Hide();
+
 	}
+
 }
 
 private: System::Void takeSingleShotAndSave(int position, ViSession* Instrument) {
@@ -2695,6 +2705,14 @@ private: System::Void btn_LoadSettings_Click(System::Object^  sender, System::Ev
 		Tr4Enable = string_to_double(values[43]);
 		Tr4Type = string_to_double(values[45]);
 		Tr4SParam = string_to_double(values[48]);
+
+		txtbx_XStart->Text = convert_string_vcppString(values[51]);
+		txtbx_XStop->Text = convert_string_vcppString(values[53]);
+		numbox_Xpoints->Text = convert_string_vcppString(values[55]);
+
+		txtbx_YStart->Text = convert_string_vcppString(values[57]);
+		txtbx_YStop->Text = convert_string_vcppString(values[59]);
+		numbox_Ypoints->Text = convert_string_vcppString(values[61]);
 
 		this->Hide();
 		this->Show();

@@ -32,7 +32,8 @@ Class Design_Project.CurrentlyScanning: AutoLayout, AnsiClass, Class, Public, Be
   :System.Windows.Forms.Form
     Void .ctor(System.Windows.Forms.Form, Int32, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
-    updateVisuals(Int32, Int32, Int32): PrivateScope, Public, HideBySig
+    setStartTime(): PrivateScope, Public, HideBySig
+    updateVisuals(Int32, Int32): PrivateScope, Public, HideBySig
     InitializeComponent(): PrivateScope, Public, HideBySig
 Class Design_Project.TraceControlEdit: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
