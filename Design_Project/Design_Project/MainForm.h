@@ -104,6 +104,7 @@ namespace Design_Project {
 			btn_StartScan->Enabled = FALSE;
 
 
+			viClose(Instrument);
 		}
 		
 
@@ -349,6 +350,7 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 			this->lbl_Tr1_Type = (gcnew System::Windows::Forms::Label());
 			this->chkbx_Tr1_Enable = (gcnew System::Windows::Forms::CheckBox());
 			this->group_AntennaPos = (gcnew System::Windows::Forms::GroupBox());
+			this->btnFirst_Pos = (gcnew System::Windows::Forms::Button());
 			this->btn_ScannerHome = (gcnew System::Windows::Forms::Button());
 			this->group_YDim = (gcnew System::Windows::Forms::GroupBox());
 			this->numbox_Ypoints = (gcnew System::Windows::Forms::NumericUpDown());
@@ -368,7 +370,6 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 			this->lbl_initScan_steps = (gcnew System::Windows::Forms::Label());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->lbl_loadSettings = (gcnew System::Windows::Forms::Label());
-			this->btnFirst_Pos = (gcnew System::Windows::Forms::Button());
 			this->Group_Freq->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numBox_Points))->BeginInit();
 			this->Span_Units->SuspendLayout();
@@ -816,19 +817,20 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 			// 
 			// group_INITScan
 			// 
+			this->group_INITScan->Controls->Add(this->btnFirst_Pos);
 			this->group_INITScan->Controls->Add(this->btn_StartScan);
 			this->group_INITScan->Controls->Add(this->SetCMDButton);
 			this->group_INITScan->Controls->Add(this->btn_ecal);
 			this->group_INITScan->Location = System::Drawing::Point(109, 222);
 			this->group_INITScan->Name = L"group_INITScan";
-			this->group_INITScan->Size = System::Drawing::Size(123, 108);
+			this->group_INITScan->Size = System::Drawing::Size(123, 129);
 			this->group_INITScan->TabIndex = 27;
 			this->group_INITScan->TabStop = false;
 			this->group_INITScan->Text = L"Initiate Scan";
 			// 
 			// btn_StartScan
 			// 
-			this->btn_StartScan->Location = System::Drawing::Point(7, 74);
+			this->btn_StartScan->Location = System::Drawing::Point(7, 100);
 			this->btn_StartScan->Name = L"btn_StartScan";
 			this->btn_StartScan->Size = System::Drawing::Size(108, 23);
 			this->btn_StartScan->TabIndex = 31;
@@ -838,7 +840,7 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 			// 
 			// btn_ecal
 			// 
-			this->btn_ecal->Location = System::Drawing::Point(7, 45);
+			this->btn_ecal->Location = System::Drawing::Point(7, 71);
 			this->btn_ecal->Name = L"btn_ecal";
 			this->btn_ecal->Size = System::Drawing::Size(108, 23);
 			this->btn_ecal->TabIndex = 29;
@@ -1113,7 +1115,6 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 			// 
 			// group_AntennaPos
 			// 
-			this->group_AntennaPos->Controls->Add(this->btnFirst_Pos);
 			this->group_AntennaPos->Controls->Add(this->btn_ScannerHome);
 			this->group_AntennaPos->Controls->Add(this->group_YDim);
 			this->group_AntennaPos->Controls->Add(this->group_XDim);
@@ -1124,6 +1125,17 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 			this->group_AntennaPos->TabStop = false;
 			this->group_AntennaPos->Text = L"Antenna Positions";
 			this->group_AntennaPos->Enter += gcnew System::EventHandler(this, &MainForm::group_AntennaPos_Enter);
+			// 
+			// btnFirst_Pos
+			// 
+			this->btnFirst_Pos->Enabled = false;
+			this->btnFirst_Pos->Location = System::Drawing::Point(7, 45);
+			this->btnFirst_Pos->Name = L"btnFirst_Pos";
+			this->btnFirst_Pos->Size = System::Drawing::Size(108, 23);
+			this->btnFirst_Pos->TabIndex = 3;
+			this->btnFirst_Pos->Text = L"Move to Start";
+			this->btnFirst_Pos->UseVisualStyleBackColor = true;
+			this->btnFirst_Pos->Click += gcnew System::EventHandler(this, &MainForm::btnFirst_Pos_Click);
 			// 
 			// btn_ScannerHome
 			// 
@@ -1287,9 +1299,10 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 				static_cast<System::Byte>(0)));
 			this->lbl_initScan_steps->Location = System::Drawing::Point(43, 246);
 			this->lbl_initScan_steps->Name = L"lbl_initScan_steps";
-			this->lbl_initScan_steps->Size = System::Drawing::Size(60, 60);
+			this->lbl_initScan_steps->Size = System::Drawing::Size(60, 80);
 			this->lbl_initScan_steps->TabIndex = 34;
-			this->lbl_initScan_steps->Text = L"Step 2:\r\nStep 3:\r\nStep 4:";
+			this->lbl_initScan_steps->Text = L"Step 2:\r\nStep 3:\r\nStep 4:\r\nStep 5:";
+			this->lbl_initScan_steps->Click += gcnew System::EventHandler(this, &MainForm::lbl_initScan_steps_Click);
 			// 
 			// label1
 			// 
@@ -1310,16 +1323,6 @@ private: System::Windows::Forms::Button^  btnFirst_Pos;
 			this->lbl_loadSettings->Size = System::Drawing::Size(129, 13);
 			this->lbl_loadSettings->TabIndex = 32;
 			this->lbl_loadSettings->Text = L"Load previous settings file";
-			// 
-			// btnFirst_Pos
-			// 
-			this->btnFirst_Pos->Location = System::Drawing::Point(170, 233);
-			this->btnFirst_Pos->Name = L"btnFirst_Pos";
-			this->btnFirst_Pos->Size = System::Drawing::Size(104, 23);
-			this->btnFirst_Pos->TabIndex = 3;
-			this->btnFirst_Pos->Text = L"Move to Start";
-			this->btnFirst_Pos->UseVisualStyleBackColor = true;
-			this->btnFirst_Pos->Click += gcnew System::EventHandler(this, &MainForm::btnFirst_Pos_Click);
 			// 
 			// MainForm
 			// 
@@ -1424,11 +1427,13 @@ private: System::Void SetCMDButton_Click(System::Object^  sender, System::EventA
 	Controls_Scanner();
 	std::cout << "\n";
 
+	viClose(Instrument);
+
 	saveSettings2File("Settings");
 
-	//enable ecal btn
-	btn_ecal->Enabled = TRUE;
+	//enable Frist POS btn
 	
+	btnFirst_Pos->Enabled = TRUE;
 }
 
 private: bool is_number(String^ testString){
@@ -1867,8 +1872,14 @@ private: System::Void Controls_Scanner() {
 	const std::string yPoints_norm = convert_vcppString_string(yPoints_native); //convert to normal string
 	yPoints = string_to_double(yPoints_norm); //convert string to double
 
-	xstep_size = (xstop_steps - xstart_steps) / xPoints; //obtain the number of steps between each column
-	ystep_size = (ystop_steps - ystart_steps) / yPoints; //obtain the number of steps between each row
+	xstep_size = (xstop_steps - xstart_steps) / (xPoints-1); //obtain the number of steps between each column
+	if (yPoints == 1) {
+		ystep_size = 0;
+	}
+	else {
+		ystep_size = (ystop_steps - ystart_steps) / (yPoints - 1); //obtain the number of steps between each row
+
+	}
 	row_size = xstep_size*(xPoints - 1);
 
 	std::cout << "\nX step size: " << xstep_size << "\nY step size: " << ystep_size;
@@ -1952,9 +1963,10 @@ private: std::string readSCPI_Buffer(ViSession* Instrument) {
 
 	viScanf(*Instrument, "%t", &buf); //Read buffer into memory
 
-	std::cout << "The visa buffer was read:  \n";
-	std::cout << buf;
-	std::cout << "\n";
+	//DISABLED FOR SCANNING
+	//std::cout << "The visa buffer was read:  \n";
+	//std::cout << buf;
+	//std::cout << "\n";
 	//viClose(Instrument); //Close COM
 
 	String^ nativeVISAREAD;
@@ -2365,7 +2377,8 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 		sendSCPI_String(":CALC1:PAR:COUNT 4", &Instrument); //Enable 4 traces
 
 		sendSCPI_String(":DISP:WIND1:MAX ON", &Instrument);
-
+		sendSCPI_String(":DISP:ENAB OFF", &Instrument);
+	
 		//Save Numbox Points to interger
 		int numbox_X = string_to_double(convert_vcppString_string(numbox_Xpoints->Text));
 		int numbox_Y = string_to_double(convert_vcppString_string(numbox_Ypoints->Text));
@@ -2379,6 +2392,11 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 
 		bool new_line = false;
 		bool line_scan;
+		///////////////////////Scanning process
+		for (int count = 15; count > 0; count--) {	
+			Sleep(1000);
+			ScanForm->updateCountDown(count);
+		}
 
 
 		//determine whether this is a line scan or not
@@ -2398,7 +2416,7 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 				SetAcelandVel(&hComm, ComPortName);
 
 				Sleep(100);
-
+				//MessageBox::Show("CLICK OK TO ADVANCE", "MOVED", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 				takeSingleShotAndSave((y*numbox_Y) + x, &Instrument);
 				
 				ScanForm->updateVisuals(x, y);
@@ -2415,7 +2433,8 @@ private: System::Void btn_StartScan_Click(System::Object^  sender, System::Event
 			}
 		}
 		ScanForm->Hide();
-
+		sendSCPI_String(":DISP:ENAB ON", &Instrument);
+		viClose(Instrument);
 	}
 
 }
@@ -3109,6 +3128,10 @@ private: System::Void btnFirst_Pos_Click(System::Object^  sender, System::EventA
 	SetAcelandVel(&hComm, ComPortName);
 	GoToFirstPos(&hComm, ComPortName, xstart_steps, ystart_steps);
 	ClosePort(&hComm, ComPortName);
+	//Enable the next step, ECAL.
+	btn_ecal->Enabled = TRUE;
+}
+private: System::Void lbl_initScan_steps_Click(System::Object^  sender, System::EventArgs^  e) {
 }
 };
 }

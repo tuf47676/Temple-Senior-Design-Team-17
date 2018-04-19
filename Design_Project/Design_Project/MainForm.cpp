@@ -19,6 +19,7 @@
 #define RESOLUTION 12800 //in steps/rev
 #define ACCELERATION 1 //in rev/sec^2
 #define VELOCITY 1 //in rev/sec
+#define ANTENNA_OFFSET  7.5 //distance from center of antenna to edge of bracket
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -247,15 +248,17 @@ bool GoHome(HANDLE *hComm, char ComPortName[]) {
 
 	//move x and y motor to (0,0) position
 	//
-	char lpBuffer[] = "D-250000 1G T10 2G ";
+	//char lpBuffer[] = "D-250000 1G T10 2G ";
+	char lpBuffer[] = "D-250000 1G T10 ";
 	WriteCmd(hComm, lpBuffer, ComPortName);
 	ReadRsp(hComm, ComPortName);
 
-	Sleep(3500);
+	//Sleep(3500);
 
 	//move just off limit switches
 	//
-	char lpBuffer1[] = "D600 1G 2G ";
+	//char lpBuffer1[] = "D600 1G 2G ";
+	char lpBuffer1[] = "D600 1G ";
 	WriteCmd(hComm, lpBuffer1, ComPortName);
 	ReadRsp(hComm, ComPortName);
 
@@ -298,7 +301,9 @@ int ConvertStepstoSeconds(int steps) {
 bool GoToFirstPos(HANDLE * hComm, char ComPortName[], int xstart_steps, int ystart_steps)
 {
 	char lpBuffer[64];
-	sprintf(lpBuffer, "D%d 1G D%d 2G ", xstart_steps, ystart_steps);
+	int x_init = xstart_steps - ConvertCmtoSteps(ANTENNA_OFFSET);
+	//sprintf(lpBuffer, "D%d 1G D%d 2G ", xstart_steps, ystart_steps);
+	sprintf(lpBuffer, "D%d 1G ", x_init);
 	WriteCmd(hComm, lpBuffer, ComPortName);
 	ReadRsp(hComm, ComPortName);
 
@@ -310,9 +315,9 @@ bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_s
 {
 	char lpBuffer[64];
 
-	std::cout << "++++++++++++++++++++++++++++++++++++++++\n";
-	std::cout << "+     Moving to next scan position     +\n";
-	std::cout << "++++++++++++++++++++++++++++++++++++++++\n";
+	//std::cout << "++++++++++++++++++++++++++++++++++++++++\n";
+	//std::cout << "+     Moving to next scan position     +\n";
+	//std::cout << "++++++++++++++++++++++++++++++++++++++++\n";
 
 
 	if (new_line == false) {
@@ -325,6 +330,11 @@ bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_s
 
 			//delay so mount has time to reach desired position
 			Sleep(ConvertStepstoSeconds(xstep_size) + 300);
+
+			//delay at position for 1 second
+			sprintf(lpBuffer, "1T1 ");
+			WriteCmd(hComm, lpBuffer, ComPortName);
+			ReadRsp(hComm, ComPortName);
 		}
 
 		return true;
@@ -344,9 +354,16 @@ bool GoToNextPos(HANDLE * hComm, char ComPortName[], int xstep_size, int ystep_s
 		ReadRsp(hComm, ComPortName);
 		Sleep(ConvertStepstoSeconds(ystep_size) + 300);
 
+		//delay at position for 1 second
+		sprintf(lpBuffer, "1T1 ");
+		WriteCmd(hComm, lpBuffer, ComPortName);
+		ReadRsp(hComm, ComPortName);
+
 		return true;
 	}
 	else {
 		return false;
 	}
+
+	
 }

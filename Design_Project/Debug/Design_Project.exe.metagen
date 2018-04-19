@@ -34,6 +34,7 @@ Class Design_Project.CurrentlyScanning: AutoLayout, AnsiClass, Class, Public, Be
   Methods:
     setStartTime(): PrivateScope, Public, HideBySig
     updateVisuals(Int32, Int32): PrivateScope, Public, HideBySig
+    updateCountDown(Int32): PrivateScope, Public, HideBySig
     InitializeComponent(): PrivateScope, Public, HideBySig
 Class Design_Project.TraceControlEdit: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form

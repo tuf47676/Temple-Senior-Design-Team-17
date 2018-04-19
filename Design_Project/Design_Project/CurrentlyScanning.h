@@ -62,6 +62,10 @@ namespace Design_Project {
 		lbl_FractionComplete->Text = "Completion: " + currentScanPoint + "/" + totalScanPoints + "\nX Position: " + x + "\nY Position: " + y + "\nElasped Time: " + elapsedTime;
 		Refresh();
 	}
+	public: System::Void updateCountDown(int count) {
+		lbl_FractionComplete->Text = "Scan will start in: " + count +" seconds";
+		Refresh();
+	}
 
 
 #pragma region Windows Form Designer generated code
